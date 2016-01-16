@@ -43,6 +43,10 @@
             android:name=".MessageActivity"
             android:label="@string/title_activity_message" >
         </activity>
+        <activity
+            android:name=".Chatlist"
+            android:label="@string/title_activity_chatlist" >
+        </activity>
     </application>
 
 </manifest>

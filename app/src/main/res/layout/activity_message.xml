@@ -103,62 +103,16 @@
                 android:layout_width="0dp"
                 android:onClick="sendMessage"
                 android:layout_weight="2"
+                android:layout_margin="8dp"
                 android:layout_marginRight="10dp"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_send"
                 app:elevation="6dp"
-                app:pressedTranslationZ="12dp"/>
+                app:pressedTranslationZ="12dp"
+                android:padding="5dp" />
 
-            <!--<EditText-->
-                <!--android:id="@+id/text"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="fill_parent"-->
-                <!--android:layout_margin="5sp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:hint="Write here"-->
-                <!--android:padding="5sp"-->
-                <!--/>-->
-
-            <!--&lt;!&ndash;<Button-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="fill_parent"-->
-                <!--android:layout_margin="5sp"-->
-
-                <!--android:onClick="sendMessage"-->
-                <!--android:paddingBottom="5sp"-->
-                <!--android:paddingLeft="15sp"-->
-                <!--android:paddingRight="15sp"-->
-                <!--android:paddingTop="5sp"-->
-                <!--android:text="Send"-->
-                <!--android:textColor="#FFF" />&ndash;&gt;-->
-            <!--&lt;!&ndash;<ImageButton&ndash;&gt;-->
-                <!--&lt;!&ndash;android:id="@+id/second_send_button_sms_view"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:onClick="sendMessage"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:background="@null"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:paddingBottom="5sp"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:paddingLeft="5sp"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:paddingRight="10sp"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:paddingTop="5sp"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:src="@drawable/send_button_selector"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="fill_parent"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_margin="5sp"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:contentDescription="Send" />&ndash;&gt;-->
-        <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
-        <!--<android.support.design.widget.FloatingActionButton-->
-            <!--android:id="@+id/second_send_button_sms_view"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:onClick="sendMessage"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="bottom|end"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:src="@drawable/ic_send"-->
-            <!--app:elevation="6dp"-->
-            <!--app:pressedTranslationZ="12dp"/>-->
         </LinearLayout>
 
         <ListView

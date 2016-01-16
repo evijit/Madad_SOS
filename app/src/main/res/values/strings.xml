@@ -5,4 +5,36 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_message">Chat</string>
+    <string name="title_activity_chatlist">Chatlist</string>
+
+
+    <string-array name="sample_names">
+        <item>Kenny Hudson </item>
+        <item>Ramiro Cox </item>
+        <item>Nathaniel Saunders </item>
+        <item>Lawrence Moore </item>
+        <item>Rosemary Johnson </item>
+        <item>Marlon Vaughn </item>
+        <item>Jorge Dixon </item>
+        <item>Hector Kelly </item>
+        <item>April Thornton </item>
+        <item>Gertrude Thomas </item>
+        <item>Jeremiah Deen </item>
+        <item>Sheen Lucas </item>
+    </string-array>
+
+    <string-array name="sample_text">
+        <item>Are John and Jane very intelligent?</item>
+        <item>Frank  must work for a few hours.</item>
+        <item>Jill  isn\'t very busy now.</item>
+        <item>Turn left at the corner.</item>
+        <item>Awesome party last night!</item>
+        <item>You\'re such a killjoy.</item>
+        <item>I love you!</item>
+        <item>Did you watch the Oscars last night?</item>
+        <item>Please get some milk for me.</item>
+        <item>Submit your report by monday.</item>
+        <item>Wavit rocks!</item>
+        <item>Bend it like Beckham ...</item>
+    </string-array>
 </resources>

@@ -29,7 +29,7 @@ public class MapsActivity extends FragmentActivity {
 
     public void openchat(View v)
     {
-        Intent i = new Intent(MapsActivity.this, MessageActivity.class);
+        Intent i = new Intent(MapsActivity.this, Chatlist.class);
         startActivity(i);
     }
     /**

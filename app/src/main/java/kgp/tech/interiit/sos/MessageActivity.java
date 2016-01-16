@@ -118,6 +118,7 @@ public class MessageActivity extends AppCompatActivity {
     }
     private class SendMessage extends AsyncTask<Void, String, String>
     {
+        String sender="Somebody";
         @Override
         protected String doInBackground(Void... params) {
             try {

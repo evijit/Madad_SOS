@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+
+    android:orientation="horizontal"
+    android:padding="5dip" >
+
+    <!--  ListRow Left sied Thumbnail image -->
+    <LinearLayout android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:layout_alignParentLeft="true"
+
+        android:layout_marginRight="5dip">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_marginTop="12dip"
+        android:textColor="#040404"
+        android:typeface="sans"
+        android:layout_marginLeft="8dp"
+        android:textSize="16dip"
+        android:textStyle="bold"/>
+
+
+    <TextView
+        android:id="@+id/txt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name"
+        android:textColor="#757575"
+        android:textSize="14dip"
+        android:layout_marginTop="6dip"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/thumbnail"
+         />
+
+    <!-- Rightend Duration -->
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dip"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/name"
+        android:gravity="right"
+        android:text="5:45"
+        android:layout_marginRight="5dip"
+        android:textSize="10dip"
+        android:textColor="@color/primary"
+        android:textStyle="bold"/>
+
+    <!-- Rightend Arrow
+    <ImageView android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>-->
+
+</RelativeLayout>
