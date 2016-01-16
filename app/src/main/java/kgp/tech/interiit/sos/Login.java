@@ -1,14 +1,27 @@
 package kgp.tech.interiit.sos;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewDebug;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
+
+import java.io.Console;
+
+import kgp.tech.interiit.sos.Utils.Utils;
 
 public class Login extends AppCompatActivity {
 
@@ -31,12 +44,31 @@ public class Login extends AppCompatActivity {
 
             final EditText login = (EditText) findViewById(R.id.username);
             final EditText pass = (EditText) findViewById(R.id.password);
+
             Button b=(Button)findViewById(R.id.butt);
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(Login.this, MapsActivity.class);
-                    startActivity(i);
+                    String username = login.getText().toString();
+                    String password = pass.getText().toString();
+                    if(username.length()==0 || password.length()==0) {
+                        Utils.showDialog(Login.this,getString(R.string.err_fields_empty));
+                        return;
+                    }
+
+                    final ProgressDialog dia = ProgressDialog.show(Login.this,null,getString(R.string.alert_wait));
+
+                    ParseUser.logInInBackground(username, password, new LogInCallback() {
+                        public void done(ParseUser user, ParseException e) {
+                            dia.dismiss();
+                            if (user != null) {
+                                startActivity(new Intent(Login.this,MapsActivity.class));
+                            } else {
+                                Utils.showDialog(Login.this,getString(R.string.err_login)+e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
             });
 
