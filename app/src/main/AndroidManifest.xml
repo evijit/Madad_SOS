@@ -44,13 +44,20 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
         <activity
             android:name=".MessageActivity"
-            android:label="@string/title_activity_message"></activity>
+            android:label="@string/title_activity_message" />
         <activity
             android:name=".Chatlist"
-            android:label="@string/title_activity_chatlist"></activity>
+            android:label="@string/title_activity_chatlist" />
+        <activity android:name=".WelcomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

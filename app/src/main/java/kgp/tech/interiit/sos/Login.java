@@ -63,6 +63,7 @@ public class Login extends AppCompatActivity {
                             dia.dismiss();
                             if (user != null) {
                                 startActivity(new Intent(Login.this,MapsActivity.class));
+                                finish();
                             } else {
                                 Utils.showDialog(Login.this,getString(R.string.err_login)+e.getMessage());
                                 e.printStackTrace();
