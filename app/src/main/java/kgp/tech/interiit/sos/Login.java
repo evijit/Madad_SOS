@@ -35,7 +35,8 @@ public class Login extends AppCompatActivity {
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Intent i = new Intent(Login.this, MapsActivity.class);
+                    startActivity(i);
                 }
             });
 
