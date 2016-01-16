@@ -1,7 +1,9 @@
 package kgp.tech.interiit.sos;
 
-import android.support.v4.app.FragmentActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -25,6 +27,11 @@ public class MapsActivity extends FragmentActivity {
         setUpMapIfNeeded();
     }
 
+    public void openchat(View v)
+    {
+        Intent i = new Intent(MapsActivity.this, MessageActivity.class);
+        startActivity(i);
+    }
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever

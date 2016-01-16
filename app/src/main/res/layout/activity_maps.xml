@@ -1,5 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+     android:layout_width="match_parent"
     android:layout_height="match_parent" android:id="@+id/map"
     tools:context="kgp.tech.interiit.sos.MapsActivity"
     android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+<android.support.design.widget.FloatingActionButton
+android:id="@+id/fab"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_gravity="bottom|end"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentBottom="true"
+    android:layout_margin="16dp"
+    android:src="@drawable/ic_msg"
+android:onClick="openchat"
+    app:elevation="6dp"
+app:pressedTranslationZ="12dp"/>
+
+    </RelativeLayout>
+

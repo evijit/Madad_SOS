@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_awesome_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chat"
+            android:textColor="#fff"
+            android:textStyle="bold"
+
+            android:textSize="20sp"
+            android:id="@+id/toolbar_title" />
+
+    </android.support.v7.widget.Toolbar>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical" >
+
+
+
+        <LinearLayout
+            android:id="@+id/bottom_write_bar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="10"
+            android:layout_alignParentBottom="true"
+            >
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view"
+                android:padding="10dp"
+                android:elevation="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="8.5"
+                android:layout_height="wrap_content"
+                card_view:cardCornerRadius="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="15dp"
+                    android:orientation="vertical">
+                    <!-- Card Contents go here -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/text"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:editable="true"
+                            android:ellipsize="end"
+                            android:hint="Say something..."
+                            android:inputType="text"
+                            android:singleLine="true" />
+
+
+                        <!--<ImageButton-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:src="@drawable/ic_send"-->
+                            <!-- -->
+                            <!--android:onClick="sendMessage"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--></ImageButton>-->
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/second_send_button_sms_view"
+                android:layout_width="0dp"
+                android:onClick="sendMessage"
+                android:layout_weight="2"
+                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_send"
+                app:elevation="6dp"
+                app:pressedTranslationZ="12dp"/>
+
+            <!--<EditText-->
+                <!--android:id="@+id/text"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:layout_margin="5sp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:hint="Write here"-->
+                <!--android:padding="5sp"-->
+                <!--/>-->
+
+            <!--&lt;!&ndash;<Button-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:layout_margin="5sp"-->
+
+                <!--android:onClick="sendMessage"-->
+                <!--android:paddingBottom="5sp"-->
+                <!--android:paddingLeft="15sp"-->
+                <!--android:paddingRight="15sp"-->
+                <!--android:paddingTop="5sp"-->
+                <!--android:text="Send"-->
+                <!--android:textColor="#FFF" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<ImageButton&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/second_send_button_sms_view"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:onClick="sendMessage"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:background="@null"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:paddingBottom="5sp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:paddingLeft="5sp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:paddingRight="10sp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:paddingTop="5sp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:src="@drawable/send_button_selector"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="fill_parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_margin="5sp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:contentDescription="Send" />&ndash;&gt;-->
+        <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/second_send_button_sms_view"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:onClick="sendMessage"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom|end"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:src="@drawable/ic_send"-->
+            <!--app:elevation="6dp"-->
+            <!--app:pressedTranslationZ="12dp"/>-->
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_above="@id/bottom_write_bar"
+            android:layout_alignParentTop="true"
+            android:cacheColorHint="#00000000"
+            android:divider="#00000000"
+            android:listSelector="#00000000" >
+        </ListView>
+
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:adjustViewBounds="true"
+            android:layout_above="@id/bottom_write_bar"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="" />
+
+    </RelativeLayout>
+</LinearLayout>
