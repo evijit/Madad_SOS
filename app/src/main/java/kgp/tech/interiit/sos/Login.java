@@ -6,13 +6,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewDebug;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -30,57 +33,58 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
         SharedPreferences pref = getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         String access = pref.getString("access", null);
         String token = pref.getString("token", null);
 
+        EditText login = (EditText) findViewById(R.id.username);
+        EditText pass = (EditText) findViewById(R.id.password);
 
+        Button b=(Button)findViewById(R.id.butt);
 
-        if (access == null || token == null) {
-
-            setContentView(R.layout.activity_login);
-
-            final EditText login = (EditText) findViewById(R.id.username);
-            final EditText pass = (EditText) findViewById(R.id.password);
-
-            Button b=(Button)findViewById(R.id.butt);
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String username = login.getText().toString();
-                    String password = pass.getText().toString();
-                    if(username.length()==0 || password.length()==0) {
-                        Utils.showDialog(Login.this,getString(R.string.err_fields_empty));
-                        return;
-                    }
-
-                    final ProgressDialog dia = ProgressDialog.show(Login.this,null,getString(R.string.alert_wait));
-
-                    ParseUser.logInInBackground(username, password, new LogInCallback() {
-                        public void done(ParseUser user, ParseException e) {
-                            dia.dismiss();
-                            if (user != null) {
-                                startActivity(new Intent(Login.this,MapsActivity.class));
-                                finish();
-                            } else {
-                                Utils.showDialog(Login.this,getString(R.string.err_login)+e.getMessage());
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+        pass.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    Button b = (Button) findViewById(R.id.butt);
+                    b.performClick();
+                    return true;
                 }
-            });
+                return false;
+            }
+        });
 
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText login = (EditText) findViewById(R.id.username);
+                EditText pass = (EditText) findViewById(R.id.password);
+                String username = login.getText().toString();
+                String password = pass.getText().toString();
+                if (username.length() == 0 || password.length() == 0) {
+                    Utils.showDialog(Login.this, getString(R.string.err_fields_empty));
+                    return;
+                }
 
-        } else {
-            Intent i = new Intent(Login.this, MapsActivity.class);
-            startActivity(i);
-            finish();
-        }
+                final ProgressDialog dia = ProgressDialog.show(Login.this, null, getString(R.string.alert_wait));
 
-
+                ParseUser.logInInBackground(username, password, new LogInCallback() {
+                    public void done(ParseUser user, ParseException e) {
+                        dia.dismiss();
+                        if (user != null) {
+                            startActivity(new Intent(Login.this, MapsActivity.class));
+                            finish();
+                        } else {
+                            Utils.showDialog(Login.this, getString(R.string.err_login) + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @Override
