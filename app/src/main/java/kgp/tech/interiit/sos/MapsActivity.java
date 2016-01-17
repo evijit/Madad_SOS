@@ -26,8 +26,6 @@ import kgp.tech.interiit.sos.Utils.People;
 public class MapsActivity extends FragmentActivity implements LocationListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    private static final String TAG = "LocationActivity";
-    int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     public Vector<People> getHelpers() {
         // We have to get it from the server
@@ -127,6 +125,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
      */
     private void setUpMap() {
         //mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+
     }
 
     @Override

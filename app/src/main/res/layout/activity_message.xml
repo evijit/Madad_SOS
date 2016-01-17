@@ -81,8 +81,8 @@
                             android:editable="true"
                             android:ellipsize="end"
                             android:hint="Say something..."
-                            android:inputType="text"
-                            android:singleLine="true" />
+                            android:inputType="textMultiLine"
+                            android:scrollHorizontally="false"/>
 
 
                         <!--<ImageButton-->

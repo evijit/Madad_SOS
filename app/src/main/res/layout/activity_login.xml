@@ -36,6 +36,7 @@
             android:ellipsize="start"
             android:singleLine="true"
             android:layout_marginTop="45dp"
+            android:nextFocusDown="@+id/password"
             />
     </android.support.design.widget.TextInputLayout>
 
