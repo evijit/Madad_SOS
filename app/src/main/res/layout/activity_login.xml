@@ -14,7 +14,7 @@
         android:id="@+id/profile_image"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         android:src="@drawable/sample_man"
         app:border_width="5dp"
         app:border_color="#0097A7"/>
@@ -73,15 +73,26 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:text="Forgot Password"
-        android:id="@+id/forgot"
+        android:text="Sign Up"
+        android:id="@+id/up"
+        android:onClick="Signup"
         android:textColor="#fff"
         android:background="#777777"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:imeOptions="actionDone"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="Forgot Password?"
+        android:textColor="@color/primary"
+        />
 
 </LinearLayout>
