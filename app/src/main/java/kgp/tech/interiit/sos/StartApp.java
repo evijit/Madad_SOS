@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 
@@ -18,8 +19,8 @@ public class StartApp extends Application {
 
         // Add your initialization code here
         Parse.initialize(this);
+        ParseInstallation.getCurrentInstallation().saveInBackground();
 
-        ParseUser.enableAutomaticUser();
         ParseACL defaultACL = new ParseACL();
         // Optionally enable public read access.
         // defaultACL.setPublicReadAccess(true);
