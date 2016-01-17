@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kgp.tech.interiit.sos">
+    package="kgp.tech.interiit.sos" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,10 +18,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".Login"
-            android:label="@string/app_name">
+            android:label="SOS_Login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,12 +51,16 @@
         <activity
             android:name=".Chatlist"
             android:label="@string/title_activity_chatlist" />
-        <activity android:name=".WelcomeActivity">
+        <activity android:name=".WelcomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Signup"
+            android:label="@string/title_activity_signup" >
         </activity>
     </application>
 

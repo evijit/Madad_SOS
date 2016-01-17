@@ -15,9 +15,11 @@ public class WelcomeActivity extends AppCompatActivity {
         if (ParseUser.getCurrentUser() != null) {
             // Start an intent for the logged in activity
             startActivity(new Intent(this, MapsActivity.class));
+            finish();
         } else {
             // Start and intent for the logged out activity
             startActivity(new Intent(this, Login.class));
+            finish();
         }
     }
 }

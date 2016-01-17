@@ -68,7 +68,7 @@ public class Chatlist extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == 3) {
-                            AlertDialog.Builder dialogBuilder2 = new AlertDialog.Builder(getApplicationContext());
+                            AlertDialog.Builder dialogBuilder2 = new AlertDialog.Builder(Chatlist.this);
                             LayoutInflater inflater = getLayoutInflater();
                             View dialogView = inflater.inflate(R.layout.contact_card, null);
                             dialogBuilder2.setView(dialogView);
