@@ -16,11 +16,40 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
+import java.util.Vector;
+
+import kgp.tech.interiit.sos.Utils.People;
+
 
 public class MapsActivity extends FragmentActivity implements LocationListener {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private static final String TAG = "LocationActivity";
+    int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
+    public Vector<People> getHelpers() {
+        // We have to get it from the server
+        Vector<People> helpers = new Vector<People>(1);
+        helpers.addElement(new People("test loc", 22.33, 87.32));
+        return helpers;
+    }
+
+    public Vector<MarkerOptions> getMarkers() {
+        Vector<People> helpers = getHelpers();
+        Vector<MarkerOptions> markers = new Vector<MarkerOptions>(helpers.size());
+        MarkerOptions mp;
+        for(int i=0;i<helpers.size();i++)
+        {
+            mp = new MarkerOptions();
+            mp.title(helpers.get(i).getName());
+            mp.position(helpers.get(i).getLat_lng());
+            mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+            markers.add(mp);
+        }
+         return markers;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +67,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
 //                                                      int[] grantResults)
 //             to handle the case where the user grants the permission. See the documentation
 //             for Activity#requestPermissions for more details.
+
                 lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
                 return;
@@ -110,10 +140,16 @@ public class MapsActivity extends FragmentActivity implements LocationListener {
         mp.title("Your Location");
 
         mMap.addMarker(mp);
+        ////// Adding Markers for helpers
+        Vector<MarkerOptions> markers = getMarkers();
+        for (int i=0;i<markers.size();i++)
+            mMap.addMarker(markers.get(i));
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(location.getLatitude(), location.getLongitude()), 16));
     }
+
+
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
