@@ -43,7 +43,8 @@ public class Login extends AppCompatActivity {
         EditText login = (EditText) findViewById(R.id.username);
         EditText pass = (EditText) findViewById(R.id.password);
 
-        Button b=(Button)findViewById(R.id.butt);
+        Button blogin=(Button)findViewById(R.id.butt);
+        Button bsignup = (Button) findViewById(R.id.up);
 
         pass.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
@@ -57,7 +58,7 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        b.setOnClickListener(new View.OnClickListener() {
+        blogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText login = (EditText) findViewById(R.id.username);
@@ -83,6 +84,14 @@ public class Login extends AppCompatActivity {
                         }
                     }
                 });
+            }
+        });
+
+        bsignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Login.this, Signup.class));
+                finish();
             }
         });
     }
