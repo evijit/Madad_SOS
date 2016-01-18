@@ -60,6 +60,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/circle"
+        android:background="@drawable/ripple"
+        app:elevation="6dp"
         ebm:dimAmount="0.8"
         ebm:mainButtonSize="0.2"
         ebm:otherButtonSize="0.18"
