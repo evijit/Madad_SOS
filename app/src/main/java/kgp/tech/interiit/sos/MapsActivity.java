@@ -31,6 +31,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseUser;
 
 import java.util.Vector;
 
@@ -170,7 +171,10 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
 //                    getSharedPreferences("MyPref", MODE_PRIVATE).edit().clear().commit();
 //
 //                    mDrawerLayout.closeDrawer(Gravity.LEFT);
-//                    finish();
+                    ParseUser.logOutInBackground();
+                    Intent intent = new Intent(MapsActivity.this, WelcomeActivity.class);
+                    startActivity(intent);
+                    finish();
 
                 }
 
