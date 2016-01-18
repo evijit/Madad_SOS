@@ -63,7 +63,7 @@
         ebm:dimAmount="0.8"
         ebm:mainButtonSize="0.2"
         ebm:otherButtonSize="0.18"
-        ebm:closeButtonSrc="@drawable/circle"
+        ebm:closeButtonSrc="@drawable/ic_close"
         ebm:leftButtonSrc="@drawable/circle"
         ebm:midButtonSrc="@drawable/circle"
         ebm:rightButtonSrc="@drawable/circle"
