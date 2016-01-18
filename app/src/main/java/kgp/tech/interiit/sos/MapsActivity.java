@@ -31,6 +31,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 import java.util.Vector;
@@ -75,6 +76,10 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("user", ParseUser.getCurrentUser());
+        installation.saveInBackground();
 
         toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
 

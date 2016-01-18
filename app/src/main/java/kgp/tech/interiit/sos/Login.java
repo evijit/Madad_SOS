@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 import kgp.tech.interiit.sos.Utils.Utils;
