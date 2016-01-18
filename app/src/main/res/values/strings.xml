@@ -59,4 +59,11 @@
     <string name="alert_loading">Loading...</string>
     <string name="msg_no_user_found">No users found for chat!</string>
     <string name="title_activity_signup">Signup</string>
+    <string name="title_activity_home">Home</string>
+    <string name="action_left">Left</string>
+    <string name="action_middle">Chat</string>
+    <string name="action_right">Right</string>
+
+
+
 </resources>
