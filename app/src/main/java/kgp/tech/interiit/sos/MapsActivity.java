@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,9 +32,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.pubnub.api.Callback;
+import com.pubnub.api.Pubnub;
+import com.pubnub.api.PubnubError;
+import com.pubnub.api.PubnubException;
 
+import java.util.HashMap;
 import java.util.Vector;
 
 import kgp.tech.interiit.sos.Utils.People;
@@ -80,6 +89,17 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();
         installation.put("user", ParseUser.getCurrentUser());
         installation.saveInBackground();
+
+        HashMap<String, Object> params = new HashMap<>();
+        ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
+            public void done(Float ratings, ParseException e) {
+                if (e == null) {
+                    // ratings is 4.5
+                }
+            }
+        });
+
+
 
         toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
 

@@ -18,8 +18,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pubnub.api.Callback;
+import com.pubnub.api.Pubnub;
+import com.pubnub.api.PubnubError;
+import com.pubnub.api.PubnubException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 
 //import android.app.ListActivity;
 
@@ -38,13 +47,47 @@ public class MessageActivity extends AppCompatActivity {
     static Random rand = new Random();
     static String sender;
     private Toolbar toolbar;
+    static String message_incoming = "";
     private ListView listView;
+    static UUID uuid_this = UUID.randomUUID();
+    final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
+        /* Instantiate PubNub */
+        pubnub.setUUID(uuid_this);
+        try {
+            pubnub.subscribe("Channel-ag04qto2e", new Callback() {
+
+                        @Override
+                        public void successCallback(String channel, Object message) {
+                            JSONObject jj = (JSONObject)message;
+                            try {
+                                UUID uu = UUID.fromString(jj.get("uuid").toString());
+                                if(uu.compareTo(uuid_this) != 0) {
+                                    message_incoming = jj.get("text").toString();
+                                    System.out.println("SUBSCRIBE : " + channel + " : "
+                                            + message.getClass() + " : " + message.toString());
+                                    new SendMessage().execute();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void errorCallback(String channel, PubnubError error) {
+                            System.out.println("SUBSCRIBE : ERROR on channel " + channel
+                                    + " : " + error.toString());
+                        }
+                    }
+            );
+        } catch (PubnubException e) {
+            System.out.println(e.toString());
+        }
 
         toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
         SpannableString s = new SpannableString("");
@@ -109,11 +152,28 @@ public class MessageActivity extends AppCompatActivity {
     public void sendMessage(View v)
     {
         String newMessage = text.getText().toString().trim();
-        if(newMessage.length() > 0)
-        {
+
+        JSONObject jj = new JSONObject();
+        try {
+            jj.put("uuid", uuid_this);
+            jj.put("text", newMessage);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Callback callback = new Callback() {
+            public void successCallback(String channel, Object response) {
+                System.out.println(response.toString());
+            }
+            public void errorCallback(String channel, PubnubError error) {
+                System.out.println(error.toString());
+            }
+        };
+        pubnub.publish("Channel-ag04qto2e", jj, callback);
+        if(newMessage.length() > 0) {
             text.setText("");
             addNewMessage(new Message(newMessage, true));
-            new SendMessage().execute();
+            //new SendMessage().execute();
         }
     }
     private class SendMessage extends AsyncTask<Void, String, String>
@@ -165,7 +225,8 @@ public class MessageActivity extends AppCompatActivity {
                 messages.remove(messages.size()-1);
             }
 
-            addNewMessage(new Message(text, false)); // add the orignal message from server.
+
+            addNewMessage(new Message(message_incoming, false)); // add the orignal message from server.
         }
 
 
