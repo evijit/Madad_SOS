@@ -57,19 +57,20 @@ public class Chatlist extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> av, View v, int position, long id) {
                 //Get your item here with the position
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getApplicationContext());
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Chatlist.this);
 
-                    /*LayoutInflater inflater = getActivity().getLayoutInflater();
-                    View dialogView = inflater.inflate(R.layout.contact_card, null);
-                    dialogBuilder.setView(dialogView);*/
+//                    LayoutInflater inflater = Chatlist.this.getLayoutInflater();
+//                    View dialogView = inflater.inflate(R.layout.contact_card, null);
+//                    dialogBuilder.setView(dialogView);
                 String[] op = {"Archive", "Delete", "Block", "Details"};
 
                 dialogBuilder.setItems(op, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (i == 3) {
+                        if(i==3)//Details
+                        {
                             AlertDialog.Builder dialogBuilder2 = new AlertDialog.Builder(Chatlist.this);
-                            LayoutInflater inflater = getLayoutInflater();
+                            LayoutInflater inflater = Chatlist.this.getLayoutInflater();
                             View dialogView = inflater.inflate(R.layout.contact_card, null);
                             dialogBuilder2.setView(dialogView);
                             AlertDialog alertDialog2 = dialogBuilder2.create();

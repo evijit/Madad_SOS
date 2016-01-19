@@ -58,19 +58,17 @@
         <activity
             android:name=".MessageActivity"
             android:label="@string/title_activity_message" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".Chatlist" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Chatlist" />
         </activity>
-
         <activity
             android:name=".Chatlist"
             android:label="@string/title_activity_chatlist" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".MapsActivity" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
         </activity>
-
         <activity android:name=".WelcomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -101,12 +99,15 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-<!--                   IMPORTANT: Change "com.parse.starter" to match your app's package name. -->
+                <!-- IMPORTANT: Change "com.parse.starter" to match your app's package name. -->
                 <category android:name="kgp.tech.interiit.sos" />
             </intent-filter>
         </receiver>
 
-
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>
