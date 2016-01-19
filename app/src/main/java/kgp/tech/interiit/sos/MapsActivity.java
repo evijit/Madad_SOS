@@ -106,11 +106,13 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
 
                 lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
+
                 return;
             }
         }
         else {
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+
         }
 
         setUpMapIfNeeded();
@@ -235,6 +237,7 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
     private void setUpMap() {
         //mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
 
+
     }
 
     @Override
@@ -255,6 +258,28 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(location.getLatitude(), location.getLongitude()), 16));
+
+        if(Build.VERSION.SDK_INT >=23) {
+            if (!(checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+//             TODO: Consider calling
+//                public void requestPermissions(@NonNull String[] permissions, int requestCode)
+//
+//               public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                                                      int[] grantResults)
+//             to handle the case where the user grants the permission. See the documentation
+//             for Activity#requestPermissions for more details.
+
+                mMap.setMyLocationEnabled(true);
+
+
+                return;
+            }
+        }
+        else {
+            mMap.setMyLocationEnabled(true);
+
+        }
+
     }
 
 
