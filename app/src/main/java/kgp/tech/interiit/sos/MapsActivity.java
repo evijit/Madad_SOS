@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FunctionCallback;
+import com.parse.Parse;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
@@ -42,7 +43,11 @@ import com.pubnub.api.Pubnub;
 import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.Vector;
 
 import kgp.tech.interiit.sos.Utils.People;
@@ -150,6 +155,7 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
                         break;
                     case LEFT:
                         // do stuff
+                        sendSOS();
                         break;
                     case RIGHT:
                         // do stuff
@@ -209,6 +215,41 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
         });
     }
 
+
+    public void sendSOS() {
+        final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
+
+            /* Publish a simple message to the demo_tutorial channel */
+        JSONObject data = new JSONObject();
+
+        try {
+            //generate channel name
+            String channelName = UUID.randomUUID().toString();
+            data.put("userid", ParseUser.getCurrentUser());
+            data.put("channel", channelName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        pubnub.publish("demo_tutorial", data, new Callback() {});
+
+            /* Subscribe to the demo_tutorial channel */
+        try {
+            pubnub.subscribe("demo_tutorial", new Callback() {
+                public void successCallback(String channel, Object message) {
+                    System.out.println(message);
+                }
+
+                public void errorCallback(String channel, PubnubError error) {
+                    System.out.println(error.getErrorString());
+                }
+            });
+        } catch (PubnubException e) {
+            e.printStackTrace();
+        }
+
+    }
+    
     @Override
     protected void onResume() {
         super.onResume();
@@ -388,4 +429,9 @@ class MyDrawerAdapter extends BaseAdapter {
     }
 
 }
+
+
+
+
+
 
