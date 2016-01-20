@@ -227,6 +227,20 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
             String channelName = UUID.randomUUID().toString();
             data.put("userid", ParseUser.getCurrentUser());
             data.put("channel", channelName);
+
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("userid", ParseUser.getCurrentUser());
+            params.put("channel", channelName);
+
+            ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
+                @Override
+                public void done(Float fLoat, ParseException e) {
+                    if(e == null) {
+                        System.out.println("YAAAY!!!");
+                    }
+
+                }
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -249,7 +263,7 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
         }
 
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
