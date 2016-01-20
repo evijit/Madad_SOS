@@ -53,22 +53,22 @@
             android:value="7N6XqNFi36GR2e9JJM43IJTgejf2BIqt8N6eRlps" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".HomeActivity"
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".MessageActivity"
             android:label="@string/title_activity_message" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Chatlist" />
+                android:value=".ChatlistFragment" />
         </activity>
-        <activity
-            android:name=".Chatlist"
-            android:label="@string/title_activity_chatlist" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MapsActivity" />
-        </activity>
+        <!--<activity-->
+            <!--android:name=".Chatlist"-->
+            <!--android:label="@string/title_activity_chatlist" >-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".MapsActivity" />-->
+        <!--</activity>-->
         <activity android:name=".WelcomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

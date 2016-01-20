@@ -5,11 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,30 +23,19 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Chatlist extends AppCompatActivity {
+public class ChatlistFragment extends Fragment {
 
     private Toolbar toolbar;
     private ListView listView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chatlist);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v=inflater.inflate(R.layout.frag_chatlist, container, false);
+        listView = (ListView) v.findViewById(R.id.list_data);
+        listView.setEmptyView(v.findViewById(R.id.emptyviewtxt));
 
-        toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
-
-
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle(new SpannableString("Chats"));
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        }
-
-        listView = (ListView) findViewById(R.id.list_data);
-        listView.setEmptyView(findViewById(R.id.emptyviewtxt));
-
-        MyAdapter adapter = new MyAdapter(getApplicationContext());
+        MyAdapter adapter = new MyAdapter(getActivity());
         listView.setAdapter(adapter);
 
         listView.setDivider(null);
@@ -57,7 +44,7 @@ public class Chatlist extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> av, View v, int position, long id) {
                 //Get your item here with the position
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Chatlist.this);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 
 //                    LayoutInflater inflater = Chatlist.this.getLayoutInflater();
 //                    View dialogView = inflater.inflate(R.layout.contact_card, null);
@@ -69,8 +56,8 @@ public class Chatlist extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(i==3)//Details
                         {
-                            AlertDialog.Builder dialogBuilder2 = new AlertDialog.Builder(Chatlist.this);
-                            LayoutInflater inflater = Chatlist.this.getLayoutInflater();
+                            AlertDialog.Builder dialogBuilder2 = new AlertDialog.Builder(getActivity());
+                            LayoutInflater inflater = getActivity().getLayoutInflater();
                             View dialogView = inflater.inflate(R.layout.contact_card, null);
                             dialogBuilder2.setView(dialogView);
                             AlertDialog alertDialog2 = dialogBuilder2.create();
@@ -90,7 +77,7 @@ public class Chatlist extends AppCompatActivity {
             public void onItemClick(AdapterView<?> av, View v, int position, long id) {
                 //Get your item here with the position
 
-                final Intent intent = new Intent(Chatlist.this, MessageActivity.class);
+                final Intent intent = new Intent(getActivity(), MessageActivity.class);
 
                 //FloatingActionsMenu fm = ((FloatingActionsMenu) getActivity().findViewById(R.id.new_up));
 
@@ -104,17 +91,16 @@ public class Chatlist extends AppCompatActivity {
         });
 
 
+        return v;
     }
-
-
-
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-       // getMenuInflater().inflate(R.menu.menu_chatlist, menu);
-        return true;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

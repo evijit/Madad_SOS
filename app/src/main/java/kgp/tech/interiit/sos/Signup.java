@@ -13,9 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -75,7 +73,7 @@ public class Signup extends AppCompatActivity {
                         dia.dismiss();
                         if (e == null) {
                             // Hooray! Let them use the app now.
-                            startActivity(new Intent(Signup.this, MapsActivity.class));
+                            startActivity(new Intent(Signup.this, HomeActivity.class));
                             finish();
                         } else {
                             // Sign up didn't succeed. Look at the ParseException

@@ -1,0 +1,54 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+<com.google.android.gms.maps.MapView xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="match_parent" android:id="@+id/map"
+    tools:context="kgp.tech.interiit.sos.HomeActivity"
+     />
+
+<!--<android.support.design.widget.FloatingActionButton-->
+<!--android:id="@+id/fab"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_gravity="bottom|end"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignParentEnd="true"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_margin="16dp"-->
+    <!--android:src="@drawable/ic_msg"-->
+<!--android:onClick="openchat"-->
+    <!--app:elevation="6dp"-->
+<!--app:pressedTranslationZ="12dp"/>-->
+
+    <lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay
+        xmlns:ebm="http://schemas.android.com/apk/res-auto"
+
+        android:id="@+id/button_menu"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/circle"
+        android:background="@drawable/ripple"
+        app:elevation="6dp"
+        ebm:dimAmount="0.8"
+        ebm:mainButtonSize="0.2"
+        ebm:otherButtonSize="0.18"
+        ebm:closeButtonSrc="@drawable/ic_close"
+        ebm:leftButtonSrc="@drawable/circle"
+        ebm:midButtonSrc="@drawable/circle"
+        ebm:rightButtonSrc="@drawable/circle"
+        ebm:leftButtonText="@string/action_left"
+        ebm:midButtonText="@string/action_middle"
+        ebm:rightButtonText="@string/action_right"
+        />
+
+    </RelativeLayout>
+
+
