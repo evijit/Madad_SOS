@@ -80,11 +80,19 @@
             android:name=".Signup"
             android:label="@string/title_activity_signup" >
         </activity>
-
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".AcceptSOS"
+            android:label="@string/title_activity_accept_sos" >
+        </activity>
         <service android:name="com.parse.PushService" />
 
+
         <receiver
-            android:name="com.parse.ParsePushBroadcastReceiver"
+            android:name="kgp.tech.interiit.sos.CustomReceiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
@@ -92,6 +100,15 @@
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
+        <!--<receiver-->
+            <!--android:name="com.parse.ParsePushBroadcastReceiver"-->
+            <!--android:exported="false" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.parse.push.intent.RECEIVE" />-->
+                <!--<action android:name="com.parse.push.intent.DELETE" />-->
+                <!--<action android:name="com.parse.push.intent.OPEN" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
         <receiver
             android:name="com.parse.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -104,14 +121,7 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
-        <activity
-            android:name=".AcceptSOS"
-            android:label="@string/title_activity_accept_sos" >
-        </activity>
+
     </application>
 
 </manifest>

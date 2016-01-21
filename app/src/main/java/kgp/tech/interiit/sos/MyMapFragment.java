@@ -71,14 +71,14 @@ public class MyMapFragment extends Fragment implements LocationListener {
         installation.put("user", ParseUser.getCurrentUser());
         installation.saveInBackground();
 
-        HashMap<String, Object> params = new HashMap<>();
-        ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
-            public void done(Float ratings, ParseException e) {
-                if (e == null) {
-                    // ratings is 4.5
-                }
-            }
-        });
+//        HashMap<String, Object> params = new HashMap<>();
+//        ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
+//            public void done(Float ratings, ParseException e) {
+//                if (e == null) {
+//                    // ratings is 4.5
+//                }
+//            }
+//        });
 
 
         LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
