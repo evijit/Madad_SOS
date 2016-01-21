@@ -54,7 +54,7 @@ public class TrustedActivity extends AppCompatActivity {
                         case DialogInterface.BUTTON_POSITIVE:
                             // int which = -1
                             //search the user in data base and add to friend class
-                            
+
                             break;
                     }
                     return;

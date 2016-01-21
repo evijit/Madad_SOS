@@ -7,7 +7,7 @@ import com.parse.ParseUser;
  * Created by nishantiam on 17-01-2016.
  */
 
-public class People extends ParseUser{
+public class People{
     private String ParseId;
     private String name;
     private String number;
