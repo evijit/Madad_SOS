@@ -1,20 +1,28 @@
 package kgp.tech.interiit.sos;
 
-import android.app.Fragment;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Data;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * Created by akshaygupta on 20/01/16.
  */
-public class ContactItemFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor>
+public class ContactItemFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
+    public ContactItemFragment(){}
+
+    public OnContactsInteractionListener mSelectedListener;
+
     private static final String[] PROJECTION =
     {
             Data._ID,
@@ -37,7 +45,7 @@ public class ContactItemFragment extends Fragment implements
     };
 
     // Defines the selection clause
-    private static final String SELECTION = Data.LOOKUP_KEY + " = ?";
+    private static final String SELECTION = Data.CONTACT_ID + " = ?";
     // Defines the array to hold the search criteria
     private String[] mSelectionArgs = { "" };
     /*
@@ -62,8 +70,10 @@ public class ContactItemFragment extends Fragment implements
      */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.i("Info", "CF");
         // Initializes the loader framework
-        //getLoaderManager().initLoader(DETAILS_QUERY_ID, null, this);
+        getLoaderManager().initLoader(DETAILS_QUERY_ID,null,this);
     }
 
     @Override
@@ -73,6 +83,7 @@ public class ContactItemFragment extends Fragment implements
             case DETAILS_QUERY_ID:
                 // Assigns the selection parameter
                 mSelectionArgs[0] = mLookupKey;
+                Log.i("Info","Key"+mLookupKey);
                 // Starts the query
                 CursorLoader mLoader =
                         new CursorLoader(
@@ -83,17 +94,37 @@ public class ContactItemFragment extends Fragment implements
                                 mSelectionArgs,
                                 SORT_ORDER
                         );
+                return mLoader;
         }
         return null;
     }
 
+    // A UI Fragment must inflate its View
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        Log.i("Info", "Cont Fragment Created");
+        // Inflate the fragment layout
+
+        return inflater.inflate(R.layout.contact_card,
+                container, false);
+    }
+
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.i("Info","Load Finished");
         switch (loader.getId()) {
             case DETAILS_QUERY_ID:
                     /*
                      * Process the resulting Cursor here.
                      */
+                Log.i("Info",String.valueOf(data.getCount()));
+                while(data.moveToFirst())
+                {
+                    for(int i=0;i<PROJECTION.length;i++)
+                        Log.i("Info","data "+data.getString(i));
+                }
+
                 break;
         }
     }
@@ -108,5 +139,25 @@ public class ContactItemFragment extends Fragment implements
                  */
                 break;
         }
+    }
+
+    public void setLookupKey(String lookupKey)
+    {
+
+        mLookupKey = lookupKey;
+    }
+
+    public interface OnContactsInteractionListener {
+        /**
+         * Called when a contact is selected from the ListView.
+         * @param contactUri The contact Uri.
+         */
+        public void onContactSelected(String lookupKey);
+
+        /**
+         * Called when the ListView selection is cleared like when
+         * a contact search is taking place or is finishing.
+         */
+        public void onSelectionCleared();
     }
 }

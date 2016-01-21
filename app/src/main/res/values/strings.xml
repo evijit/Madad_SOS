@@ -38,6 +38,10 @@
         <item>Bend it like Beckham ...</item>
     </string-array>
 
+    <string name="doadd">Add Contact as Trused ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="add">Add</string>
     <string name="or">or</string>
     <string name="email">Email</string>
     <string name="username">Username</string>
@@ -63,7 +67,6 @@
     <string name="action_left">Left</string>
     <string name="action_middle">Chat</string>
     <string name="action_right">Right</string>
-
 
 
 </resources>

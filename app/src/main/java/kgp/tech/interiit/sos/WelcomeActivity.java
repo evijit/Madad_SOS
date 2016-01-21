@@ -1,12 +1,14 @@
 package kgp.tech.interiit.sos;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.parse.ParseUser;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity implements ContactItemFragment.OnContactsInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,25 +24,40 @@ public class WelcomeActivity extends AppCompatActivity {
             startActivity(new Intent(this, Login.class));
             finish();
         }
-        if (findViewById(R.id.fragment_container) != null) {
+//        if (findViewById(R.id.fragment_container) != null) {
+//
+//            // However, if we're being restored from a previous state,
+//            // then we don't need to do anything and should return or else
+//            // we could end up with overlapping fragments.
+//            if (savedInstanceState != null) {
+//                return;
+//            }
+//
+//            // Create a new Fragment to be placed in the activity layout
+//            ContactListFragment listFragment = new ContactListFragment();
+//
+//            // In case this activity was started with special instructions from an
+//            // Intent, pass the Intent's extras to the fragment as arguments
+//            listFragment.setArguments(getIntent().getExtras());
+//
+//            // Add the fragment to the 'fragment_container' FrameLayout
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.fragment_container, listFragment).commit();
+//        }
+    }
 
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
-            if (savedInstanceState != null) {
-                return;
-            }
+    @Override
+    public void onContactSelected(String lookupKey) {
+        ContactItemFragment itemFragment = new ContactItemFragment();
+        Log.i("Info", "");
+        itemFragment.setLookupKey(lookupKey);
 
-            // Create a new Fragment to be placed in the activity layout
-            ContactListFragment firstFragment = new ContactListFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, itemFragment).commit();
+    }
 
-            // In case this activity was started with special instructions from an
-            // Intent, pass the Intent's extras to the fragment as arguments
-            firstFragment.setArguments(getIntent().getExtras());
+    @Override
+    public void onSelectionCleared() {
 
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, firstFragment).commit();
-        }
     }
 }

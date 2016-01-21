@@ -117,7 +117,7 @@ public class ContactListFragment extends Fragment implements
         // Moves to the Cursor row corresponding to the ListView item that was clicked
         cursor.moveToPosition(position);
         // Get the _ID value
-        mContactId = CONTACT_ID_INDEX;
+        mContactId = Long.valueOf(cursor.getString(CONTACT_ID_INDEX));
         // Get the selected LOOKUP KEY
         mContactKey = String.valueOf(LOOKUP_KEY_INDEX);
         // Create the contact's content Uri
@@ -126,6 +126,9 @@ public class ContactListFragment extends Fragment implements
          * You can use mContactUri as the content URI for retrieving
          * the details for a contact.
          */
+        Log.i("Info","Key "+mContactId+" "+mContactKey);
+        ContactItemFragment.OnContactsInteractionListener mOnContactsInteractionListener = (ContactItemFragment.OnContactsInteractionListener)getActivity();
+        mOnContactsInteractionListener.onContactSelected(String.valueOf(mContactId));
     }
 
     // Defines the text expression
@@ -169,5 +172,4 @@ public class ContactListFragment extends Fragment implements
         mCursorAdapter.swapCursor(null);
 
     }
-
 }
