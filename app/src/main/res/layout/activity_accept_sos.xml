@@ -1,0 +1,111 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_awesome_toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="kgp.tech.interiit.sos.AcceptSOS">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:padding="20dp"
+        android:layout_height="wrap_content">
+
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img"
+            android:src="@drawable/sample_man"
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UserName"
+
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SOS Detail"
+            android:textSize="20sp"
+            android:id="@+id/detail"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location Detail"
+            android:id="@+id/addr"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time"
+            android:id="@+id/tim"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/acceptFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:backgroundTint="#0f0"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/reject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_centerInParent="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                app:backgroundTint="#f00"
+                android:layout_margin="16dp"
+                app:elevation="6dp"
+                app:pressedTranslationZ="12dp"/>
+        <!--android:src="@drawable/accept"-->
+
+
+</RelativeLayout>\
+
+</LinearLayout>
