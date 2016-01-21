@@ -63,6 +63,7 @@
     <string name="action_left">Left</string>
     <string name="action_middle">Chat</string>
     <string name="action_right">Right</string>
+    <string name="title_activity_accept_sos">AcceptSOS</string>
 
 
 
