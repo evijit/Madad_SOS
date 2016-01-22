@@ -31,7 +31,10 @@ public class TrustedActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                Intent i = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Contactables.CONTENT_URI);
+                }
                 startActivityForResult(i, PICK_CONTACT);
             }
 
