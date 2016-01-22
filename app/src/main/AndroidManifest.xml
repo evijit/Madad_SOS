@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kgp.tech.interiit.sos" >
+    package="kgp.tech.interiit.sos">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -33,11 +33,10 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".Login"
-            android:label="Login" >
-        </activity>
+            android:label="Login"></activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -57,7 +56,7 @@
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".MessageActivity"
-            android:label="@string/title_activity_message" >
+            android:label="@string/title_activity_message">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity" />
@@ -69,7 +68,7 @@
         <!-- android:name="android.support.PARENT_ACTIVITY" -->
         <!-- android:value=".MapsActivity" /> -->
         <!-- </activity> -->
-        <activity android:name=".WelcomeActivity" >
+        <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -78,44 +77,40 @@
         </activity>
         <activity
             android:name=".Signup"
-            android:label="@string/title_activity_signup" >
-        </activity>
+            android:label="@string/title_activity_signup"></activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
+            android:label="@string/title_activity_settings"></activity>
         <activity
             android:name=".AcceptSOS"
-            android:label="@string/title_activity_accept_sos" >
-        </activity>
+            android:label="@string/title_activity_accept_sos"></activity>
         <activity
             android:name=".TrustedActivity"
-            android:label="@string/title_activity_trusted" >
-        </activity>
+            android:label="@string/title_activity_trusted"></activity>
+
         <service android:name="com.parse.PushService" />
 
-
         <receiver
-            android:name="kgp.tech.interiit.sos.CustomReceiver"
-            android:exported="false" >
+            android:name=".CustomReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
-        <!--<receiver-->
-            <!--android:name="com.parse.ParsePushBroadcastReceiver"-->
-            <!--android:exported="false" >-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.parse.push.intent.RECEIVE" />-->
-                <!--<action android:name="com.parse.push.intent.DELETE" />-->
-                <!--<action android:name="com.parse.push.intent.OPEN" />-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
+        <!-- <receiver -->
+        <!-- android:name="com.parse.ParsePushBroadcastReceiver" -->
+        <!-- android:exported="false" > -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.parse.push.intent.RECEIVE" /> -->
+        <!-- <action android:name="com.parse.push.intent.DELETE" /> -->
+        <!-- <action android:name="com.parse.push.intent.OPEN" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
         <receiver
             android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -125,7 +120,15 @@
             </intent-filter>
         </receiver>
 
-
+        <activity
+            android:name=".AccountDetails"
+            android:label="@string/title_activity_account_details"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="kgp.tech.interiit.sos.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>

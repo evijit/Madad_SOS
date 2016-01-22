@@ -125,6 +125,15 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+
+        ImageView avatar=(ImageView)findViewById(R.id.avatar);
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(HomeActivity.this, AccountDetails.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override

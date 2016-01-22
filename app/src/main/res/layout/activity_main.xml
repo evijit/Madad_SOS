@@ -69,40 +69,44 @@ android:orientation="vertical" >
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatar"
         android:src="@drawable/sample_man"
-        android:layout_width="100dip"
-        android:layout_height="100dip"
-        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_width="80dip"
+        android:layout_height="80dip"
+        android:layout_gravity="left"
+        android:layout_marginBottom="10dp"
         />
 
 
 
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Entrepreneurship Cell"-->
-    <!--android:textColor="#ffffff"-->
-    <!--android:textSize="24sp"-->
-    <!--android:textStyle="bold"-->
-    <!--android:id="@+id/textView"-->
-    <!--android:layout_gravity="center_horizontal" />-->
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Avijit Ghosh"
+    android:textColor="#ffffff"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    android:id="@+id/textView"
+    android:layout_gravity="left" />
 
 
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="IIT Kharagpur"-->
-    <!--android:textColor="#ffffff"-->
-    <!--android:textSize="20sp"-->
-    <!--android:id="@+id/designation"-->
-    <!--android:layout_gravity="center_horizontal" />-->
 
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:textColor="#ffffff"-->
-    <!--android:text="info@ecell-iitkgp.org"-->
-    <!--android:id="@+id/email"-->
-    <!--android:layout_gravity="center_horizontal" />-->
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="#ffffff"
+        android:textSize="12sp"
+    android:text="avijitg22@gmail.com"
+    android:id="@+id/email"
+    android:layout_gravity="left" />
+
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Current Location: IIT Kharagpur"
+    android:textColor="#ffffff"
+    android:textSize="11sp"
+    android:id="@+id/designation"
+    android:layout_gravity="left" />
 </LinearLayout>
 
 
