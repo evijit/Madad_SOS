@@ -1,5 +1,6 @@
 package kgp.tech.interiit.sos;
 
+import android.app.LoaderManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +11,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import kgp.tech.interiit.sos.Utils.Utils;
 
@@ -27,7 +31,7 @@ public class TrustedActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                Intent i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Contactables.CONTENT_URI);
                 startActivityForResult(i, PICK_CONTACT);
             }
 
@@ -40,8 +44,12 @@ public class TrustedActivity extends AppCompatActivity {
             Uri contactUri = data.getData();
             Cursor cursor = getContentResolver().query(contactUri, null, null, null, null);
             cursor.moveToFirst();
-            int ncol = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Identity.DISPLAY_NAME);
-            int phcol = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            int ncol = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Contactables.DISPLAY_NAME);
+            int phcol = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA);
+            int ecol = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
+            final String name = cursor.getString(ncol);
+            final String phone = cursor.getString(phcol);
+            final String email = cursor.getString(ecol);
 
             Utils.showDialog(this, R.string.doadd,R.string.yes,R.string.no, new DialogInterface.OnClickListener() {
                 @Override
@@ -54,7 +62,14 @@ public class TrustedActivity extends AppCompatActivity {
                         case DialogInterface.BUTTON_POSITIVE:
                             // int which = -1
                             //search the user in data base and add to friend class
+                            ParseObject trustedUser = new ParseObject("Trusted");
+                            trustedUser.put("Name",name);
+                            trustedUser.put("Phone",phone);
+                            trustedUser.put("email",email);
+                            trustedUser.put("UserId", ParseUser.getCurrentUser());
+                            trustedUser.put("accepted",Boolean.FALSE);
 
+                            trustedUser.saveInBackground();
                             break;
                     }
                     return;

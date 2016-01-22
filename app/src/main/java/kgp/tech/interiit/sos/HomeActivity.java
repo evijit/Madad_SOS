@@ -1,5 +1,6 @@
 package kgp.tech.interiit.sos;
 
+import android.content.AsyncQueryHandler;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +31,9 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
+
+import kgp.tech.interiit.sos.Utils.UserData;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -53,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StartApp.userData = new UserData();
+
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
@@ -63,7 +69,6 @@ public class HomeActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(new SpannableString("Home"));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-
         }
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);

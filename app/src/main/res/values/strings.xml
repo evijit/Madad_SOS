@@ -6,6 +6,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_message">Chat</string>
     <string name="title_activity_chatlist">Chatlist</string>
+    <string name="title_activity_trusted">Trusted Group</string>
 
 
     <string-array name="sample_names">
@@ -38,7 +39,7 @@
         <item>Bend it like Beckham ...</item>
     </string-array>
 
-    <string name="doadd">Add Contact as Trused ?</string>
+    <string name="doadd">Add Contact as Trusted ?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="add">Add</string>

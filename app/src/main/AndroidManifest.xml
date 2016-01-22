@@ -88,6 +88,10 @@
             android:name=".AcceptSOS"
             android:label="@string/title_activity_accept_sos" >
         </activity>
+        <activity
+            android:name=".TrustedActivity"
+            android:label="@string/title_activity_trusted" >
+        </activity>
         <service android:name="com.parse.PushService" />
 
 

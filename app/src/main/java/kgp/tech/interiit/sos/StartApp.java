@@ -7,9 +7,12 @@ import com.parse.ParseACL;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
+import kgp.tech.interiit.sos.Utils.UserData;
+
 
 public class StartApp extends Application {
 
+    public static UserData userData;
     @Override
     public void onCreate() {
         super.onCreate();
