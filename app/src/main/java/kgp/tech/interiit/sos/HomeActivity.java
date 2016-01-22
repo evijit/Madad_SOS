@@ -91,8 +91,8 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> av, View v, int position, long id) {
                 //Get your item here with the position
                 if (position == 0) {
-//                    Intent intent = new Intent(TrucklistActivity.this, Account.class);
-//                    startActivity(intent);
+                    Intent intent = new Intent(HomeActivity.this, TrustedActivity.class);
+                    startActivity(intent);
 
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
                 }
@@ -151,7 +151,7 @@ public class HomeActivity extends AppCompatActivity {
 class MyDrawerAdapter extends BaseAdapter {
 
     String[] options;
-    String[] items = {"Settings1", "Settings2","Settings3", "Logout"};
+    String[] items = {"Trusted Contacts", "Settings2","Settings3", "Logout"};
     int[] images = {R.drawable.pass, R.drawable.pass,R.drawable.pass, R.drawable.pass};
     private Context context;
 
