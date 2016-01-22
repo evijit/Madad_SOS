@@ -58,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StartApp.userData = new UserData();
-
+        //StartApp.userData.update();
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
@@ -154,7 +154,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-
 }
 
 class MyDrawerAdapter extends BaseAdapter {

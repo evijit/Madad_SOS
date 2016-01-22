@@ -1,5 +1,6 @@
 package kgp.tech.interiit.sos.Utils;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.parse.FindCallback;
@@ -8,6 +9,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -35,63 +37,36 @@ public class UserData{
         mySosQuery = ParseQuery.getQuery("SOS");
         mySosQuery.whereEqualTo("UserId", ParseUser.getCurrentUser());
     }
-    public void update()
-    {
+    public void update() {
+        try {
+            trustedList = trustedQuery.find();
+            Log.d("Thread", String.valueOf(trustedList));
+            requestList = requestQuery.find();
 
-        trustedQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if(e==null)
-                {
-                    trustedList = list;
-                }
-                else
-                {
-                    Log.d("Trust","Error: " + e.getMessage());
-                }
-            }
-        });
+            allSosList = allSosQuery.find();
 
-        requestQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if(e==null)
-                {
-                    requestList = list;
-                }
-                else
-                {
-                    Log.d("Request","Error: " + e.getMessage());
-                }
-            }
-        });
-
-        allSosQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if(e==null)
-                {
-                    allSosList = list;
-                }
-                else
-                {
-                    Log.d("AllSos","Error: " + e.getMessage());
-                }
-            }
-        });
-
-        requestQuery.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if(e==null)
-                {
-                    mySos = list;
-                }
-                else
-                {
-                    Log.d("MySos","Error: " + e.getMessage());
-                }
-            }
-        });
+            requestList = requestQuery.find();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //th.start();
     }
+    Thread th = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                trustedList = trustedQuery.find();
+                Log.d("Thread", String.valueOf(trustedList));
+                requestList = requestQuery.find();
+
+                allSosList = allSosQuery.find();
+
+                requestList = requestQuery.find();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    });
 }
+
+
