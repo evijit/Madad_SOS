@@ -6,7 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.parse.DeleteCallback;
+import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 public class WelcomeActivity extends AppCompatActivity implements ContactItemFragment.OnContactsInteractionListener {
 
@@ -17,6 +25,22 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
 
         if (ParseUser.getCurrentUser() != null) {
             // Start an intent for the logged in activity
+            ParseUser.getCurrentUser().pinInBackground();
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Trusted");
+            query.whereEqualTo("UserId", ParseUser.getCurrentUser());
+
+            // Query for new results from the network.
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(final List<ParseObject> scores, ParseException e) {
+                    // Remove the previously cached results.
+                    ParseObject.unpinAllInBackground("trusted", new DeleteCallback() {
+                        public void done(ParseException e) {
+                            // Cache the new results.
+                            ParseObject.pinAllInBackground("trusted", scores);
+                        }
+                    });
+                }
+            });
             startActivity(new Intent(this, HomeActivity.class));
             finish();
         } else {

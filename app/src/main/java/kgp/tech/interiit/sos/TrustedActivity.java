@@ -71,8 +71,8 @@ public class TrustedActivity extends AppCompatActivity {
                             trustedUser.put("email",email);
                             trustedUser.put("UserId", ParseUser.getCurrentUser());
                             trustedUser.put("accepted",Boolean.FALSE);
-
-                            trustedUser.saveInBackground();
+                            trustedUser.pinInBackground("trusted");
+                            trustedUser.saveEventually();
                             break;
                     }
                     return;

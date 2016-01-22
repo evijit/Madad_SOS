@@ -116,6 +116,7 @@ public class HomeActivity extends AppCompatActivity {
 //                    getSharedPreferences("MyPref", MODE_PRIVATE).edit().clear().commit();
 //
 //                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    ParseUser.getCurrentUser().unpinInBackground();
                     ParseUser.logOutInBackground();
                     Intent intent = new Intent(HomeActivity.this, WelcomeActivity.class);
                     startActivity(intent);
