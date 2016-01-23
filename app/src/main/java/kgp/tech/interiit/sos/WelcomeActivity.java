@@ -1,15 +1,21 @@
 package kgp.tech.interiit.sos;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -26,6 +32,48 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
         if (ParseUser.getCurrentUser() != null) {
             // Start an intent for the logged in activity
             ParseUser.getCurrentUser().pinInBackground();
+
+            // Locate the objectId from the class
+            ParseFile fileObject =  ParseUser.getCurrentUser().getParseFile("profilePic");
+            fileObject.getDataInBackground(new GetDataCallback() {
+
+                public void done(final byte[] data,
+                                 ParseException e) {
+                    if (e == null) {
+                        Log.i("test",
+                                "We've got data in data.");
+                        // Decode the Byte[] into
+                        // Bitmap
+
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("picture");
+                        query.fromLocalDatastore();
+                        query.whereEqualTo("user", ParseUser.getCurrentUser());
+                        query.getFirstInBackground(new GetCallback<ParseObject>() {
+                            @Override
+                            public void done(ParseObject parseObject, ParseException e) {
+                                if(e == null) {
+                                    Log.i("test", parseObject.toString());
+                                    parseObject.put("user", ParseUser.getCurrentUser());
+                                    parseObject.put("picture", data);
+                                    parseObject.pinInBackground();
+                                }else{
+                                    Log.i("test","error");
+                                    ParseObject pp = new ParseObject("picture");
+                                    pp.put("user", ParseUser.getCurrentUser());
+                                    pp.put("picture", data);
+                                    pp.pinInBackground();
+                                }
+                            }
+                        });
+
+                    } else {
+                        Log.d("test",
+                                "There was a problem downloading the data.");
+                    }
+                }
+            });
+
+
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Trusted");
             query.whereEqualTo("UserId", ParseUser.getCurrentUser());
 
@@ -41,6 +89,7 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
                     });
                 }
             });
+
             startActivity(new Intent(this, HomeActivity.class));
             finish();
         } else {
