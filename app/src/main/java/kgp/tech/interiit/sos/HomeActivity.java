@@ -1,6 +1,9 @@
 package kgp.tech.interiit.sos;
 
 import android.content.AsyncQueryHandler;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
