@@ -1,17 +1,20 @@
 package kgp.tech.interiit.sos;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.fabtransitionactivity.SheetLayout;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -43,10 +46,11 @@ import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu;
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay;
 
 
-public class MyMapFragment extends Fragment implements LocationListener {
+public class MyMapFragment extends Fragment implements LocationListener{
 
     private MapView mMapView; // Might be null if Google Play services APK is not available.
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+
 
 
     private ExpandableMenuOverlay menuOverlay;
@@ -122,6 +126,7 @@ public class MyMapFragment extends Fragment implements LocationListener {
 
 
 //        setUpMapIfNeeded();
+
 
 
         menuOverlay = (ExpandableMenuOverlay) v.findViewById(R.id.button_menu);
@@ -308,6 +313,8 @@ public class MyMapFragment extends Fragment implements LocationListener {
         super.onLowMemory();
         mMapView.onLowMemory();
     }
+
+
 
 
 }

@@ -1,6 +1,7 @@
 package kgp.tech.interiit.sos;
 
 import android.content.AsyncQueryHandler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.fabtransitionactivity.SheetLayout;
 import com.google.android.gms.maps.GoogleMap;
 import com.parse.ParseUser;
 
@@ -36,7 +38,7 @@ import java.util.logging.Handler;
 import kgp.tech.interiit.sos.Utils.UserData;
 
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFabAnimationEndListener{
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Toolbar toolbar;
@@ -46,6 +48,12 @@ public class HomeActivity extends AppCompatActivity {
     private MyDrawerAdapter adapter1;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
+    private static final int REQUEST_CODE = 1;
+
+    SheetLayout mSheetLayout;
+    FloatingActionButton mFab;
+
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -76,6 +84,13 @@ public class HomeActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+
+        mSheetLayout=(SheetLayout)findViewById(R.id.bottom_sheet);
+        mFab=(FloatingActionButton)findViewById(R.id.fab);
+        mSheetLayout.setFab(mFab);
+        mSheetLayout.setFabAnimationEndListener(this);
+
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
@@ -155,6 +170,34 @@ public class HomeActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+
+
+    protected void enterFromBottomAnimation(){
+        overridePendingTransition(R.anim.activity_open_translate_from_bottom, R.anim.activity_no_animation);
+    }
+
+    protected void exitToBottomAnimation(){
+        overridePendingTransition(R.anim.activity_no_animation, R.anim.activity_close_translate_to_bottom);
+    }
+
+    public void onFabClick(View v) {
+        mSheetLayout.expandFab();
+    }
+
+    @Override
+    public void onFabAnimationEnd() {
+        Intent intent = new Intent(HomeActivity.this, AnimatedButtons.class);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE){
+            mSheetLayout.contractFab();
+        }
+    }
 }
 
 class MyDrawerAdapter extends BaseAdapter {
@@ -213,6 +256,9 @@ class MyDrawerAdapter extends BaseAdapter {
     }
 
 
+
+
+
 }
 
 class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -242,6 +288,7 @@ class ViewPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return mFragmentTitleList.get(position);
     }
+
 }
 
 

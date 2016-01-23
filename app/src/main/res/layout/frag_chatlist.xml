@@ -61,19 +61,19 @@
                         android:text="No information to show." />
 
                 </FrameLayout>
-                <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="16dp"
-                android:src="@drawable/ic_msg"
-                android:onClick="newchat"
-                app:elevation="6dp"
-                app:pressedTranslationZ="12dp"/>
+                <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:id="@+id/fab"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="bottom|end"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_margin="16dp"-->
+                <!--android:src="@drawable/ic_msg"-->
+                <!--android:onClick="newchat"-->
+                <!--app:elevation="6dp"-->
+                <!--app:pressedTranslationZ="12dp"/>-->
 
             </RelativeLayout>
     <!--</LinearLayout>-->

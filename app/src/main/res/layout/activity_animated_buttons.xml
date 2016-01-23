@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/primary_dark"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ru.biovamp.widget.CircleLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp"
+        app:angleOffset="0">
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:backgroundTint="#333"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:backgroundTint="#333"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:backgroundTint="#333"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:backgroundTint="#333"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fab1"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:backgroundTint= "#ff9800"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:backgroundTint="#333"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"/>
+        <!-- Add here any views you want -->
+
+    </ru.biovamp.widget.CircleLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:backgroundTint="#333"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"/>
+
+    </RelativeLayout>
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="BUTTONS COME HERE"/>-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:onClick="onbkps"
+        app:backgroundTint="#333"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"/>
+
+</RelativeLayout>
+

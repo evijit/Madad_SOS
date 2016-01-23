@@ -7,6 +7,9 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -40,11 +43,43 @@
         android:layout_height="fill_parent"
         android:layout_marginBottom="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+
+
+
+
 </android.support.design.widget.CoordinatorLayout>
 
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/add"
+        android:onClick="onFabClick"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"/>
 
-<RelativeLayout
+    <com.github.fabtransitionactivity.SheetLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        app:ft_container_gravity="center"
+        app:ft_color="@color/primary_dark"
+        android:elevation="2dp"/>
+
+</RelativeLayout>
+
+
+
+
+
+    <RelativeLayout
 android:id="@+id/left_drawer"
 android:layout_width="304dp"
 android:layout_height="match_parent"

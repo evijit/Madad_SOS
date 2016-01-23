@@ -37,7 +37,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Login"
-            android:label="Login"></activity>
+            android:label="Login" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -78,16 +78,16 @@
         </activity>
         <activity
             android:name=".Signup"
-            android:label="@string/title_activity_signup"></activity>
+            android:label="@string/title_activity_signup" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
         <activity
             android:name=".AcceptSOS"
-            android:label="@string/title_activity_accept_sos"></activity>
+            android:label="@string/title_activity_accept_sos" />
         <activity
             android:name=".TrustedActivity"
-            android:label="@string/title_activity_trusted"></activity>
+            android:label="@string/title_activity_trusted" />
 
         <service android:name="com.parse.PushService" />
 
@@ -130,6 +130,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="kgp.tech.interiit.sos.HomeActivity" />
         </activity>
+        <activity android:name=".AnimatedButtons"></activity>
     </application>
 
 </manifest>
