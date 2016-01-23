@@ -21,10 +21,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
@@ -46,37 +49,29 @@ public class AccountDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_details);
 
+        ParseQuery<ParseObject> pq = new ParseQuery("picture");
+        pq.fromLocalDatastore();
 
-        // Locate the objectId from the class
-        ParseFile fileObject =  ParseUser.getCurrentUser().getParseFile("profilePic");
-        fileObject.getDataInBackground(new GetDataCallback() {
+        pq.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                // Locate the objectId from the class
+                Bitmap bmp = BitmapFactory
+                        .decodeByteArray(
+                                list.get(0).getBytes("picture"), 0,
+                                list.get(0).getBytes("picture").length);
 
-            public void done(byte[] data,
-                             ParseException e) {
-                if (e == null) {
-                    Log.d("test",
-                            "We've got data in data.");
-                    // Decode the Byte[] into
-                    // Bitmap
-                    Bitmap bmp = BitmapFactory
-                            .decodeByteArray(
-                                    data, 0,
-                                    data.length);
+                // Get the ImageView from
+                // main.xml
+                ImageView image = (ImageView) findViewById(R.id.photo);
 
-                    // Get the ImageView from
-                    // main.xml
-                    ImageView image = (ImageView) findViewById(R.id.photo);
-
-                    // Set the Bitmap into the
-                    // ImageView
-                    image.setImageBitmap(bmp);
-
-                } else {
-                    Log.d("test",
-                            "There was a problem downloading the data.");
-                }
+                // Set the Bitmap into the
+                // ImageView
+                image.setImageBitmap(bmp);
             }
         });
+
+
     }
 
     public void photoupload(View v)
@@ -122,7 +117,7 @@ public class AccountDetails extends AppCompatActivity {
                 ImageView imgView=(ImageView)findViewById(R.id.photo);
 
                 imgView.setImageBitmap(resizedBitmap);
-                byte[] image = outputStream.toByteArray();
+                final byte[] image = outputStream.toByteArray();
 
                 // Create the ParseFile
                 ParseFile file = new ParseFile("profile.jpg", image);
@@ -137,6 +132,16 @@ public class AccountDetails extends AppCompatActivity {
 
                 // Create the class and the columns
                 imgupload.saveInBackground();
+
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("picture");
+                query.fromLocalDatastore();
+                query.whereEqualTo("user", ParseUser.getCurrentUser());
+                query.getFirstInBackground(new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject parseObject, ParseException e) {
+                        parseObject.put("picture", image);
+                    }
+                });
 
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block

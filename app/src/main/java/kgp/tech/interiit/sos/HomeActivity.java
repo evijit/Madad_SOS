@@ -1,7 +1,6 @@
 package kgp.tech.interiit.sos;
 
 import android.content.AsyncQueryHandler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +28,10 @@ import android.widget.TextView;
 
 import com.github.fabtransitionactivity.SheetLayout;
 import com.google.android.gms.maps.GoogleMap;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -142,6 +145,30 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
             }
         });
 
+        ParseQuery<ParseObject> pq = new ParseQuery("picture");
+        pq.fromLocalDatastore();
+
+        pq.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if(e == null && !list.isEmpty()) {
+                    // Locate the objectId from the class
+                    Bitmap bmp = BitmapFactory
+                            .decodeByteArray(
+                                    list.get(0).getBytes("picture"), 0,
+                                    list.get(0).getBytes("picture").length);
+
+                    // Get the ImageView from
+                    // main.xml
+                    ImageView image = (ImageView) findViewById(R.id.avatar);
+
+                    // Set the Bitmap into the
+                    // ImageView
+                    image.setImageBitmap(bmp);
+                }
+            }
+        });
+
         ImageView avatar=(ImageView)findViewById(R.id.avatar);
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +182,30 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
     @Override
     protected void onResume() {
         super.onResume();
+
+        ParseQuery<ParseObject> pq = new ParseQuery("picture");
+        pq.fromLocalDatastore();
+
+        pq.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null && !list.isEmpty()) {
+                    // Locate the objectId from the class
+                    Bitmap bmp = BitmapFactory
+                            .decodeByteArray(
+                                    list.get(0).getBytes("picture"), 0,
+                                    list.get(0).getBytes("picture").length);
+
+                    // Get the ImageView from
+                    // main.xml
+                    ImageView image = (ImageView) findViewById(R.id.avatar);
+
+                    // Set the Bitmap into the
+                    // ImageView
+                    image.setImageBitmap(bmp);
+                }
+            }
+        });
     }
 
 
