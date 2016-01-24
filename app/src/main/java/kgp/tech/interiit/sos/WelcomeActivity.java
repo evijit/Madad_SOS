@@ -88,6 +88,7 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
                         public void done(ParseException e) {
                             // Cache the new results.
                             ParseObject.pinAllInBackground("trusted", scores);
+                            Log.d("welcome", String.valueOf(scores.size()));
                         }
                     });
                 }
