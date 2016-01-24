@@ -55,6 +55,8 @@ public class AccountDetails extends AppCompatActivity {
         pq.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
+                if(e!=null)
+                    return;
                 // Locate the objectId from the class
                 Bitmap bmp = BitmapFactory
                         .decodeByteArray(

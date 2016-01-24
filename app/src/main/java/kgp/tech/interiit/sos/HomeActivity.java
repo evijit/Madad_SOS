@@ -155,7 +155,7 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
         pq.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if(e == null && !list.isEmpty()) {
+                if (e == null && !list.isEmpty()) {
                     // Locate the objectId from the class
                     Bitmap bmp = BitmapFactory
                             .decodeByteArray(
@@ -181,6 +181,11 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
                 startActivity(i);
             }
         });
+
+        TextView name = (TextView) findViewById(R.id.drawer_username);
+        name.setText(ParseUser.getCurrentUser().getUsername());
+        TextView email = (TextView) findViewById(R.id.drawer_email);
+        email.setText(ParseUser.getCurrentUser().getEmail());
     }
 
     @Override

@@ -119,7 +119,7 @@ android:orientation="vertical" >
     android:textColor="#ffffff"
     android:textSize="16sp"
     android:textStyle="bold"
-    android:id="@+id/textView"
+    android:id="@+id/drawer_username"
     android:layout_gravity="left" />
 
 
@@ -130,7 +130,7 @@ android:orientation="vertical" >
     android:textColor="#ffffff"
         android:textSize="12sp"
     android:text="avijitg22@gmail.com"
-    android:id="@+id/email"
+    android:id="@+id/drawer_email"
     android:layout_gravity="left" />
 
 
