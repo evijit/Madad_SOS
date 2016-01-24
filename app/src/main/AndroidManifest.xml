@@ -130,6 +130,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="kgp.tech.interiit.sos.HomeActivity" />
         </activity>
+        <service android:name=".Utils.NetworkLocationService" />
+        <service android:name=".Utils.SOSService" />
+        <receiver android:name=".Utils.MyReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.wifi.STATE_CHANGED" />
+
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

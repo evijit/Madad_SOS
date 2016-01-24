@@ -56,18 +56,20 @@ public class AccountDetails extends AppCompatActivity {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 // Locate the objectId from the class
-                Bitmap bmp = BitmapFactory
-                        .decodeByteArray(
-                                list.get(0).getBytes("picture"), 0,
-                                list.get(0).getBytes("picture").length);
+                if (e == null && !list.isEmpty()) {
+                    Bitmap bmp = BitmapFactory
+                            .decodeByteArray(
+                                    list.get(0).getBytes("picture"), 0,
+                                    list.get(0).getBytes("picture").length);
 
-                // Get the ImageView from
-                // main.xml
-                ImageView image = (ImageView) findViewById(R.id.photo);
+                    // Get the ImageView from
+                    // main.xml
+                    ImageView image = (ImageView) findViewById(R.id.photo);
 
-                // Set the Bitmap into the
-                // ImageView
-                image.setImageBitmap(bmp);
+                    // Set the Bitmap into the
+                    // ImageView
+                    image.setImageBitmap(bmp);
+                }
             }
         });
 
@@ -139,7 +141,8 @@ public class AccountDetails extends AppCompatActivity {
                 query.getFirstInBackground(new GetCallback<ParseObject>() {
                     @Override
                     public void done(ParseObject parseObject, ParseException e) {
-                        parseObject.put("picture", image);
+                        if(parseObject!=null)
+                            parseObject.put("picture", image);
                     }
                 });
 
