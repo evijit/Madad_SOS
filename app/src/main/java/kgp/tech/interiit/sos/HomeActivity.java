@@ -84,7 +84,7 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
-        centerToolbarTitle(toolbar);
+        //centerToolbarTitle(toolbar);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);

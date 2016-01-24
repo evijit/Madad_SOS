@@ -35,43 +35,46 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
 
             // Locate the objectId from the class
             ParseFile fileObject =  ParseUser.getCurrentUser().getParseFile("profilePic");
-            fileObject.getDataInBackground(new GetDataCallback() {
+            if(fileObject!=null)
+            {
+                fileObject.getDataInBackground(new GetDataCallback() {
 
-                public void done(final byte[] data,
-                                 ParseException e) {
-                    if (e == null) {
-                        Log.i("test",
-                                "We've got data in data.");
-                        // Decode the Byte[] into
-                        // Bitmap
+                    public void done(final byte[] data,
+                                     ParseException e) {
+                        if (e == null) {
+                            Log.i("test",
+                                    "We've got data in data.");
+                            // Decode the Byte[] into
+                            // Bitmap
 
-                        ParseQuery<ParseObject> query = ParseQuery.getQuery("picture");
-                        query.fromLocalDatastore();
-                        query.whereEqualTo("user", ParseUser.getCurrentUser());
-                        query.getFirstInBackground(new GetCallback<ParseObject>() {
-                            @Override
-                            public void done(ParseObject parseObject, ParseException e) {
-                                if(e == null) {
-                                    Log.i("test", parseObject.toString());
-                                    parseObject.put("user", ParseUser.getCurrentUser());
-                                    parseObject.put("picture", data);
-                                    parseObject.pinInBackground();
-                                }else{
-                                    Log.i("test","error");
-                                    ParseObject pp = new ParseObject("picture");
-                                    pp.put("user", ParseUser.getCurrentUser());
-                                    pp.put("picture", data);
-                                    pp.pinInBackground();
+                            ParseQuery<ParseObject> query = ParseQuery.getQuery("picture");
+                            query.fromLocalDatastore();
+                            query.whereEqualTo("user", ParseUser.getCurrentUser());
+                            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                                @Override
+                                public void done(ParseObject parseObject, ParseException e) {
+                                    if(e == null) {
+                                        Log.i("test", parseObject.toString());
+                                        parseObject.put("user", ParseUser.getCurrentUser());
+                                        parseObject.put("picture", data);
+                                        parseObject.pinInBackground();
+                                    }else{
+                                        Log.i("test","error");
+                                        ParseObject pp = new ParseObject("picture");
+                                        pp.put("user", ParseUser.getCurrentUser());
+                                        pp.put("picture", data);
+                                        pp.pinInBackground();
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                    } else {
-                        Log.d("test",
-                                "There was a problem downloading the data.");
+                        } else {
+                            Log.d("test",
+                                    "There was a problem downloading the data.");
+                        }
                     }
-                }
-            });
+                });
+            }
 
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Trusted");

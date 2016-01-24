@@ -53,6 +53,7 @@
             android:id="@+id/fab1"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
             app:backgroundTint= "#ff9800"
+            android:onClick="fakecall"
             app:elevation="6dp"
             app:pressedTranslationZ="12dp"/>
 
