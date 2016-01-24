@@ -84,6 +84,7 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
+        centerToolbarTitle(toolbar);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -211,6 +212,19 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
         });
     }
 
+    static void centerToolbarTitle(final Toolbar toolbar) {
+        final CharSequence title = toolbar.getTitle();
+        final ArrayList<View> outViews = new ArrayList<>(1);
+        toolbar.findViewsWithText(outViews, title, View.FIND_VIEWS_WITH_TEXT);
+        if (!outViews.isEmpty()) {
+            final TextView titleView = (TextView) outViews.get(0);
+            titleView.setGravity(Gravity.CENTER);
+            final Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) titleView.getLayoutParams();
+            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            toolbar.requestLayout();
+            //also you can use titleView for changing font: titleView.setTypeface(Typeface);
+        }
+    }
 
 
     @Override

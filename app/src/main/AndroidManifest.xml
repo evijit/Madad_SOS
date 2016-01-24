@@ -130,7 +130,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="kgp.tech.interiit.sos.HomeActivity" />
         </activity>
-        <activity android:name=".AnimatedButtons"></activity>
+        <activity android:name=".AnimatedButtons" />
+        <activity android:name=".FakeCall">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
