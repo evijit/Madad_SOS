@@ -52,6 +52,23 @@ public class Utils
 
     }
 
+    public static AlertDialog showDialog(Context ctx, String msg, int btn1,
+                                         int btn2, DialogInterface.OnClickListener listener1,
+                                         DialogInterface.OnClickListener listener2)
+    {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+        // builder.setTitle(R.string.app_name);
+        builder.setMessage(msg).setCancelable(false)
+                .setPositiveButton(ctx.getString(btn1), listener1);
+        builder.setNegativeButton(ctx.getString(btn2), listener2);
+
+        AlertDialog alert = builder.create();
+        alert.show();
+        return alert;
+
+    }
+
     /**
      * Show dialog.
      *
@@ -130,6 +147,15 @@ public class Utils
     {
 
         return showDialog(ctx, ctx.getString(msg), ctx.getString(btn1),
+                ctx.getString(btn2), listener);
+
+    }
+
+    public static AlertDialog showDialog(Context ctx, String msg, int btn1,
+                                         int btn2, DialogInterface.OnClickListener listener)
+    {
+
+        return showDialog(ctx, msg, ctx.getString(btn1),
                 ctx.getString(btn2), listener);
 
     }

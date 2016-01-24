@@ -41,4 +41,43 @@
         android:text="8902551989"
         android:id="@+id/email"
         android:layout_gravity="center_horizontal" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/notuserlayout"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/notuser"
+            android:text="@string/notuser"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rembtn"
+            android:text="@string/remind"
+            android:layout_gravity="center_horizontal"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/callbtn"
+            android:text="@string/call"
+            android:layout_gravity="center_horizontal"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/delbtn"
+            android:text="@string/delete"
+            android:layout_gravity="center_horizontal"
+            />
+    </LinearLayout>
 </LinearLayout>

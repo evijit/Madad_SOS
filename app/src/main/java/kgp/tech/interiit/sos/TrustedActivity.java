@@ -4,17 +4,22 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.LinearGradient;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,6 +39,8 @@ import kgp.tech.interiit.sos.Utils.Utils;
 public class TrustedActivity extends AppCompatActivity {
 
     public final int PICK_CONTACT = 2015;
+    private List<ParseObject> ptlist;
+    private List<ParseObject> prlist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,29 +66,31 @@ public class TrustedActivity extends AppCompatActivity {
 
         ParseQuery<ParseObject> tquery = ParseQuery.getQuery("Trusted");
         tquery.whereEqualTo("UserId", ParseUser.getCurrentUser());
-        tquery.whereEqualTo("accepted", Boolean.TRUE);
+        //tquery.whereEqualTo("accepted", Boolean.TRUE);
         tquery.fromLocalDatastore();
         tquery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
-                    ContactAdapter ca = new ContactAdapter(list, TrustedActivity.this);
+                    ptlist = list;
+                    ContactAdapter ca = new ContactAdapter(ptlist, TrustedActivity.this);
                     tcList.setAdapter(ca);
                 }
 
-                ParseQuery<ParseObject> rquery = ParseQuery.getQuery("Trusted");
-                rquery.whereEqualTo("UserId", ParseUser.getCurrentUser());
-                rquery.whereEqualTo("accepted", Boolean.FALSE);
-                rquery.fromLocalDatastore();
-                rquery.findInBackground(new FindCallback<ParseObject>() {
-                    @Override
-                    public void done(List<ParseObject> list, ParseException e) {
-                        if (e == null) {
-                            ContactAdapter ca = new ContactAdapter(list, TrustedActivity.this);
-                            rcList.setAdapter(ca);
-                        }
-                    }
-                });
+//                ParseQuery<ParseObject> rquery = ParseQuery.getQuery("Trusted");
+//                rquery.whereEqualTo("UserId", ParseUser.getCurrentUser());
+//                rquery.whereEqualTo("accepted", Boolean.FALSE);
+//                rquery.fromLocalDatastore();
+//                rquery.findInBackground(new FindCallback<ParseObject>() {
+//                    @Override
+//                    public void done(List<ParseObject> list, ParseException e) {
+//                        if (e == null) {
+//                            prlist = list;
+//                            ContactAdapter ca = new ContactAdapter(prlist, TrustedActivity.this);
+//                            rcList.setAdapter(ca);
+//                        }
+//                    }
+//                });
             }
         });
 
@@ -91,7 +100,7 @@ public class TrustedActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_CONTACT && resultCode == RESULT_OK) {
-            Uri contactUri = data.getData();
+            final Uri contactUri = data.getData();
             Cursor cursor = getContentResolver().query(contactUri, null, null, null, null);
             cursor.moveToFirst();
             int ncol = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Identity.DISPLAY_NAME);
@@ -101,7 +110,7 @@ public class TrustedActivity extends AppCompatActivity {
             final String phone = cursor.getString(phcol);
             final String email = cursor.getString(ecol);
 
-            Utils.showDialog(this, R.string.doadd,R.string.yes,R.string.no, new DialogInterface.OnClickListener() {
+            Utils.showDialog(this, R.string.doadd, R.string.yes, R.string.no, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
@@ -113,13 +122,19 @@ public class TrustedActivity extends AppCompatActivity {
                             // int which = -1
                             //search the user in data base and add to friend class
                             ParseObject trustedUser = new ParseObject("Trusted");
-                            trustedUser.put("Name",name);
-                            trustedUser.put("Phone",phone);
-                            trustedUser.put("Email",email);
+                            trustedUser.put("Name", name);
+                            trustedUser.put("Phone", phone);
+                            trustedUser.put("Email", email);
                             trustedUser.put("UserId", ParseUser.getCurrentUser());
-                            trustedUser.put("accepted",Boolean.FALSE);
+                            trustedUser.put("accepted", Boolean.FALSE);
                             trustedUser.pinInBackground("trusted");
                             trustedUser.saveEventually();
+
+                            ptlist.add(trustedUser);
+                            ContactAdapter ca = (ContactAdapter)((ListView) findViewById(R.id.trusted)).getAdapter();
+                            ca.notifyDataSetChanged();
+
+                            //TODO call the cloud service and make it check if contact uses the app
                             break;
                     }
                     return;
@@ -130,7 +145,7 @@ public class TrustedActivity extends AppCompatActivity {
     }
 }
 
-class ContactAdapter extends BaseAdapter{
+class ContactAdapter extends BaseAdapter {
     private List<ParseObject> contactList;
     private Context context;
 
@@ -155,7 +170,7 @@ class ContactAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.contact_card, parent, false);
 
@@ -167,6 +182,78 @@ class ContactAdapter extends BaseAdapter{
 
         TextView email = (TextView) v.findViewById(R.id.email);
         email.setText(contactList.get(position).getString("Email"));
+
+        LinearLayout notuserlayout = (LinearLayout) v.findViewById(R.id.notuserlayout);
+        if(false) //TODO
+            notuserlayout.setVisibility(View.GONE);
+        else
+            notuserlayout.setVisibility(View.VISIBLE);
+
+        TextView notuser = (TextView) v.findViewById(R.id.notuser);
+        notuser.setText(contactList.get(position).getString("Name") + " " + context.getString(R.string.notuser));
+
+        Button remindBtn = (Button) v.findViewById(R.id.rembtn);
+        remindBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO
+                String number = contactList.get(position).getString("Phone");
+                String message = context.getString(R.string.download_app);
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(number,null,message,null,null);
+                //Intent intent = new Intent(Intent.ACTION_, Uri.parse(url));
+
+                //context.startActivity(intent);
+            }
+        });
+
+
+        Button callBtn = (Button) v.findViewById(R.id.callbtn);
+        callBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "tel:" + contactList.get(position).getString("Phone");
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
+                if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                context.startActivity(intent);
+            }
+        });
+
+        Button delBtn = (Button) v.findViewById(R.id.delbtn);
+        delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.showDialog(context, contactList.get(position).getString("Name") + " " + context.getString(R.string.deleteContact), R.string.yes, R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                // int which = -2
+
+                                break;
+                            case DialogInterface.BUTTON_POSITIVE:
+                                // int which = -1
+                                //search the user in data base and add to friend class
+                                contactList.get(position).deleteEventually();
+                                contactList.remove(position);
+                                notifyDataSetChanged();
+                                //TODO call the cloud service and make it check if contact uses the app
+                                break;
+                        }
+                        return;
+                    }
+                });
+            }
+        });
 
         return v;
     }

@@ -39,6 +39,12 @@
         <item>Bend it like Beckham ...</item>
     </string-array>
 
+    <string name="download_app">Please help me be safe. Install SOS App by clicking the link http://www.google.com</string>
+    <string name="call">Call</string>
+    <string name="delete">Delete</string>
+    <string name="remind">Remind</string>
+    <string name="notuser">has not yet accepted your invitation</string>
+    <string name="deleteContact">will be removed from Trusted Contacts</string>
     <string name="doadd">Add Contact as Trusted ?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
