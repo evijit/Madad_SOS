@@ -1,5 +1,8 @@
 package kgp.tech.interiit.sos;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,7 +23,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.Calendar;
 import java.util.List;
+
+import kgp.tech.interiit.sos.Utils.MyReceiver;
 
 public class WelcomeActivity extends AppCompatActivity implements ContactItemFragment.OnContactsInteractionListener {
 
@@ -34,6 +40,20 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
             ParseUser.getCurrentUser().pinInBackground();
 
             // Locate the objectId from the class
+            //////////////////////Background thing start
+            AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
+
+            Calendar timeOff9 = Calendar.getInstance();
+
+            Intent intent = new Intent(this,MyReceiver.class);
+
+            PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+            am.set(AlarmManager.RTC_WAKEUP, timeOff9.getTimeInMillis() + 30000, sender);
+
+            //////////////////////Background thing end
             ParseFile fileObject =  ParseUser.getCurrentUser().getParseFile("profilePic");
             if(fileObject!=null)
             {
