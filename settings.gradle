@@ -1,2 +1,2 @@
-include ':app', ':app:libs'
+include ':app', ':app:libs', ':library'
 include ':circleLayout'

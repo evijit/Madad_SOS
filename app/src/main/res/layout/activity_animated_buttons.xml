@@ -7,75 +7,99 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:padding="40dp"
         android:layout_height="match_parent">
 
     <ru.biovamp.widget.CircleLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="30dp"
         app:angleOffset="0">
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:backgroundTint="#333"
-            app:elevation="6dp"
-            app:pressedTranslationZ="12dp"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:backgroundTint="#333"
-            app:elevation="6dp"
-            app:pressedTranslationZ="12dp"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:backgroundTint="#333"
-            app:elevation="6dp"
-            app:pressedTranslationZ="12dp"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:backgroundTint="#333"
-            app:elevation="6dp"
-            app:pressedTranslationZ="12dp"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/fab1"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:backgroundTint= "#ff9800"
+        <ImageButton
+            android:layout_margin="15dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:id="@+id/fab3"
+            android:visibility="invisible"
+            android:src="@drawable/mr_ic_audio_vol"
+            android:background="@drawable/fab_green"
             android:onClick="fakecall"
-            app:elevation="6dp"
-            app:pressedTranslationZ="12dp"/>
+            android:layout_centerInParent="true"
+            />
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:backgroundTint="#333"
-            app:elevation="6dp"
-            app:pressedTranslationZ="12dp"/>
+        <ImageButton
+            android:layout_margin="15dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:visibility="invisible"
+            android:id="@+id/fab4"
+            android:src="@drawable/mr_ic_audio_vol"
+            android:background="@drawable/fab_amber"
+            android:onClick="fakecall"
+            android:layout_centerInParent="true"
+            />
+
+        <ImageButton
+            android:layout_margin="15dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:visibility="invisible"
+            android:id="@+id/fab5"
+            android:src="@drawable/mr_ic_audio_vol"
+            android:background="@drawable/fab_purple"
+            android:onClick="fakecall"
+            android:layout_centerInParent="true"
+            />
+
+        <ImageButton
+            android:layout_margin="15dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:visibility="invisible"
+            android:id="@+id/fab6"
+            android:src="@drawable/mr_ic_audio_vol"
+            android:background="@drawable/fab_grey"
+            android:onClick="fakecall"
+            android:layout_centerInParent="true"
+            />
+
+        <ImageButton
+            android:layout_margin="15dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:visibility="invisible"
+            android:id="@+id/fab1"
+            android:src="@drawable/mr_ic_audio_vol"
+            android:background="@drawable/fab_blue"
+            android:onClick="fakecall"
+            android:layout_centerInParent="true"
+            />
+
+        <ImageButton
+            android:layout_margin="15dp"
+            android:layout_width="70dp"
+            android:visibility="invisible"
+            android:layout_height="70dp"
+            android:id="@+id/fab2"
+            android:src="@drawable/mr_ic_audio_vol"
+            android:background="@drawable/fab_ochre"
+            android:onClick="fakecall"
+            android:layout_centerInParent="true"
+            />
         <!-- Add here any views you want -->
 
     </ru.biovamp.widget.CircleLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+        <ImageButton
+            android:layout_margin="15dp"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:visibility="invisible"
+            android:id="@+id/fab7"
+            android:src="@drawable/mr_ic_audio_vol"
+            android:background="@drawable/fab_red"
             android:layout_centerInParent="true"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:backgroundTint="#333"
-            app:elevation="6dp"
-            app:pressedTranslationZ="12dp"/>
+            />
 
     </RelativeLayout>
 
@@ -92,9 +116,11 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
+        app:fabSize="mini"
         android:src="@android:drawable/ic_menu_close_clear_cancel"
         android:onClick="onbkps"
         app:backgroundTint="#333"
+        android:visibility="invisible"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"/>
 

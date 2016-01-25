@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/SOS.iml" filepath="$PROJECT_DIR$/SOS.iml" />
       <module fileurl="file://$PROJECT_DIR$/SOS_InterIIT.iml" filepath="$PROJECT_DIR$/SOS_InterIIT.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/circleLayout/circleLayout.iml" filepath="$PROJECT_DIR$/circleLayout/circleLayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/libs/libs.iml" filepath="$PROJECT_DIR$/app/libs/libs.iml" />
     </modules>
   </component>
