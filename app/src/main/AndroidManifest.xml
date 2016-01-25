@@ -95,13 +95,12 @@
         <service android:name="com.parse.PushService" />
 
         <receiver
-            android:enabled="true"
-            android:name=".FakeCallReciever">
+            android:name=".FakeCallReciever"
+            android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".CustomReceiver"
             android:exported="false">
@@ -142,16 +141,16 @@
                 android:value="kgp.tech.interiit.sos.HomeActivity" />
         </activity>
         <activity android:name=".AnimatedButtons" />
-        <activity android:name=".FakeCall"
+        <activity
+            android:name=".FakeCall"
             android:showOnLockScreen="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity android:name=".FakeCallOngoing"></activity>
     </application>
 
 </manifest>
