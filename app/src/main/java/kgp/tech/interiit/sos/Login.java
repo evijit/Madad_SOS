@@ -40,6 +40,8 @@ public class Login extends AppCompatActivity {
         Button blogin=(Button)findViewById(R.id.butt);
         Button bsignup = (Button) findViewById(R.id.up);
 
+        TextView forgotPass = (TextView)findViewById(R.id.forgot);
+
         pass.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -88,6 +90,13 @@ public class Login extends AppCompatActivity {
                 finish();
             }
         });
+
+        forgotPass.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        }));
     }
 
     @Override
