@@ -95,13 +95,12 @@
         <service android:name="com.parse.PushService" />
 
         <receiver
-            android:enabled="true"
-            android:name=".FakeCallReciever">
+            android:name=".FakeCallReciever"
+            android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".CustomReceiver"
             android:exported="false">
@@ -152,6 +151,10 @@
             </intent-filter>
 
         </activity>
+        <activity
+            android:name=".FirstTimeActivity"
+            android:label="@string/title_activity_first_time"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

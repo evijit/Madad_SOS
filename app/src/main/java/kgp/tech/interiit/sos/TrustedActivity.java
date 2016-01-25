@@ -110,7 +110,7 @@ public class TrustedActivity extends AppCompatActivity {
             final String phone = cursor.getString(phcol);
             final String email = cursor.getString(ecol);
 
-            Utils.showDialog(this, R.string.doadd, R.string.yes, R.string.no, new DialogInterface.OnClickListener() {
+            Utils.showDialog(this, getString(R.string.add)+" "+ name + " " + getString(R.string.add1), R.string.yes, R.string.no, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {

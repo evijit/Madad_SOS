@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings">
+    <ListPreference
+        android:key="pref_distance_list"
+        android:summary="@string/pref_distance_summary"
+        android:title="@string/pref_distance_title"
+        android:entries="@array/pref_distance_entries"
+        android:entryValues="@array/pref_distance_entriesValues"
+        />
+    <CheckBoxPreference
+        android:key="pref_share"
+        android:summary="@string/pref_share_summary"
+        android:title="@string/pref_share_title"
+        />
+    <PreferenceCategory
+        android:title="@string/pref_commode_title"
+        android:key="pref_commode">
+        <CheckBoxPreference
+            android:key="pref_call"
+            android:summary="@string/pref_call_summary"
+            android:title="@string/pref_call_title"
+            />
+        <CheckBoxPreference
+            android:key="pref_sms"
+            android:summary="@string/pref_sms_summary"
+            android:title="@string/pref_sms_title"
+            />
+        <CheckBoxPreference
+            android:key="pref_email"
+            android:summary="@string/pref_email_summary"
+            android:title="@string/pref_email_title"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>
