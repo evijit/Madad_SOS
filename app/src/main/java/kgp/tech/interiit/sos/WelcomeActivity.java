@@ -64,30 +64,27 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
                         if (e == null) {
                             Log.i("test",
                                     "We've got data in data.");
-                            // Decode the Byte[] into
-                            // Bitmap
 
-                            ParseQuery<ParseObject> query = ParseQuery.getQuery("picture");
-                            query.fromLocalDatastore();
-                            query.whereEqualTo("user", ParseUser.getCurrentUser());
-                            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                            ParseQuery<ParseObject> pq = ParseQuery.getQuery("picture");
+                            pq.whereEqualTo("user", ParseUser.getCurrentUser());
+                            pq.fromLocalDatastore();
+                            pq.getFirstInBackground(new GetCallback<ParseObject>() {
+
                                 @Override
                                 public void done(ParseObject parseObject, ParseException e) {
-                                    if(e == null) {
-                                        Log.i("test", parseObject.toString());
-                                        parseObject.put("user", ParseUser.getCurrentUser());
-                                        parseObject.put("picture", data);
-                                        parseObject.pinInBackground();
-                                    }else{
-                                        Log.i("test","error");
-                                        ParseObject pp = new ParseObject("picture");
-                                        pp.put("user", ParseUser.getCurrentUser());
-                                        pp.put("picture", data);
-                                        pp.pinInBackground();
+                                    if (e != null) {
+                                        // Saving image locally
+                                        e.printStackTrace();
+                                        ParseObject picData = new ParseObject("picture");
+                                        picData.put("user", ParseUser.getCurrentUser());
+                                        picData.put("picture", data);
+                                        picData.pinInBackground();
+                                        return;
                                     }
+                                    parseObject.put("picture", data);
+                                    parseObject.saveInBackground();
                                 }
                             });
-
                         } else {
                             Log.d("test",
                                     "There was a problem downloading the data.");
@@ -103,18 +100,30 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
             // Query for new results from the network.
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(final List<ParseObject> scores, ParseException e) {
+                    if(e!=null)
+                    {
+                        e.printStackTrace();
+                        return;
+                    }
                     // Remove the previously cached results.
                     ParseObject.unpinAllInBackground("trusted", new DeleteCallback() {
                         public void done(ParseException e) {
                             // Cache the new results.
-                            ParseObject.pinAllInBackground("trusted", scores);
-                            Log.d("welcome", String.valueOf(scores.size()));
+                            if(e!=null) {
+                                e.printStackTrace();
+                                return;
+                            }
+                            if(!scores.isEmpty()) {
+                                ParseObject.pinAllInBackground("trusted", scores);
+                                Log.d("welcome", String.valueOf(scores.size()));
+                            }
                         }
                     });
                 }
             });
 
             startActivity(new Intent(this, HomeActivity.class));
+            //startActivity(new Intent(this, FirstTimeActivity.class));
             finish();
         } else {
             // Start and intent for the logged out activity

@@ -45,7 +45,7 @@
     <string name="remind">Remind</string>
     <string name="notuser">has not yet accepted your invitation</string>
     <string name="deleteContact">will be removed from Trusted Contacts</string>
-    <string name="doadd">Add Contact as Trusted ?</string>
+    <string name="add1">as Trusted ?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="add">Add</string>
@@ -76,6 +76,38 @@
     <string name="action_right">Right</string>
     <string name="title_activity_accept_sos">AcceptSOS</string>
     <string name="title_activity_account_details">Account Details</string>
+    <string name="title_activity_first_time">"Hello "</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
+    <!-- Settings Page Strings -->
+    <string name="settings">Settings</string>
+    <string name="pref_distance_title">Distance</string>
+    <string name="pref_distance_summary">Specify search radius for local help</string>
 
+    <string-array name="pref_distance_entries">
+        <item>500 m</item>
+        <item>1 km</item>
+        <item>10 km</item>
+        <item>50 km</item>
+    </string-array>
+    <string-array name="pref_distance_entriesValues">
+        <item>500</item>
+        <item>1000</item>
+        <item>10000</item>
+        <item>50000</item>
+    </string-array>
+
+    <string name="pref_share_title">Always Share</string>
+    <string name="pref_share_summary">Your current location will be shared with your tursted contacts</string>
+
+    <string name="pref_commode_title">Permissions</string>
+
+    <string name="pref_call_title">Phone Call</string>
+    <string name="pref_call_summary">Allow to make phone call to contact</string>
+
+    <string name="pref_email_title">Email</string>
+    <string name="pref_email_summary">Allow to send email to contact</string>
+
+    <string name="pref_sms_title">SMS</string>
+    <string name="pref_sms_summary">Allow to send SMS to contact</string>
 </resources>

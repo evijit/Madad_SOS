@@ -7,8 +7,7 @@
     <dimen name="tab_label">14sp</dimen>
     <dimen name="custom_tab_layout_height">72dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-
-
+    <dimen name="appbar_padding_top">8dp</dimen>
     <dimen name="margin_standard">16dp</dimen>
     <dimen name="margin_short">8dp</dimen>
     <dimen name="margin_extra_short">4dp</dimen>

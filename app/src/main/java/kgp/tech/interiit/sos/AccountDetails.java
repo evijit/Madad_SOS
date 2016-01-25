@@ -20,15 +20,19 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -49,19 +53,31 @@ public class AccountDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_details);
 
-        ParseQuery<ParseObject> pq = new ParseQuery("picture");
-        pq.fromLocalDatastore();
+        TextView username= (TextView) findViewById(R.id.username);
+        username.setText(ParseUser.getCurrentUser().getUsername());
 
-        pq.findInBackground(new FindCallback<ParseObject>() {
+        TextView phone= (TextView) findViewById(R.id.phone);
+        phone.setText(ParseUser.getCurrentUser().getString("phone"));
+
+        TextView email= (TextView) findViewById(R.id.email);
+        email.setText(ParseUser.getCurrentUser().getString("email"));
+
+        ParseQuery<ParseObject> pq = ParseQuery.getQuery("picture");
+        pq.whereEqualTo("user", ParseUser.getCurrentUser());
+        pq.fromLocalDatastore();
+        pq.getFirstInBackground(new GetCallback<ParseObject>() {
+
             @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if(e!=null)
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e != null) {
+                    e.printStackTrace();
                     return;
+                }
                 // Locate the objectId from the class
                 Bitmap bmp = BitmapFactory
                         .decodeByteArray(
-                                list.get(0).getBytes("picture"), 0,
-                                list.get(0).getBytes("picture").length);
+                                parseObject.getBytes("picture"), 0,
+                                parseObject.getBytes("picture").length);
 
                 // Get the ImageView from
                 // main.xml
@@ -70,8 +86,7 @@ public class AccountDetails extends AppCompatActivity {
                 // Set the Bitmap into the
                 // ImageView
                 image.setImageBitmap(bmp);
-            }
-        });
+            }});
 
 
     }
@@ -131,17 +146,27 @@ public class AccountDetails extends AppCompatActivity {
 
                 // Create a column named "ImageFile" and insert the image
                 imgupload.put("profilePic", file);
-
                 // Create the class and the columns
                 imgupload.saveInBackground();
 
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("picture");
-                query.fromLocalDatastore();
-                query.whereEqualTo("user", ParseUser.getCurrentUser());
-                query.getFirstInBackground(new GetCallback<ParseObject>() {
+                ParseQuery<ParseObject> pq = ParseQuery.getQuery("picture");
+                pq.whereEqualTo("user", ParseUser.getCurrentUser());
+                pq.fromLocalDatastore();
+                pq.getFirstInBackground(new GetCallback<ParseObject>() {
+
                     @Override
                     public void done(ParseObject parseObject, ParseException e) {
-                        parseObject.put("picture", image);
+                        if (e != null) {
+                            // Saving image locally
+                            e.printStackTrace();
+                            ParseObject picData = new ParseObject("picture");
+                            picData.put("user", ParseUser.getCurrentUser());
+                            picData.put("picture", image);
+                            picData.pinInBackground();
+                            return;
+                        }
+                        parseObject.put("picture",image);
+                        parseObject.saveInBackground();
                     }
                 });
 

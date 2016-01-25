@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.github.fabtransitionactivity.SheetLayout;
 import com.google.android.gms.maps.GoogleMap;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -115,25 +116,21 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
                 if (position == 0) {
                     Intent intent = new Intent(HomeActivity.this, TrustedActivity.class);
                     startActivity(intent);
-
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
                 }
+
                 if (position == 1) {
-//                    Intent intent = new Intent(TrucklistActivity.this, Contact.class);
+
+//                    Intent intent = new Intent(TrucklistActivity.this, TrackLinkList.class);
 //                    startActivity(intent);
+                    Intent intent = new Intent(HomeActivity.this,SettingsActivity.class);
+                    startActivity(intent);
+                    //finish();
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
 
                 }
 
                 if (position == 2) {
-
-//                    Intent intent = new Intent(TrucklistActivity.this, TrackLinkList.class);
-//                    startActivity(intent);
-                    mDrawerLayout.closeDrawer(Gravity.LEFT);
-
-                }
-
-                if (position == 3) {
 
 //                    getSharedPreferences("MyPref", MODE_PRIVATE).edit().clear().commit();
 //
@@ -142,6 +139,7 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
                     ParseUser.logOutInBackground();
                     Intent intent = new Intent(HomeActivity.this, WelcomeActivity.class);
                     startActivity(intent);
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
                     finish();
 
                 }
@@ -150,17 +148,18 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
         });
 
         ParseQuery<ParseObject> pq = new ParseQuery("picture");
+        pq.whereEqualTo("user",ParseUser.getCurrentUser());
         pq.fromLocalDatastore();
+        pq.getFirstInBackground(new GetCallback<ParseObject>() {
 
-        pq.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null && !list.isEmpty()) {
+            public void done(ParseObject parseObject, ParseException e) {
+                if (e == null) {
                     // Locate the objectId from the class
                     Bitmap bmp = BitmapFactory
                             .decodeByteArray(
-                                    list.get(0).getBytes("picture"), 0,
-                                    list.get(0).getBytes("picture").length);
+                                    parseObject.getBytes("picture"), 0,
+                                    parseObject.getBytes("picture").length);
 
                     // Get the ImageView from
                     // main.xml
@@ -276,7 +275,7 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
 class MyDrawerAdapter extends BaseAdapter {
 
     String[] options;
-    String[] items = {"Trusted Contacts", "Settings2","Settings3", "Logout"};
+    String[] items = {"Trusted Contacts","Settings", "Logout"};
     int[] images = {R.drawable.pass, R.drawable.pass,R.drawable.pass, R.drawable.pass};
     private Context context;
 
