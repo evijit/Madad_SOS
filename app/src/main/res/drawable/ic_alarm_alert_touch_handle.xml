@@ -107,15 +107,27 @@
                     <solid android:color="#FFBB00" />
                 </shape>
             </item>
-            <item>
+
+
+            <item >
                 <shape android:shape="oval">
 
-                    <solid android:color="@color/red" />
+                    <solid android:color="#fff" />
 
 
                 </shape>
 
             </item>
+            <item
+                android:left="10dp"
+                android:right="10dp"
+                android:top="10dp"
+                android:bottom="10dp"
+                android:state_enabled="true"
+                android:state_active="false"
+                android:state_focused="false"
+                android:drawable="@drawable/callring"/>
+
 
         </ripple>
 

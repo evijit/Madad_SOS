@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="snooze_dismiss_drawables">
+        <item>@drawable/ic_item_accept</item>
+        <item>@null</item>
+        <item>@drawable/ic_item_decline</item>
+        <item>@null</item>
+    </array>
+</resources>

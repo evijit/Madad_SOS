@@ -107,15 +107,23 @@
                     <solid android:color="#FFBB00" />
                 </shape>
             </item>
+
+
             <item>
                 <shape android:shape="oval">
 
-                    <solid android:color="@color/red" />
+                    <solid android:color="@color/green" />
 
 
                 </shape>
 
             </item>
+            <item
+                android:state_enabled="true"
+                android:state_active="false"
+                android:state_focused="false"
+                android:drawable="@drawable/answer"/>
+
 
         </ripple>
 

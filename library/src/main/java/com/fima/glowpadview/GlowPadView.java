@@ -265,12 +265,12 @@ public class GlowPadView extends View {
 			setDirectionDescriptionsResourceId(resourceId);
 		}
 
-		a.recycle();
+		//a.recycle();
 
 		// Use gravity attribute from LinearLayout
 		// a = context.obtainStyledAttributes(attrs, R.styleable.LinearLayout);
 		mGravity = a.getInt(R.styleable.GlowPadView_android_gravity, Gravity.TOP);
-		a.recycle();
+		//a.recycle();
 
 		setVibrateEnabled(mVibrationDuration > 0);
 
@@ -557,7 +557,7 @@ public class GlowPadView extends View {
 			TargetDrawable target = new TargetDrawable(res, value != null ? value.resourceId : 0, 3);
 			drawables.add(target);
 		}
-		array.recycle();
+		//array.recycle();
 		return drawables;
 	}
 
@@ -1152,7 +1152,7 @@ public class GlowPadView extends View {
 			String contentDescription = array.getString(i);
 			targetContentDescriptions.add(contentDescription);
 		}
-		array.recycle();
+		//array.recycle();
 		return targetContentDescriptions;
 	}
 

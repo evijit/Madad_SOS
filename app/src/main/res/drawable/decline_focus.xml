@@ -107,6 +107,8 @@
                     <solid android:color="#FFBB00" />
                 </shape>
             </item>
+
+
             <item>
                 <shape android:shape="oval">
 
@@ -116,6 +118,12 @@
                 </shape>
 
             </item>
+            <item
+                android:state_enabled="true"
+                android:state_active="false"
+                android:state_focused="false"
+                android:drawable="@drawable/decline"/>
+
 
         </ripple>
 

@@ -3,15 +3,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    xmlns:glowpad="http://schemas.android.com/apk/res-auto"
+    android:background="@color/darkgrey"
     tools:context="kgp.tech.interiit.sos.FakeCall">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="FAKE CALL UI"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="10">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/primary"
+            android:layout_weight="4">
+
+        </LinearLayout>
+
+        <com.fima.glowpadview.GlowPadView
+            android:id="@+id/glow_pad_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:layout_gravity="center_vertical|center_horizontal|bottom"
+            android:layout_marginBottom="@dimen/glowpadview_margin_bottom"
+            android:focusable="true"
+            android:gravity="center"
+            glowpad:feedbackCount="1"
+            glowpad:glowRadius="@dimen/glowpadview_glow_radius"
+            glowpad:handleDrawable="@drawable/ic_alarm_alert_touch_handle"
+            glowpad:inner_Radius="@dimen/glowpadview_inner_radius"
+            glowpad:outerRadius="@dimen/glowpadview_target_placement_radius"
+            glowpad:outerRingDrawable="@drawable/lockring"
+            glowpad:pointDrawable="@drawable/ic_lockscreen_glowdot"
+            glowpad:snapMargin="@dimen/glowpadview_snap_margin"
+            glowpad:targetDrawables="@array/snooze_dismiss_drawables"
+            glowpad:vibrationDuration="20" />
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>
