@@ -77,7 +77,7 @@ public class ChatlistFragment extends Fragment {
             public void onItemClick(AdapterView<?> av, View v, int position, long id) {
                 //Get your item here with the position
 
-                final Intent intent = new Intent(getActivity(), Scrolltest.class);
+                final Intent intent = new Intent(getActivity(), MessageActivity.class);
 
                 //FloatingActionsMenu fm = ((FloatingActionsMenu) getActivity().findViewById(R.id.new_up));
 
