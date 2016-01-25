@@ -141,20 +141,16 @@
                 android:value="kgp.tech.interiit.sos.HomeActivity" />
         </activity>
         <activity android:name=".AnimatedButtons" />
-        <activity android:name=".FakeCall"
+        <activity
+            android:name=".FakeCall"
             android:showOnLockScreen="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity
-            android:name=".FirstTimeActivity"
-            android:label="@string/title_activity_first_time"
-            android:theme="@style/AppTheme"></activity>
+        <activity android:name=".FakeCallOngoing"></activity>
     </application>
 
 </manifest>

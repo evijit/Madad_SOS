@@ -12,13 +12,56 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="10">
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:orientation="vertical"
             android:background="@color/primary"
             android:layout_weight="4">
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="left|bottom"
+                android:layout_alignParentBottom="true"
+                android:gravity="left"
+                android:layout_marginBottom="110dp"
+                android:layout_marginLeft="30dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="40sp"
+                    android:textColor="#fff"
+                    android:text="Unknown"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="left|bottom"
+                android:layout_alignParentBottom="true"
+                android:gravity="left"
+                android:layout_marginBottom="58dp"
+                android:layout_marginLeft="30dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:textColor="#fff"
+                    android:text="+91 (789)8902-555"/>
+
+            </LinearLayout>
+
+
+
+
+
+
+        </RelativeLayout>
+
 
         <com.fima.glowpadview.GlowPadView
             android:id="@+id/glow_pad_view"
