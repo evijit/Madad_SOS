@@ -65,7 +65,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scrolltest);
+        setContentView(R.layout.activity_message);
 
 
         pubnub.setUUID(uuid_this);
