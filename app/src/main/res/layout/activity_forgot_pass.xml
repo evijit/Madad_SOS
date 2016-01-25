@@ -14,7 +14,7 @@
 
 
     <EditText
-    android:id="@+id/username"
+    android:id="@+id/email"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:hint="Email-id"
@@ -22,7 +22,6 @@
     android:ellipsize="start"
     android:singleLine="true"
     android:layout_marginTop="45dp"
-    android:nextFocusDown="@+id/email"
     />
 
     <Button
