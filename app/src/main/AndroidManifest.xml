@@ -91,7 +91,12 @@
             android:label="@string/title_activity_accept_sos" />
         <activity
             android:name=".TrustedActivity"
-            android:label="@string/title_activity_trusted" />
+            android:label="@string/title_activity_trusted"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="kgp.tech.interiit.sos.HomeActivity" />
+        </activity>
 
         <service android:name="com.parse.PushService" />
 

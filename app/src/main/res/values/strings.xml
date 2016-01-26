@@ -6,7 +6,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_message">Chat</string>
     <string name="title_activity_chatlist">Chatlist</string>
-    <string name="title_activity_trusted">Trusted Group</string>
+    <string name="title_activity_trusted">Trusted Contacts</string>
 
 
     <string-array name="sample_names">
