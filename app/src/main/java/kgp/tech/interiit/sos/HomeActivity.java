@@ -1,8 +1,10 @@
 package kgp.tech.interiit.sos;
 
 import android.content.AsyncQueryHandler;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.content.Context;
@@ -18,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -123,7 +126,7 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
 
 //                    Intent intent = new Intent(TrucklistActivity.this, TrackLinkList.class);
 //                    startActivity(intent);
-                    Intent intent = new Intent(HomeActivity.this,SettingsActivity.class);
+                    Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
                     startActivity(intent);
                     //finish();
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
@@ -146,6 +149,9 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
 
             }
         });
+
+        //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(android.content.Context);
+        //Log.d("prefs dist", String.valueOf(sharedPref.getInt(getString(R.string.pref_distance),0)));
 
         ParseQuery<ParseObject> pq = new ParseQuery("picture");
         pq.whereEqualTo("user",ParseUser.getCurrentUser());

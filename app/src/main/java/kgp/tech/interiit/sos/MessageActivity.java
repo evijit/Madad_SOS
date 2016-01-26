@@ -2,6 +2,7 @@ package kgp.tech.interiit.sos;
 
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -9,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.EditText;
@@ -23,6 +25,11 @@ import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.pubnub.api.Callback;
 import com.pubnub.api.Pubnub;
 import com.pubnub.api.PubnubError;
@@ -34,6 +41,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+
+import kgp.tech.interiit.sos.Utils.comm;
 
 public class MessageActivity extends BaseActivity implements ObservableScrollViewCallbacks {
 
@@ -58,51 +68,32 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     private Toolbar toolbar;
     static String message_incoming = "";
     private ObservableListView listView;
-    static UUID uuid_this = UUID.randomUUID();
-    final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
 
+    String channelID;
+    String sos_creater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
+        channelID = getIntent().getStringExtra("channelID");
 
-        pubnub.setUUID(uuid_this);
-        try {
-            pubnub.subscribe("Channel-ag04qto2e", new Callback() {
-
-                        @Override
-                        public void successCallback(String channel, Object message) {
-                            JSONObject jj = (JSONObject)message;
-                            try {
-                                UUID uu = UUID.fromString(jj.get("uuid").toString());
-                                if(uu.compareTo(uuid_this) != 0) {
-                                    message_incoming = jj.get("text").toString();
-                                    System.out.println("SUBSCRIBE : " + channel + " : "
-                                            + message.getClass() + " : " + message.toString());
-                                    new SendMessage().execute();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        @Override
-                        public void errorCallback(String channel, PubnubError error) {
-                            System.out.println("SUBSCRIBE : ERROR on channel " + channel
-                                    + " : " + error.toString());
-                        }
-                    }
-            );
-        } catch (PubnubException e) {
-            System.out.println(e.toString());
-        }
+//        ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS");
+//        pq.fromLocalDatastore();
+//        ParseObject sos=null;
+//        pq.whereEqualTo("channelID", channelID);
+//        try {
+//            sos = pq.getFirst();
+//            sos_creater = sos.getParseObject("User").getString("username");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
         Intent iin= getIntent();
         Bundle b = iin.getExtras();
 
-        String j =(String) b.get("name");
+        String j = "hello";
         TextView title= (TextView)findViewById(R.id.name);
         title.setText(j);
         sender=j;
@@ -110,17 +101,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         text = (EditText) this.findViewById(R.id.text);
         messages = new ArrayList<Message>();
 
-        messages.add(new Message("Hello", false));
-        messages.add(new Message("Hi!", true));
-        messages.add(new Message("Wassup??", false));
-        messages.add(new Message("nothing much, working on speech bubbles.", true));
-        messages.add(new Message("you say!", true));
-        messages.add(new Message("oh thats great. how are you showing them", false));
-
-
         adapter = new AwesomeAdapter(this, messages);
         listView.setAdapter(adapter);
-        addNewMessage(new Message("mmm, well, using 9 patches png to show them.", true));
 
 
         mFlexibleSpaceImageHeight = getResources().getDimensionPixelSize(R.dimen.flexible_space_image_height);
@@ -158,6 +140,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 
         // mListBackgroundView makes ListView's background except header view.
         mListBackgroundView = findViewById(R.id.list_background);
+
+        recieveMessage(channelID);
     }
 
     @Override
@@ -250,85 +234,49 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     public void sendMessage(View v)
     {
         String newMessage = text.getText().toString().trim();
+        comm.sendMessage(channelID,newMessage);
+        ((EditText)findViewById(R.id.text)).setText("");
+    }
 
-        JSONObject jj = new JSONObject();
+    void recieveMessage(String channelName)
+    {
         try {
-            jj.put("uuid", uuid_this);
-            jj.put("text", newMessage);
-        } catch (JSONException e) {
+            final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
+
+            pubnub.subscribe(channelName, new Callback() {
+                public void successCallback(String channel, Object mes) {
+
+                    try {
+                        JSONObject json_mes = new JSONObject(mes.toString());
+
+                        String message = json_mes.getString("message");
+                        String username = json_mes.getString("username");
+
+                        final Message m = new Message(username,message,false);
+                        if(username.equals(ParseUser.getCurrentUser().getUsername()))
+                            m.isMine = true;
+
+                        MessageActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                addNewMessage(m);
+                            }
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                public void errorCallback(String channel, PubnubError error) {
+                    System.out.println(error.getErrorString());
+                }
+            });
+        } catch (PubnubException e) {
             e.printStackTrace();
         }
-
-        Callback callback = new Callback() {
-            public void successCallback(String channel, Object response) {
-                System.out.println(response.toString());
-            }
-            public void errorCallback(String channel, PubnubError error) {
-                System.out.println(error.toString());
-            }
-        };
-        pubnub.publish("Channel-ag04qto2e", jj, callback);
-        if(newMessage.length() > 0) {
-            text.setText("");
-            addNewMessage(new Message(newMessage, true));
-            //new SendMessage().execute();
-        }
     }
-    private class SendMessage extends AsyncTask<Void, String, String>
-    {
-        String sender="Somebody";
-        @Override
-        protected String doInBackground(Void... params) {
-            try {
-                Thread.sleep(2000); //simulate a network call
-            }catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
-            this.publishProgress(String.format("%s started writing", sender));
-            try {
-                Thread.sleep(2000); //simulate a network call
-            }catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            this.publishProgress(String.format("%s has entered text", sender));
-            try {
-                Thread.sleep(3000);//simulate a network call
-            }catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-
-            return Random_Message.messages[rand.nextInt(Random_Message.messages.length-1)];
-
-
-        }
-        @Override
-        public void onProgressUpdate(String... v) {
-
-            if(messages.get(messages.size()-1).isStatusMessage)//check wether we have already added a status message
-            {
-                messages.get(messages.size()-1).setMessage(v[0]); //update the status for that
-                adapter.notifyDataSetChanged();
-                listView.setSelection(messages.size()-1);
-            }
-            else{
-                addNewMessage(new Message(true,v[0])); //add new message, if there is no existing status message
-            }
-        }
-        @Override
-        protected void onPostExecute(String text) {
-            if(messages.get(messages.size()-1).isStatusMessage)//check if there is any status message, now remove it.
-            {
-                messages.remove(messages.size()-1);
-            }
-
-
-            addNewMessage(new Message(message_incoming, false)); // add the orignal message from server.
-        }
-
-
-    }
     void addNewMessage(Message m)
     {
         messages.add(m);

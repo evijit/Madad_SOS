@@ -1,16 +1,113 @@
 package kgp.tech.interiit.sos;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
+
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+
+import kgp.tech.interiit.sos.Utils.Utils;
 
 public class AcceptSOS extends AppCompatActivity {
+
+    private String SOSId;
+    private String channelId;
+    private String senderId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_sos);
+        Intent intent = getIntent();
+        try {
+            JSONObject data = new JSONObject(intent.getExtras().getString("com.parse.Data"));
+            SOSId = data.getString("sosId");
+            senderId = data.getString("username");
+            channelId = data.getString("chatChannel");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void action_accept_sos(View v)
+    {
+        ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS_Users");
+        pq.whereEqualTo("UserID", ParseUser.getCurrentUser());
+        ParseObject sos = new ParseObject("SOS");
+        sos.setObjectId(SOSId);
+        pq.whereEqualTo("SOSid",sos);
+        final ProgressDialog dia = ProgressDialog.show(AcceptSOS.this, null, getString(R.string.alert_wait));
+        pq.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if(e!=null)
+                {
+                    dia.dismiss();
+                    e.printStackTrace();
+                    return;
+                }
+                Log.d("AcceptedSOS","ID "+parseObject.getObjectId());
+                parseObject.put("hasAccepted", true);
+                parseObject.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e!=null)
+                        {
+                            dia.dismiss();
+                            e.printStackTrace();
+                            return;
+                        }
+                        dia.dismiss();
+                        Log.d("AcceptedSOS", "Saved");
+                        Intent intent = new Intent(AcceptSOS.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            }
+        });
+    }
+
+    public void action_reject_sos(final View v)
+    {
+        Utils.showDialog(this, getString(R.string.please_help), R.string.save, R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        Intent intent = new Intent(AcceptSOS.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                        break;
+                    case DialogInterface.BUTTON_POSITIVE:
+                        action_accept_sos(v);
+                        //TODO call the cloud service and make it check if contact uses the app
+                        break;
+                }
+                return;
+            }
+        });
     }
 
     @Override

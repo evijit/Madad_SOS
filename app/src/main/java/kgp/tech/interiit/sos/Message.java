@@ -14,11 +14,12 @@ public class Message {
     /**
      * The content of the message
      */
+    String username;
     String message;
     /**
      * boolean to determine, who is sender of this message
      */
-    boolean isMine;
+    public boolean isMine;
     /**
      * boolean to determine, whether the message is a status message or not.
      * it reflects the changes/updates about the sender is writing, have entered text etc
@@ -28,8 +29,9 @@ public class Message {
     /**
      * Constructor to make a Message object
      */
-    public Message(String message, boolean isMine) {
+    public Message(String username, String message, boolean isMine) {
         super();
+        this.username = username;
         this.message = message;
         this.isMine = isMine;
         this.isStatusMessage = false;

@@ -13,6 +13,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import kgp.tech.interiit.sos.Utils.comm;
+
 public class AnimatedButtons extends AppCompatActivity {
 
     @Override
@@ -71,8 +73,11 @@ public class AnimatedButtons extends AppCompatActivity {
         overridePendingTransition(R.anim.activity_no_animation, R.anim.activity_close_translate_to_bottom);
     }
 
-
-    public void fakecall(View v)
+    public void action_sos(View v)
+    {
+        comm.sendSOS();
+    }
+    public void action_fakecall(View v)
     {
         Intent intent = new Intent(this, FakeCallReciever.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 1222222, intent, 0);

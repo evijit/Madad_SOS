@@ -89,20 +89,22 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         app:elevation="6dp"
-        app:pressedTranslationZ="12dp"/>
+        app:pressedTranslationZ="12dp"
+        android:onClick="action_accept_sos"/>
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/reject"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_centerInParent="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                app:backgroundTint="#f00"
-                android:layout_margin="16dp"
-                app:elevation="6dp"
-                app:pressedTranslationZ="12dp"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/reject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        app:backgroundTint="#f00"
+        android:layout_margin="16dp"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:onClick="action_reject_sos"/>
         <!--android:src="@drawable/accept"-->
 
 

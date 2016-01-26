@@ -46,6 +46,7 @@ import java.util.Vector;
 
 import kgp.tech.interiit.sos.Utils.NetworkLocationService;
 import kgp.tech.interiit.sos.Utils.People;
+import kgp.tech.interiit.sos.Utils.comm;
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu;
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay;
 
@@ -169,7 +170,7 @@ public class MyMapFragment extends Fragment implements LocationListener{
                         // do stuff and dismiss
 //                        Intent i = new Intent(MapsActivity.this, Chatlist.class);
 //                        startActivity(i);
-                        sendSOS();
+                        comm.sendSOS();
                         menuOverlay.getButtonMenu().toggle();
                         break;
                     case LEFT:
@@ -208,71 +209,7 @@ public class MyMapFragment extends Fragment implements LocationListener{
 //            }
 //    }
 
-    public void sendSOS() {
-        final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
 
-            /* Publish a simple message to the demo_tutorial channel */
-        final JSONObject data = new JSONObject();
-        pubnub.setUUID(ParseUser.getCurrentUser().toString());
-
-        try {
-            //generate channel name
-            final ParseObject obj = new ParseObject("SOS");
-            final String channelName = UUID.randomUUID().toString();
-
-            obj.put("UserID", ParseUser.getCurrentUser());
-            obj.put("channelID", channelName);
-            obj.put("isActive", true);
-            obj.saveInBackground(new SaveCallback() {
-                public void done(ParseException e) {
-                    if (e == null) {
-                        String id = obj.getObjectId();
-                        try {
-                            data.put("userid", ParseUser.getCurrentUser());
-                            data.put("channel", channelName);
-
-                            HashMap<String, Object> params = new HashMap<>();
-                            params.put("username", ParseUser.getCurrentUser().getUsername());
-                            params.put("channel", channelName);
-                            params.put("sosid", id);
-
-                            ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
-                                @Override
-                                public void done(Float fLoat, ParseException e) {
-                                    if (e == null) {
-                                        System.out.println("YAAAY!!!");
-                                    }
-
-                                }
-                            });
-                            pubnub.publish(channelName, "BACHAO!!!", new Callback() {
-                            });
-
-                /* Subscribe to the demo_tutorial channel */
-
-                            pubnub.subscribe(channelName, new Callback() {
-                                public void successCallback(String channel, Object message) {
-                                    System.out.println(message);
-                                }
-
-                                public void errorCallback(String channel, PubnubError error) {
-                                    System.out.println(error.getErrorString());
-                                }
-                            });
-
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
-
-                    } else
-                        System.out.println(e.toString());
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 
     @Override

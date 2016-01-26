@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,15 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -27,16 +37,16 @@ public class ChatlistFragment extends Fragment {
 
     private Toolbar toolbar;
     private ListView listView;
+    private List<ParseObject> sos_list = new ArrayList<ParseObject>();;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.frag_chatlist, container, false);
-        listView = (ListView) v.findViewById(R.id.list_data);
-        listView.setEmptyView(v.findViewById(R.id.emptyviewtxt));
 
-        MyAdapter adapter = new MyAdapter(getActivity());
-        listView.setAdapter(adapter);
+        listView = (ListView) v.findViewById(R.id.list_data);
+        pullData();
+        listView.setEmptyView(v.findViewById(R.id.emptyviewtxt));
 
         listView.setDivider(null);
         listView.setDividerHeight(0);
@@ -54,7 +64,7 @@ public class ChatlistFragment extends Fragment {
                 dialogBuilder.setItems(op, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(i==3)//Details
+                        if (i == 3)//Details
                         {
                             AlertDialog.Builder dialogBuilder2 = new AlertDialog.Builder(getActivity());
                             LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -78,18 +88,10 @@ public class ChatlistFragment extends Fragment {
                 //Get your item here with the position
 
                 final Intent intent = new Intent(getActivity(), MessageActivity.class);
-
-                //FloatingActionsMenu fm = ((FloatingActionsMenu) getActivity().findViewById(R.id.new_up));
-
-                TextView tv1 = (TextView) v.findViewById(R.id.name);
-                String name = tv1.getText().toString();
-                intent.putExtra("name", name);
+                intent.putExtra("channelID", sos_list.get(position).getString("channelID"));
                 startActivity(intent);
-
-
             }
         });
-
 
         return v;
     }
@@ -98,6 +100,36 @@ public class ChatlistFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    void pullData()
+    {
+        ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS_Users");
+        pq.whereEqualTo("UserID", ParseUser.getCurrentUser());
+        pq.whereEqualTo("hasAccepted", true);
+        pq.include("SOSid");
+        pq.include("SOSid.UserID");
+        pq.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if(e!=null)
+                {
+                    e.printStackTrace();
+                    return;
+                }
+                //Log.d("Chatlist", String.valueOf(list.size()));
+                Log.d("Chatlist", list.get(0).keySet().toString());
+
+                for(ParseObject psos : list) {
+                    ParseObject sos = psos.getParseObject("SOSid");
+                    sos.pinInBackground();
+                    sos_list.add(sos);
+                }
+
+                MyAdapter adapter = new MyAdapter(sos_list,getActivity());
+                listView.setAdapter(adapter);
+            }
+        });
     }
 
 
@@ -122,54 +154,26 @@ class MyAdapter extends BaseAdapter {
 
     private Context context;
     String[] txt,name;
+    private List<ParseObject> sos_list;
 //    int[] images={R.drawable.im0,R.drawable.im1,R.drawable.im2,R.drawable.im3,R.drawable.im4,R.drawable.im5,R.drawable.im6,R.drawable.im7,R.drawable.im8,R.drawable.im9,R.drawable.im10,R.drawable.im11,R.drawable.im12};
 
 
-    MyAdapter(Context context)
+    MyAdapter(List<ParseObject> sos_list,Context context)
     {
         this.context=context;
-        name=context.getResources().getStringArray(R.array.sample_names);
-        txt=context.getResources().getStringArray(R.array.sample_text);
-//        shuffleArray(images);
-
-
-        Random rng = new Random();
-        List<String> arr = Arrays.asList(txt);
-        Collections.shuffle(arr, rng);
-        arr.toArray(txt);
-
-
-        rng = new Random();
-        arr = Arrays.asList(name);
-        Collections.shuffle(arr, rng);
-        arr.toArray(name);
-    }
-
-
-
-    static void shuffleArray(int[] ar)
-    {
-        Random rnd = new Random();
-        for (int i = ar.length - 1; i > 0; i--)
-        {
-            int index = rnd.nextInt(i + 1);
-            // Simple swap
-            int a = ar[index];
-            ar[index] = ar[i];
-            ar[i] = a;
-        }
+        this.sos_list = sos_list;
     }
 
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return name.length;
+        return sos_list.size();
     }
 
     @Override
-    public Object getItem(int position) {
+    public ParseObject getItem(int position) {
         // TODO Auto-generated method stub
-        return name[position];
+        return sos_list.get(position);
     }
 
     @Override
@@ -183,7 +187,6 @@ class MyAdapter extends BaseAdapter {
         // TODO Auto-generated method stub
         View row=null;
 
-
         if(convertView==null)
         {
             LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -193,26 +196,16 @@ class MyAdapter extends BaseAdapter {
         {
             row=convertView;
         }
-        TextView tv1=(TextView) row.findViewById(R.id.name);
-        TextView tv2=(TextView) row.findViewById(R.id.txt);
-        TextView tv3=(TextView) row.findViewById(R.id.time);
+        TextView sos_title=(TextView) row.findViewById(R.id.name);
+        TextView sos_message=(TextView) row.findViewById(R.id.txt);
+        TextView sos_time=(TextView) row.findViewById(R.id.time);
         CircleImageView iv1=(CircleImageView) row.findViewById(R.id.img);
 
-
-        tv1.setText(name[position]);
-        tv2.setText(txt[position]);
+        //Log.d("Chatlist","view "+sos_list.get(position).getClassName());
+        sos_title.setText(sos_list.get(position).getString("channelID"));
+        sos_message.setText(sos_list.get(position).getString("description"));
+        sos_time.setText(sos_list.get(position).getCreatedAt().toString());
         iv1.setImageResource(R.drawable.sample_man);
-
-        Random r = new Random();
-        int Low = 0;
-        int High = 23;
-        int R1 = r.nextInt(High-Low) + Low;
-        String f1 = String.format("%02d", R1);
-        Low = 00;
-        High=59;
-        int R2 = r.nextInt(High-Low) + Low;
-        String f2 = String.format("%02d", R2);
-        tv3.setText(f1+":"+f2);
 
         return row;
     }

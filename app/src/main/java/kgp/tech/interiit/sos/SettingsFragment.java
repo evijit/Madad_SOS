@@ -1,6 +1,7 @@
 package kgp.tech.interiit.sos;
 
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 /**

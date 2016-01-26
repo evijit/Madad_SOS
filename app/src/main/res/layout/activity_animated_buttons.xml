@@ -23,7 +23,7 @@
             android:visibility="invisible"
             android:src="@drawable/mr_ic_audio_vol"
             android:background="@drawable/fab_green"
-            android:onClick="fakecall"
+            android:onClick="action_fakecall"
             android:layout_centerInParent="true"
             />
 
@@ -35,7 +35,7 @@
             android:id="@+id/fab4"
             android:src="@drawable/mr_ic_audio_vol"
             android:background="@drawable/fab_amber"
-            android:onClick="fakecall"
+            android:onClick="action_fakecall"
             android:layout_centerInParent="true"
             />
 
@@ -47,7 +47,7 @@
             android:id="@+id/fab5"
             android:src="@drawable/mr_ic_audio_vol"
             android:background="@drawable/fab_purple"
-            android:onClick="fakecall"
+            android:onClick="action_fakecall"
             android:layout_centerInParent="true"
             />
 
@@ -59,7 +59,7 @@
             android:id="@+id/fab6"
             android:src="@drawable/mr_ic_audio_vol"
             android:background="@drawable/fab_grey"
-            android:onClick="fakecall"
+            android:onClick="action_fakecall"
             android:layout_centerInParent="true"
             />
 
@@ -71,7 +71,7 @@
             android:id="@+id/fab1"
             android:src="@drawable/mr_ic_audio_vol"
             android:background="@drawable/fab_blue"
-            android:onClick="fakecall"
+            android:onClick="action_fakecall"
             android:layout_centerInParent="true"
             />
 
@@ -83,7 +83,7 @@
             android:id="@+id/fab2"
             android:src="@drawable/mr_ic_audio_vol"
             android:background="@drawable/fab_ochre"
-            android:onClick="fakecall"
+            android:onClick="action_fakecall"
             android:layout_centerInParent="true"
             />
         <!-- Add here any views you want -->
@@ -98,6 +98,7 @@
             android:src="@drawable/mr_ic_audio_vol"
             android:background="@drawable/fab_red"
             android:layout_centerInParent="true"
+            android:onClick="action_sos"
             />
 
     </RelativeLayout>
