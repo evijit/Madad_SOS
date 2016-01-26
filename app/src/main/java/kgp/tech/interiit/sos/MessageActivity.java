@@ -34,10 +34,12 @@ import com.pubnub.api.Pubnub;
 import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -95,15 +97,10 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 //            e.printStackTrace();
 //        }
 
-        Intent iin= getIntent();
-        Bundle b = iin.getExtras();
-
         String j = "hello";
-        TextView title= (TextView)findViewById(R.id.name);
-        title.setText(j);
         sender=j;
         listView = (ObservableListView) findViewById(R.id.list);
-        text = (EditText) this.findViewById(R.id.text);
+        //text = (EditText) this.findViewById(R.id.text);
         messages = new ArrayList<Message>();
 
         adapter = new AwesomeAdapter(this, messages);
@@ -146,6 +143,9 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         // mListBackgroundView makes ListView's background except header view.
         mListBackgroundView = findViewById(R.id.list_background);
 
+        text = (EditText)findViewById(R.id.text);
+
+        history(channelID);
         recieveMessage(channelID);
     }
 
@@ -268,7 +268,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     {
         String newMessage = text.getText().toString().trim();
         comm.sendMessage(channelID,newMessage);
-        ((EditText)findViewById(R.id.text)).setText("");
+        text.setText("");
     }
 
     void recieveMessage(String channelName)
@@ -308,6 +308,50 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         } catch (PubnubException e) {
             e.printStackTrace();
         }
+    }
+
+    public void history(String channelName){
+        final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
+        pubnub.history(channelName,100,false,new Callback() {
+            @Override
+            public void successCallback(String channel, final Object message) {
+                try {
+                    JSONArray json = (JSONArray) message;
+                    Log.d("History", json.toString());
+                    final JSONArray messages = json.getJSONArray(0);
+
+                    MessageActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < messages.length(); i++)
+                            {
+                                try {
+                                    JSONObject jsonMsg = messages.getJSONObject(i);
+
+                                    String message = jsonMsg.getString("message");
+                                    String username = jsonMsg.getString("username");
+
+                                    final Message m = new Message(username, message, false);
+                                    if (username.equals(ParseUser.getCurrentUser().getUsername()))
+                                        m.isMine = true;
+
+                                    addNewMessage(m);
+                                }catch (JSONException e) { // Handle errors silently
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void errorCallback(String channel, PubnubError error) {
+                Log.d("History", error.toString());
+            }
+        });
     }
 
     void addNewMessage(Message m)

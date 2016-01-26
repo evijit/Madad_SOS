@@ -77,7 +77,7 @@ public class AnimatedButtons extends AppCompatActivity {
     {
         comm.sendSOS();
     }
-    public void action_fakecall(View v)
+
     public void recordAudio(View v) {
         Intent intent = new Intent(this, RecordFragment.class);
         startActivity(intent);
@@ -85,7 +85,7 @@ public class AnimatedButtons extends AppCompatActivity {
 
     }
 
-    public void fakecall(View v)
+    public void action_fakecall(View v)
     {
         Intent intent = new Intent(this, FakeCallReciever.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 1222222, intent, 0);
