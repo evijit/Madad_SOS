@@ -1109,12 +1109,12 @@ public class GlowPadView extends View {
 		StringBuilder utterance = new StringBuilder();
 		final int targetCount = mTargetDrawables.size();
 		for (int i = 0; i < targetCount; i++) {
-			String targetDescription = getTargetDescription(i);
-			String directionDescription = getDirectionDescription(i);
-			if (!TextUtils.isEmpty(targetDescription) && !TextUtils.isEmpty(directionDescription)) {
-				String text = String.format(directionDescription, targetDescription);
-				utterance.append(text);
-			}
+//			String targetDescription = getTargetDescription(i);
+//			String directionDescription = getDirectionDescription(i);
+//			if (!TextUtils.isEmpty(targetDescription) && !TextUtils.isEmpty(directionDescription)) {
+//				String text = String.format(directionDescription, targetDescription);
+//				utterance.append(text);
+//			}
 		}
 		if (utterance.length() > 0) {
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN)

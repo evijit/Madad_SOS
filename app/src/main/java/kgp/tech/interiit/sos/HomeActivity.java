@@ -3,6 +3,7 @@ package kgp.tech.interiit.sos;
 import android.content.AsyncQueryHandler;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.content.Context;
@@ -253,7 +254,14 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
     }
 
     public void onFabClick(View v) {
-        mSheetLayout.expandFab();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mSheetLayout.expandFab();
+        }
+        else
+        {
+            Intent intent = new Intent(HomeActivity.this, AnimatedButtons.class);
+            startActivityForResult(intent, REQUEST_CODE);
+        }
     }
 
     @Override

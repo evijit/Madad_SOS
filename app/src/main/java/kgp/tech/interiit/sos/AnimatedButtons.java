@@ -86,17 +86,17 @@ public class AnimatedButtons extends AppCompatActivity {
 
 //        if (mTimer.getText().toString().trim().equalsIgnoreCase("5 sec")) {
             int i = 5;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (i * 1000), pendingIntent);
-        }
-        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (i * 1000), pendingIntent);
-        }
-        else
-        {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (i * 1000), pendingIntent);
+//        }
+//        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+//        {
+//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (i * 1000), pendingIntent);
+//        }
+//        else
+//        {
             alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (i * 1000), pendingIntent);
-        }
+        //}
 
         Toast.makeText(this, "Fake call scheduled after " + i + " sec", Toast.LENGTH_LONG).show();
 //        }
@@ -109,6 +109,44 @@ public class AnimatedButtons extends AppCompatActivity {
         finish();
     }
 
+    public void enable_hospitals(View v)
+    {
+        MyMapFragment map_fragment = new MyMapFragment();
+        map_fragment.isAddHospital = !(map_fragment.isAddHospital);
+        if(map_fragment.isAddHospital)
+            Toast.makeText(this, "Nearby Hospitals Marked", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this, "Nearby Hospitals Un-Marked", Toast.LENGTH_LONG).show();
+        map_fragment = null;
+        System.gc();
+        finish();
+    }
+
+    public void enable_police(View v)
+    {
+        MyMapFragment map_fragment = new MyMapFragment();
+        map_fragment.isAddPolice= !(map_fragment.isAddPolice);
+        if(map_fragment.isAddPolice)
+            Toast.makeText(this, "Nearby Police Stations Marked", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this, "Nearby Police Staions Un-Marked", Toast.LENGTH_LONG).show();
+        map_fragment = null;
+        System.gc();
+        finish();
+    }
+
+    public void enable_pharmacy(View v)
+    {
+        MyMapFragment map_fragment = new MyMapFragment();
+        map_fragment.isAddPharmacy = !(map_fragment.isAddPharmacy);
+        if(map_fragment.isAddPharmacy)
+            Toast.makeText(this, "Nearby Pharmacies Marked", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this, "Nearby Pharmacies Un-Marked", Toast.LENGTH_LONG).show();
+        map_fragment = null;
+        System.gc();
+        finish();
+    }
     @Override
     protected void onPause() {
         exitToBottomAnimation();

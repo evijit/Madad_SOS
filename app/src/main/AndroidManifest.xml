@@ -149,17 +149,28 @@
         <activity android:name=".AnimatedButtons" />
         <activity
             android:name=".FakeCall"
-            android:showOnLockScreen="true"></activity>
+            android:showOnLockScreen="true" />
         <activity android:name=".FakeCallOngoing" />
-        <activity android:name=".RecordFragment"
+        <activity
+            android:name=".RecordFragment"
             android:label="Audio Test"
-            android:theme="@style/Theme.UserDialog" >
-        >
+            android:theme="@style/Theme.UserDialog">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".Utils.NetworkLocationService" />
+        <service android:name=".Utils.SOSService" />
+        <receiver android:name=".Utils.MyReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SCREEN_ON"></action>
+                <action android:name="android.intent.action.ACTION_SCREEN_OFF"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
