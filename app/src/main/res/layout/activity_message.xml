@@ -37,7 +37,7 @@
         android:id="@+id/list_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white" />
+        android:background="#E3E3E3" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -45,14 +45,6 @@
 
         android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#000"
-            android:id="@+id/name"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:text="Name of Person"/>
 
         <LinearLayout
             android:id="@+id/bottom_write_bar"
@@ -135,6 +127,8 @@
         </LinearLayout>
 
 
+
+
         <com.github.ksoichiro.android.observablescrollview.ObservableListView
             android:id="@+id/list"
             android:layout_width="match_parent"
@@ -144,6 +138,14 @@
             android:cacheColorHint="#00000000"
             android:divider="#00000000"
             android:listSelector="#00000000"/>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </RelativeLayout>
     <LinearLayout
@@ -162,7 +164,7 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:minHeight="?attr/actionBarSize"
-            android:textColor="@android:color/white"
+            android:textColor="#E3E3E3"
             android:textSize="20sp" />
 
         <View
