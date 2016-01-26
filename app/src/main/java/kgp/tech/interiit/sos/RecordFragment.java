@@ -6,24 +6,24 @@ package kgp.tech.interiit.sos;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.view.LayoutInflater;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.content.Context;
 import android.util.Log;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer;
 
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import kgp.tech.interiit.sos.Utils.Utils;
@@ -102,11 +102,51 @@ public class RecordFragment extends Activity
         mFileName += "/audiorecordtest.3gp";
     }
 
+//    public ParseObject uploadToParse(File audioFile, ParseObject po, String columnName){
+        private final ParseObject uploadAudioToParse(String message, File audioFile, ParseObject po, String columnName){
+
+            if(audioFile != null){
+                Log.d("EB", "audioFile is not NULL: " + audioFile.toString());
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                BufferedInputStream in = null;
+                try {
+                    in = new BufferedInputStream(new FileInputStream(audioFile));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                int read;
+                byte[] buff = new byte[1024];
+                try {
+                    while ((read = in.read(buff)) > 0)
+                    {
+                        out.write(buff, 0, read);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    out.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                byte[] audioBytes = out.toByteArray();
+
+                // Create the ParseFile
+                ParseFile file = new ParseFile(audioFile.getName() , audioBytes);
+                po.put(columnName, file);
+                po.put("Message", message);
+
+                // Upload the file into Parse Cloud
+                file.saveInBackground();
+                po.saveInBackground();
+            }
+            return po;
+    }
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        setContentView(R.layout.fragment_record);
+        setContentView(R.layout.activity_record);
 
         mRecordButton = (Button) findViewById(R.id.record);
         mRecordButton.setText("Start recording");
@@ -161,11 +201,15 @@ public class RecordFragment extends Activity
                     return;
                 }
                 ParseObject parseObject = new ParseObject("SOS");
-                parseObject.put("Description", message);
-                ParseFile audio = new ParseFile();
+                File audioFile = new File(mFileName);
+                ParseObject audio = uploadAudioToParse(message, audioFile, parseObject,"audio");
+//                parseObject.put("objectName", "Sos AUdio");
 
-                parseObject.put("audio",audio);
-                parseObject.saveInBackground();
+//                parseObject.put("audio",audio);
+
+//                ParseFile audio = new ParseFile();
+                Log.d("audioUpload", message);
+//                parseObject.saveInBackground();
                 startActivity(new Intent(RecordFragment.this, AnimatedButtons.class));
                 finish();
             }
