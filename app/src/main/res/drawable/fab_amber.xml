@@ -96,28 +96,27 @@
         </layer-list>
     </item>
 
-    <item >
 
-        <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-            android:color="?android:colorControlHighlight"
-            tools:targetApi="lollipop">
-            <item android:id="@android:id/mask"
-                tools:targetApi="lollipop">
-                <shape android:shape="oval">
-                    <solid android:color="#FFBB00" />
-                </shape>
-            </item>
-            <item>
-                <shape android:shape="oval">
+        <!--<ripple xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--android:color="?android:colorControlHighlight"-->
+            <!--tools:targetApi="lollipop">-->
+            <!--<item android:id="@android:id/mask"-->
+                <!--tools:targetApi="lollipop">-->
+                <!--<shape android:shape="oval">-->
+                    <!--<solid android:color="#FFBB00" />-->
+                <!--</shape>-->
+            <!--</item>-->
 
-                    <solid android:color="@color/orange" />
+        <!--</ripple>-->
+        <item>
+            <shape android:shape="oval">
+
+                <solid android:color="@color/orange" />
 
 
-                </shape>
-            </item>
-        </ripple>
+            </shape>
+        </item>
 
-    </item>
 
 
 </layer-list>

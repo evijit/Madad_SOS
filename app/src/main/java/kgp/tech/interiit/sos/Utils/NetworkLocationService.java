@@ -90,16 +90,44 @@ public class NetworkLocationService extends Service implements LocationListener 
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-        Log.e("In AppLocation", Float.toString(location.getAccuracy()));
-
-        MyMapFragment maps = new MyMapFragment();
+    public void onLocationChanged(final Location location) {
+        final MyMapFragment maps = new MyMapFragment();
         if(maps.mMap!=null) {
             maps.mMap.clear();
             ////// Adding Markers for helpers
             Vector<MarkerOptions> markers = maps.getMarkers();
             for (int i = 0; i < markers.size(); i++)
                 maps.mMap.addMarker(markers.get(i));
+
+            if(maps.isAddHospital) { // 's' is for hospital
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        maps.addCustomMarkers(location.getLatitude(), location.getLongitude(),'s');
+                    }
+                });
+                thread.run();
+            }
+
+            if(maps.isAddPolice) { // 'l' is for police
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        maps.addCustomMarkers(location.getLatitude(), location.getLongitude(),'l');
+                    }
+                });
+                thread.run();
+            }
+            if(maps.isAddPharmacy)
+            {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        maps.addCustomMarkers(location.getLatitude(), location.getLongitude(),'a');
+                    }
+                });
+                thread.run();
+            }
 
             if (maps.isAnimateCamera) {
                 maps.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(

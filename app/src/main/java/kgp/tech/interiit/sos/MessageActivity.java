@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +76,12 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
+        toolbar=(Toolbar)findViewById(R.id.toolbar);
+        if(toolbar!=null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
         channelID = getIntent().getStringExtra("channelID");
 
 //        ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS");
@@ -123,9 +128,9 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         paddingView.setClickable(true);
 
         listView.addHeaderView(paddingView);
-        //setDummyData(listView);
+        //setDummyData(listView);le
         mTitleView = (TextView) findViewById(R.id.title);
-        mTitleView.setText(getTitle());
+        mTitleView.setText(j);
         setTitle(null);
         mFab = findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +149,16 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         recieveMessage(channelID);
     }
 
+//    @Override
+//    protected int getLayoutResId() {
+//        return 0;
+//    }
+//
+//    @Override
+//    protected ObservableListView createScrollable() {
+//        return null;
+//    }
+
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
         // Translate overlay and image
@@ -157,6 +172,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 
         // Change alpha of overlay
         ViewHelper.setAlpha(mOverlayView, ScrollUtils.getFloat((float) scrollY / flexibleRange, 0, 1));
+        //ViewHelper.setAlpha(toolbar, ScrollUtils.getFloat((float) scrollY / flexibleRange, 1, 0));
 
         // Scale title text
         float scale = 1 + ScrollUtils.getFloat((flexibleRange - scrollY) / flexibleRange, 0, MAX_TEXT_SCALE_DELTA);
@@ -188,11 +204,13 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
             ViewHelper.setTranslationY(mFab, fabTranslationY);
         }
 
-        // Show/hide FAB
+        // Show FAB
         if (fabTranslationY < mFlexibleSpaceShowFabOffset) {
             hideFab();
         } else {
             showFab();
+            //toolbar.setVisibility(View.INVISIBLE);
+
         }
     }
 
@@ -200,8 +218,15 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     public void onDownMotionEvent() {
     }
 
-    @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        if (scrollState == ScrollState.UP) {
+            // TODO show or hide the ActionBar
+            toolbar.setVisibility(View.VISIBLE);
+        } else if (scrollState == ScrollState.DOWN) {
+            // TODO show or hide the ActionBar
+            toolbar.setVisibility(View.INVISIBLE);
+
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -219,7 +244,12 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         if (!mFabIsShown) {
             ViewPropertyAnimator.animate(mFab).cancel();
             ViewPropertyAnimator.animate(mFab).scaleX(1).scaleY(1).setDuration(200).start();
+           // toolbar.setVisibility(View.INVISIBLE);
             mFabIsShown = true;
+            mTitleView.setVisibility(View.VISIBLE);
+            getSupportActionBar().setTitle(new SpannableString(""));
+
+
         }
     }
 
@@ -227,6 +257,9 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         if (mFabIsShown) {
             ViewPropertyAnimator.animate(mFab).cancel();
             ViewPropertyAnimator.animate(mFab).scaleX(0).scaleY(0).setDuration(200).start();
+            //toolbar.setVisibility(View.VISIBLE);
+            mTitleView.setVisibility(View.INVISIBLE);
+            getSupportActionBar().setTitle(new SpannableString(sender));
             mFabIsShown = false;
         }
     }
@@ -298,5 +331,11 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
                 break;
 
         }
+    }
+
+    void setcolor(int colres)//use setcolor R.color.red for Self SOS
+    {
+        mOverlayView.setBackgroundColor(getResources().getColor(colres));
+        toolbar.setBackgroundColor(getResources().getColor(colres));
     }
 }

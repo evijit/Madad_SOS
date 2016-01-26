@@ -42,7 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         int indexOfAttrTextSize = 0;
         TypedArray a = obtainStyledAttributes(typedValue.data, textSizeAttr);
         int actionBarSize = a.getDimensionPixelSize(indexOfAttrTextSize, -1);
-        a.recycle();
+        //a.recycle();
         return actionBarSize;
     }
 
