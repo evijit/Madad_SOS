@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -38,7 +39,13 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+        final IntentFilter theFilter = new IntentFilter();
+        /** System Defined Broadcast */
+        theFilter.addAction(Intent.ACTION_SCREEN_ON);
+        theFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        theFilter.addAction(Intent.ACTION_MEDIA_BUTTON);
 
+        getApplicationContext().registerReceiver(new MyReceiver(), theFilter);
         setContentView(R.layout.activity_welcome);
 
         if (ParseUser.getCurrentUser() != null) {

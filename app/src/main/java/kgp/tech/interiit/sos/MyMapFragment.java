@@ -70,8 +70,8 @@ public class MyMapFragment extends Fragment implements LocationListener{
     public static boolean isAnimateCamera = true;
     public NetworkLocationService appLocationServiceNet = null;
     public static boolean isAddHospital = true;
-    public static boolean isAddPolice = true;
-    public static boolean isAddPharmacy = true;
+    public static boolean isAddPolice = false;
+    public static boolean isAddPharmacy = false;
 
 
     private ExpandableMenuOverlay menuOverlay;
