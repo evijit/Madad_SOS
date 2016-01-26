@@ -98,7 +98,7 @@
     </string-array>
 
     <string name="pref_share_title">Always Share</string>
-    <string name="pref_share_summary">Your current location will be shared with your tursted contacts</string>
+    <string name="pref_share_summary">Your current location will be shared with your trusted contacts</string>
 
     <string name="pref_commode_title">Permissions</string>
 

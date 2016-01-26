@@ -106,6 +106,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
             System.out.println(e.toString());
         }
 
+
+
         Intent iin= getIntent();
         Bundle b = iin.getExtras();
 
@@ -385,5 +387,11 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
                 break;
 
         }
+    }
+
+    void setcolor(int colres)//use setcolor R.color.red for Self SOS
+    {
+        mOverlayView.setBackgroundColor(getResources().getColor(colres));
+        toolbar.setBackgroundColor(getResources().getColor(colres));
     }
 }

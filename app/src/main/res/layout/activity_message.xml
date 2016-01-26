@@ -16,16 +16,56 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:fab="http://schemas.android.com/tools"
+    android:background="@color/primary_dark"
     android:layout_height="match_parent">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/flexible_space_image_height"
+        android:layout_width="100dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_height="100dp"
         android:scaleType="centerCrop"
         android:src="@drawable/sample_man" />
 
+    <TextView
+        android:id="@+id/desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="40dp"
+        android:text="Add SOS description here"
+        android:minHeight="?attr/actionBarSize"
+        android:textColor="#fff"
+        android:textSize="14sp" />
 
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="70dp"
+        android:text="SOS activated on 3rd Jan at 5:40pm"
+        android:minHeight="?attr/actionBarSize"
+        android:textColor="#fff"
+        android:textSize="14sp" />
+    
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="120dp"
+        android:background="@null"
+        android:src="@drawable/ic_volume_up_white_24dp"/>
+
+    <!--<ImageButton-->
+        <!--android:layout_width="20dp"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:layout_marginLeft="190dp"-->
+        <!--android:src="@drawable/ic_loc"/>-->
 
     <View
         android:id="@+id/overlay"
@@ -96,16 +136,6 @@
                             android:inputType="textMultiLine"
                             android:scrollHorizontally="false"/>
 
-
-                        <!--<ImageButton-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:src="@drawable/ic_send"-->
-                        <!-- -->
-                        <!--android:onClick="sendMessage"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--></ImageButton>-->
-
-
                     </LinearLayout>
                 </LinearLayout>
 
@@ -145,6 +175,7 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </RelativeLayout>
@@ -164,8 +195,9 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:minHeight="?attr/actionBarSize"
-            android:textColor="#E3E3E3"
-            android:textSize="20sp" />
+            android:textColor="#fff"
+            android:textSize="22sp" />
+
 
         <View
             android:layout_width="match_parent"
@@ -175,6 +207,8 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
+        app:backgroundTint="#fff"
+        android:src="@drawable/ic_loc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="center"
