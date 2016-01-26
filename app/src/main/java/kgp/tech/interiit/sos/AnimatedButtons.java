@@ -103,6 +103,44 @@ public class AnimatedButtons extends AppCompatActivity {
         finish();
     }
 
+    public void enable_hospitals(View v)
+    {
+        MyMapFragment map_fragment = new MyMapFragment();
+        map_fragment.isAddHospital = !(map_fragment.isAddHospital);
+        if(map_fragment.isAddHospital)
+            Toast.makeText(this, "Nearby Hospitals Marked", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this, "Nearby Hospitals Un-Marked", Toast.LENGTH_LONG).show();
+        map_fragment = null;
+        System.gc();
+        finish();
+    }
+
+    public void enable_police(View v)
+    {
+        MyMapFragment map_fragment = new MyMapFragment();
+        map_fragment.isAddPolice= !(map_fragment.isAddPolice);
+        if(map_fragment.isAddPolice)
+            Toast.makeText(this, "Nearby Police Stations Marked", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this, "Nearby Police Staions Un-Marked", Toast.LENGTH_LONG).show();
+        map_fragment = null;
+        System.gc();
+        finish();
+    }
+
+    public void enable_pharmacy(View v)
+    {
+        MyMapFragment map_fragment = new MyMapFragment();
+        map_fragment.isAddPharmacy = !(map_fragment.isAddPharmacy);
+        if(map_fragment.isAddPharmacy)
+            Toast.makeText(this, "Nearby Pharmacies Marked", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this, "Nearby Pharmacies Un-Marked", Toast.LENGTH_LONG).show();
+        map_fragment = null;
+        System.gc();
+        finish();
+    }
     @Override
     protected void onPause() {
         exitToBottomAnimation();

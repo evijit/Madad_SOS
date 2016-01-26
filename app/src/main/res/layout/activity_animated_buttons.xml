@@ -21,9 +21,9 @@
             android:layout_height="70dp"
             android:id="@+id/fab3"
             android:visibility="invisible"
-            android:src="@drawable/mr_ic_audio_vol"
+            android:src="@drawable/police_place"
             android:background="@drawable/fab_green"
-            android:onClick="fakecall"
+            android:onClick="enable_police"
             android:layout_centerInParent="true"
             />
 
@@ -33,9 +33,9 @@
             android:layout_height="70dp"
             android:visibility="invisible"
             android:id="@+id/fab4"
-            android:src="@drawable/mr_ic_audio_vol"
+            android:src="@drawable/hospital_place"
             android:background="@drawable/fab_amber"
-            android:onClick="fakecall"
+            android:onClick="enable_hospitals"
             android:layout_centerInParent="true"
             />
 
@@ -45,9 +45,9 @@
             android:layout_height="70dp"
             android:visibility="invisible"
             android:id="@+id/fab5"
-            android:src="@drawable/mr_ic_audio_vol"
+            android:src="@drawable/pharmacy_place"
             android:background="@drawable/fab_purple"
-            android:onClick="fakecall"
+            android:onClick="enable_pharmacy"
             android:layout_centerInParent="true"
             />
 
