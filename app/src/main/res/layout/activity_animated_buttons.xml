@@ -35,7 +35,7 @@
             android:id="@+id/fab4"
             android:src="@drawable/mr_ic_audio_vol"
             android:background="@drawable/fab_amber"
-            android:onClick="fakecall"
+            android:onClick="recordAudio"
             android:layout_centerInParent="true"
             />
 

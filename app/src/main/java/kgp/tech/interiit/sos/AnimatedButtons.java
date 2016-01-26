@@ -71,6 +71,12 @@ public class AnimatedButtons extends AppCompatActivity {
         overridePendingTransition(R.anim.activity_no_animation, R.anim.activity_close_translate_to_bottom);
     }
 
+    public void recordAudio(View v) {
+        Intent intent = new Intent(this, RecordFragment.class);
+        startActivity(intent);
+        finish();
+
+    }
 
     public void fakecall(View v)
     {
