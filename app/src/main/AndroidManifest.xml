@@ -152,7 +152,7 @@
             android:showOnLockScreen="true" />
         <activity android:name=".FakeCallOngoing" />
         <activity
-            android:name=".RecordFragment"
+            android:name=".AddSOSDetailActivity"
             android:label="Audio Test"
             android:theme="@style/Theme.UserDialog">
             >

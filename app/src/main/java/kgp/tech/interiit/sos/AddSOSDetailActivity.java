@@ -29,7 +29,7 @@ import java.io.IOException;
 import kgp.tech.interiit.sos.Utils.Utils;
 
 
-public class RecordFragment extends Activity
+public class AddSOSDetailActivity extends Activity
 {
     private static final String LOG_TAG = "AudioRecordTest";
     private static String mFileName = null;
@@ -97,7 +97,7 @@ public class RecordFragment extends Activity
         mRecorder = null;
     }
 
-    public RecordFragment() {
+    public AddSOSDetailActivity() {
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
         mFileName += "/audiorecordtest.3gp";
     }
@@ -134,7 +134,7 @@ public class RecordFragment extends Activity
                 // Create the ParseFile
                 ParseFile file = new ParseFile(audioFile.getName() , audioBytes);
                 po.put(columnName, file);
-                po.put("Message", message);
+                po.put("Description", message);
 
                 // Upload the file into Parse Cloud
                 file.saveInBackground();
@@ -186,7 +186,7 @@ public class RecordFragment extends Activity
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RecordFragment.this, AnimatedButtons.class));
+                startSOS();
                 finish();
             }
 
@@ -197,7 +197,7 @@ public class RecordFragment extends Activity
             public void onClick(View v) {
                 String message = mTextBox.getText().toString();
                 if (message.length() == 0) {
-                    Utils.showDialog(RecordFragment.this, getString(R.string.err_fields_empty));
+                    Utils.showDialog(AddSOSDetailActivity.this, getString(R.string.err_fields_empty));
                     return;
                 }
                 ParseObject parseObject = new ParseObject("SOS");
@@ -210,11 +210,20 @@ public class RecordFragment extends Activity
 //                ParseFile audio = new ParseFile();
                 Log.d("audioUpload", message);
 //                parseObject.saveInBackground();
-                startActivity(new Intent(RecordFragment.this, AnimatedButtons.class));
+
+                startSOS();
                 finish();
             }
 
         });
+    }
+
+    void startSOS()
+    {
+        Intent intent = new Intent(AddSOSDetailActivity.this, MessageActivity.class);
+        intent.putExtra("channelID",getIntent().getStringExtra("channelID"));
+        intent.putExtra("mysos", true);
+        startActivity(intent);
     }
 
     @Override

@@ -3,7 +3,6 @@ package kgp.tech.interiit.sos;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -75,11 +74,17 @@ public class AnimatedButtons extends AppCompatActivity {
 
     public void action_sos(View v)
     {
-        comm.sendSOS();
+        String channelID = comm.sendSOS();
+
+        Intent intent = new Intent(this, AddSOSDetailActivity.class);
+        intent.putExtra("channelID",channelID);
+        intent.putExtra("mysos",true);
+        startActivity(intent);
+        finish();
     }
 
     public void recordAudio(View v) {
-        Intent intent = new Intent(this, RecordFragment.class);
+        Intent intent = new Intent(this, AddSOSDetailActivity.class);
         startActivity(intent);
         finish();
 

@@ -28,7 +28,7 @@ import kgp.tech.interiit.sos.MessageActivity;
  */
 public class comm {
 
-    public static void sendSOS() {
+    public static String sendSOS() {
             /* Publish a simple message to the demo_tutorial channel */
         final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
         pubnub.setUUID(ParseUser.getCurrentUser().toString());
@@ -67,9 +67,11 @@ public class comm {
                         System.out.println(e.toString());
                 }
             });
+            return channelName;
 
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 
