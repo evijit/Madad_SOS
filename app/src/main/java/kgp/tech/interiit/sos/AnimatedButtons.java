@@ -80,17 +80,17 @@ public class AnimatedButtons extends AppCompatActivity {
 
 //        if (mTimer.getText().toString().trim().equalsIgnoreCase("5 sec")) {
             int i = 5;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (i * 1000), pendingIntent);
-        }
-        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-        {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (i * 1000), pendingIntent);
-        }
-        else
-        {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (i * 1000), pendingIntent);
+//        }
+//        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+//        {
+//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (i * 1000), pendingIntent);
+//        }
+//        else
+//        {
             alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (i * 1000), pendingIntent);
-        }
+        //}
 
         Toast.makeText(this, "Fake call scheduled after " + i + " sec", Toast.LENGTH_LONG).show();
 //        }

@@ -7,4 +7,17 @@
         <item>@drawable/ic_item_decline</item>
         <item>@null</item>
     </array>
+
+    <array name="snooze_dismiss_descriptions">
+        <item>accept</item>
+        <item>@null</item>
+        <item>decline</item>
+        <item>@null</item>
+    </array>
+    <array name="snooze_dismiss_direction_descriptions">
+        <item>right</item>
+        <item>@null</item>
+        <item>left</item>
+        <item>@null</item>
+    </array>
 </resources>

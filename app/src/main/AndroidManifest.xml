@@ -144,14 +144,23 @@
         <activity android:name=".AnimatedButtons" />
         <activity
             android:name=".FakeCall"
-            android:showOnLockScreen="true"></activity>
+            android:showOnLockScreen="true" />
         <activity android:name=".FakeCallOngoing" />
-        <activity android:name=".RecordFragment"
+        <activity
+            android:name=".RecordFragment"
             android:label="Audio Test"
-            android:theme="@style/Theme.UserDialog" >
-        >
+            android:theme="@style/Theme.UserDialog">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Scrolltest">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
