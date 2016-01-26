@@ -21,6 +21,7 @@ import com.github.fabtransitionactivity.SheetLayout;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -37,15 +38,25 @@ import com.pubnub.api.Pubnub;
 import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import kgp.tech.interiit.sos.Utils.NetworkLocationService;
 import kgp.tech.interiit.sos.Utils.People;
+import kgp.tech.interiit.sos.Utils.Places;
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu;
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay;
 
@@ -54,9 +65,13 @@ public class MyMapFragment extends Fragment implements LocationListener{
 
     public static MapView mMapView; // Might be null if Google Play services APK is not available.
     public static GoogleMap mMap; // Might be null if Google Play services APK is not available.
-
+    public static Location pre_hospital_point = null;
+    final static Vector<Places> customPlaces = new Vector<Places>(10); // like People it too has a name
     public static boolean isAnimateCamera = true;
     public NetworkLocationService appLocationServiceNet = null;
+    public static boolean isAddHospital = true;
+    public static boolean isAddPolice = true;
+    public static boolean isAddPharmacy = true;
 
 
     private ExpandableMenuOverlay menuOverlay;
@@ -82,6 +97,96 @@ public class MyMapFragment extends Fragment implements LocationListener{
         }
         return markers;
     }
+
+    public void addCustomMarkers(final double lat,final double lng, final char type)
+    {
+        final BitmapDescriptor bitmap ;
+        if(type=='l') {
+            bitmap = BitmapDescriptorFactory.fromResource(R.drawable.police_marker);
+        }
+        else if(type=='s') {
+            bitmap = BitmapDescriptorFactory.fromResource(R.drawable.hospital_marker);
+        }
+        else if(type == 'a') {
+            bitmap = BitmapDescriptorFactory.fromResource(R.drawable.pharmacy_marker);
+        }
+        else{
+            bitmap = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
+        }
+        boolean was_null = false;
+        if(pre_hospital_point == null) {
+            was_null =true;
+            pre_hospital_point = new Location("loc");
+            pre_hospital_point.setLongitude(lng);
+            pre_hospital_point.setLatitude(lat);
+        }
+        Location l = new Location("loc");
+        l.setLatitude(lat);
+        l.setLongitude(lng);
+        if(l.distanceTo(pre_hospital_point) >= 1000 || was_null == true)
+        {
+            pre_hospital_point = l;
+            customPlaces.clear();
+            Thread thread = new Thread(new Runnable() {
+
+
+                @Override
+                public void run() {
+                    try {
+                        String key = "AIzaSyCTDMaJIhXDmGiz7dlJcmghD2LoVgKkTpI";
+                        String url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + lat + "," + lng + "&rankby=distance&types=hospital|police|pharmacy&key=" + key;
+                        String data = getJSON(url, 3000);
+                        try {
+                            JSONObject jsonRootObject = new JSONObject(data);
+
+                            //Get the instance of JSONArray that contains JSONObjects
+                            JSONArray jsonArray = jsonRootObject.getJSONArray("results");
+
+                            //Iterate the jsonArray and print the info of JSONObjects
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                                Double lat = Double.parseDouble(jsonObject.getJSONObject("geometry").getJSONObject("location").optString("lat"));
+                                Double lng = Double.parseDouble(jsonObject.getJSONObject("geometry").getJSONObject("location").optString("lng"));
+                                String name = jsonObject.optString("name").toString();
+
+                                String types = jsonObject.getString("types");
+                                customPlaces.addElement(new Places(name, lat, lng, types.charAt(4)));
+                                if(types.charAt(4)== type ) {
+                                    MarkerOptions mp = new MarkerOptions();
+                                    mp.title(customPlaces.get(i).getName());
+                                    mp.position(customPlaces.get(i).getLat_lng());
+                                    mp.icon(bitmap);
+                                    mMap.addMarker(mp);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //Your code goes here
+                    } catch (Exception e) {
+                        pre_hospital_point = null;
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.run();
+        }
+        else
+        {
+            for (int i = 0; i < customPlaces.size(); i++) {
+                char type_from_places = customPlaces.get(i).getType();
+                if(type_from_places== type ) {
+                    MarkerOptions mp = new MarkerOptions();
+                    mp.title(customPlaces.get(i).getName());
+                    mp.position(customPlaces.get(i).getLat_lng());
+                    mp.icon(bitmap);
+                    mMap.addMarker(mp);
+                }
+            }
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -122,28 +227,22 @@ public class MyMapFragment extends Fragment implements LocationListener{
                 gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
                 lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, appLocationServiceNet);
-                if (gps_enabled)
-                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-                else
-                    showSettingsAlert("GPS");
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
             }
             else
             {
                 gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
                 lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, appLocationServiceNet);
-                if (gps_enabled)
-                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-                else
-                    showSettingsAlert("GPS");
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
             }
         }
         else {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, appLocationServiceNet);
-            if (gps_enabled)
-                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-            else
-                showSettingsAlert("GPS");
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
         }
 
 
@@ -189,6 +288,49 @@ public class MyMapFragment extends Fragment implements LocationListener{
         super.onCreate(savedInstanceState);
 
 
+    }
+
+    public String getJSON(String url, int timeout) {
+        HttpURLConnection c = null;
+        try {
+            URL u = new URL(url);
+            c = (HttpURLConnection) u.openConnection();
+            c.setRequestMethod("GET");
+            c.setRequestProperty("Content-length", "0");
+            c.setUseCaches(false);
+            c.setAllowUserInteraction(false);
+            c.setConnectTimeout(timeout);
+            c.setReadTimeout(timeout);
+            c.connect();
+            int status = c.getResponseCode();
+
+            switch (status) {
+                case 200:
+                case 201:
+                    BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line+"\n");
+                    }
+                    br.close();
+                    return sb.toString();
+            }
+
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (c != null) {
+                try {
+                    c.disconnect();
+                } catch (Exception ex) {
+                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -276,7 +418,7 @@ public class MyMapFragment extends Fragment implements LocationListener{
 
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(final Location location) {
         if(location.getAccuracy() <= appLocationServiceNet.getLocation().getAccuracy())
             return;
         if(mMap!=null) {
@@ -286,6 +428,35 @@ public class MyMapFragment extends Fragment implements LocationListener{
             Vector<MarkerOptions> markers = getMarkers();
             for (int i = 0; i < markers.size(); i++)
                 mMap.addMarker(markers.get(i));
+            if(isAddHospital) { // 's' is for hospital
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addCustomMarkers(location.getLatitude(), location.getLongitude(),'s');
+                    }
+                });
+                thread.run();
+            }
+
+            if(isAddPolice) { // 'l' is for police
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addCustomMarkers(location.getLatitude(), location.getLongitude(),'l');
+                    }
+                });
+                thread.run();
+            }
+            if(isAddPharmacy) // 'a' for pharmacy
+            {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addCustomMarkers(location.getLatitude(), location.getLongitude(),'a');
+                    }
+                });
+                thread.run();
+            }
 
             if (isAnimateCamera) {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
@@ -325,7 +496,7 @@ public class MyMapFragment extends Fragment implements LocationListener{
         super.onLowMemory();
         mMapView.onLowMemory();
     }
-
+/*
     public void showSettingsAlert(String provider) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(
                 getContext());
@@ -354,7 +525,7 @@ public class MyMapFragment extends Fragment implements LocationListener{
         alertDialog.show();
     }
 
-
+*/
 
 
 }
