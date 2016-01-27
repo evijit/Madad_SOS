@@ -8,13 +8,13 @@
 
 
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img"
-            android:src="@drawable/sample_man"
-            android:layout_width="60dip"
-            android:layout_height="60dip"
-            android:layout_gravity="center_horizontal"
-            />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img"
+        android:src="@drawable/sample_man"
+        android:layout_width="60dip"
+        android:layout_height="60dip"
+        android:layout_gravity="center_horizontal"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,7 +23,7 @@
 
         android:textSize="24sp"
         android:textStyle="bold"
-        android:id="@+id/name"
+        android:id="@+id/textView"
         android:layout_gravity="center_horizontal" />
 
 
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:text="Kharagpur"
         android:textSize="20sp"
-        android:id="@+id/phone"
+        android:id="@+id/designation"
         android:layout_gravity="center_horizontal" />
 
     <TextView
@@ -41,43 +41,4 @@
         android:text="8902551989"
         android:id="@+id/email"
         android:layout_gravity="center_horizontal" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/notuserlayout"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/notuser"
-            android:text="@string/notuser"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/rembtn"
-            android:text="@string/remind"
-            android:layout_gravity="center_horizontal"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/callbtn"
-            android:text="@string/call"
-            android:layout_gravity="center_horizontal"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/delbtn"
-            android:text="@string/delete"
-            android:layout_gravity="center_horizontal"
-            />
-    </LinearLayout>
 </LinearLayout>

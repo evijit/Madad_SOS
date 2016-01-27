@@ -1,12 +1,10 @@
 package kgp.tech.interiit.sos;
 
-import android.app.LoaderManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.LinearGradient;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
@@ -15,21 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -37,7 +32,6 @@ import com.parse.ParseUser;
 
 import java.util.List;
 
-import bolts.Task;
 import kgp.tech.interiit.sos.Utils.Utils;
 
 public class TrustedActivity extends AppCompatActivity {
@@ -213,7 +207,7 @@ class ContactAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.contact_card, parent, false);
+        View v = inflater.inflate(R.layout.trusted_contact_item, parent, false);
 
         TextView name = (TextView) v.findViewById(R.id.name);
         name.setText(contactList.get(position).getString("Name"));
@@ -233,7 +227,7 @@ class ContactAdapter extends BaseAdapter {
         TextView notuser = (TextView) v.findViewById(R.id.notuser);
         notuser.setText(contactList.get(position).getString("Name") + " " + context.getString(R.string.notuser));
 
-        Button remindBtn = (Button) v.findViewById(R.id.rembtn);
+        ImageButton remindBtn = (ImageButton) v.findViewById(R.id.rembtn);
         remindBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -249,7 +243,7 @@ class ContactAdapter extends BaseAdapter {
         });
 
 
-        Button callBtn = (Button) v.findViewById(R.id.callbtn);
+        ImageButton callBtn = (ImageButton) v.findViewById(R.id.callbtn);
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -269,7 +263,7 @@ class ContactAdapter extends BaseAdapter {
             }
         });
 
-        Button delBtn = (Button) v.findViewById(R.id.delbtn);
+        ImageButton delBtn = (ImageButton) v.findViewById(R.id.delbtn);
         delBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
