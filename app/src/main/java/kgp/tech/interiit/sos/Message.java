@@ -50,6 +50,9 @@ public class Message {
     public String getMessage() {
         return message;
     }
+    public String getUserame() {
+        return username;
+    }
     public void setMessage(String message) {
         this.message = message;
     }

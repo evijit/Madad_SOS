@@ -52,19 +52,12 @@ public class Helper {
         return directory.getAbsolutePath();
     }
 
-    private static void loadImageFromStorage(String path, String userName, ImageView v)
-    {
+    private static void loadImageFromStorage(String path, String userName, ImageView v) throws FileNotFoundException {
 
-        try {
-            File f=new File(path, userName + ".jpg");
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+        File f=new File(path, userName + ".jpg");
+        Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
 //            ImageView img=(ImageView)findViewById(R.id.imgPicker);
-            v.setImageBitmap(b);
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
+        v.setImageBitmap(b);
 
     }
 
