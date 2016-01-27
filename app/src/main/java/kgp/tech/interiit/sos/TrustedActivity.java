@@ -61,6 +61,8 @@ public class TrustedActivity extends AppCompatActivity {
         final ListView tcList = (ListView) findViewById(R.id.trusted);
         final ListView rcList = (ListView) findViewById(R.id.requested);
 
+        tcList.setEmptyView(findViewById(R.id.emptyviewtxt));
+
         ParseQuery<ParseObject> tquery = ParseQuery.getQuery("Trusted");
         tquery.whereEqualTo("UserId", ParseUser.getCurrentUser());
         //tquery.whereEqualTo("accepted", Boolean.TRUE);
@@ -141,10 +143,19 @@ public class TrustedActivity extends AppCompatActivity {
         }
     }
 
+    public void addTrusted(View v)
+    {
+        Intent i = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            i = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+        }
+        startActivityForResult(i, PICK_CONTACT);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_trusted, menu);
+       // getMenuInflater().inflate(R.menu.menu_trusted, menu);
         return true;
     }
 

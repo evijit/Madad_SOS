@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/home/sayan/Documents/StudioProjects/SOS_InterIIT/circleLayout/src/main/assets"/></dataSet><dataSet config="release"><source path="/home/sayan/Documents/StudioProjects/SOS_InterIIT/circleLayout/src/release/assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/media/avijit/User/AndroidStudio/SOS/circleLayout/src/main/assets"/></dataSet><dataSet config="release"><source path="/media/avijit/User/AndroidStudio/SOS/circleLayout/src/release/assets"/></dataSet></merger>

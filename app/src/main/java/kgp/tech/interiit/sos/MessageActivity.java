@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,7 +55,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     private View mImageView;
     private View mOverlayView;
     private View mListBackgroundView;
-    private TextView mTitleView;
+    private RelativeLayout mTitleView;
     private View mFab;
     private int mActionBarSize;
     private int mFlexibleSpaceShowFabOffset;
@@ -72,6 +74,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 
     String channelID;
     String sos_creater;
+    private TextView mTitlehead;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,8 +129,10 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 
         listView.addHeaderView(paddingView);
         //setDummyData(listView);le
-        mTitleView = (TextView) findViewById(R.id.title);
-        mTitleView.setText(j);
+        mTitlehead = (TextView) findViewById(R.id.titlehead);
+        mTitleView = (RelativeLayout) findViewById(R.id.title);
+
+        mTitlehead.setText(j);
         setTitle(null);
         mFab = findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
