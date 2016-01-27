@@ -29,6 +29,7 @@ import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -70,6 +71,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     ArrayList<Message> messages;
     AwesomeAdapter adapter;
     EditText text;
+    TextView desc;
     static Random rand = new Random();
     static String sender;
     private Toolbar toolbar;
@@ -77,7 +79,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     private ObservableListView listView;
 
     String channelID;
-    String sos_creater;
+    String sos_creater = "";
     private TextView mTitlehead;
 
     @Override
@@ -91,22 +93,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
-        channelID = getIntent().getStringExtra("channelID");
 
-        ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS");
-        pq.include("UserID");
-        pq.fromLocalDatastore();
-        ParseObject sos=null;
-        pq.whereEqualTo("channelID", channelID);
-        try {
-            sos = pq.getFirst();
-            sos_creater = sos.getParseUser("UserID").getUsername();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        String j = sos_creater;
-        sender=j;
         listView = (ObservableListView) findViewById(R.id.list);
         //text = (EditText) this.findViewById(R.id.text);
         messages = new ArrayList<Message>();
@@ -137,7 +124,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         mTitlehead = (TextView) findViewById(R.id.titlehead);
         mTitleView = (RelativeLayout) findViewById(R.id.title);
 
-        mTitlehead.setText(j);
+
         setTitle(null);
         mFab = findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
@@ -154,18 +141,22 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         mListBackgroundView = findViewById(R.id.list_background);
 
         text = (EditText)findViewById(R.id.text);
-        TextView desc = (TextView)findViewById(R.id.desc);
+        desc = (TextView)findViewById(R.id.desc);
 
-
-        try{
-            Helper.GetProfilePic(sos.getParseUser("UserID"),mImageView,this);
-            desc.setText(sos.getString("Description"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //setting data
+        Log.d("Message",getIntent().getStringExtra("username"));
+        channelID = getIntent().getStringExtra("channelID");
+        sos_creater = getIntent().getStringExtra("username");
+        ParseUser user = new ParseUser();
+        user.setUsername(sos_creater);
+        Helper.GetProfilePic(user, mImageView, MessageActivity.this);
+        desc.setText(getIntent().getStringExtra("Description"));
+        mTitlehead.setText(sos_creater);
+        sender = sos_creater;
 
         history(channelID);
         recieveMessage(channelID);
+
     }
 
 //    @Override
