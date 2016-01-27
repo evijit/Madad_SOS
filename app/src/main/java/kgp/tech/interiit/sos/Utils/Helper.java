@@ -1,6 +1,7 @@
 package kgp.tech.interiit.sos.Utils;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -17,6 +18,11 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -25,6 +31,42 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Helper {
     private static  LruCache<String, Bitmap> mMemoryCache;
 
+    private static String saveToInternalStorage(Bitmap bitmapImage, String userName, Context context){
+//        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+
+        File directory = context.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath = new File(directory,userName + ".jpg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return directory.getAbsolutePath();
+    }
+
+    private static void loadImageFromStorage(String path, String userName, ImageView v)
+    {
+
+        try {
+            File f=new File(path, userName + ".jpg");
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+//            ImageView img=(ImageView)findViewById(R.id.imgPicker);
+            v.setImageBitmap(b);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+    }
 
     static void init() {
         if(mMemoryCache!=null)
@@ -68,58 +110,44 @@ public class Helper {
             image.setImageBitmap(bmp);
         }
         else {
-            //If not in cache, check local storage or download
-            ParseQuery<ParseObject> pq = new ParseQuery("picture");
-            pq.whereEqualTo("user", user);
-            pq.fromLocalDatastore();
-            pq.getFirstInBackground(new GetCallback<ParseObject>() {
 
-                @Override
-                public void done(ParseObject parseObject, ParseException e) {
-                    if (e == null) {
-                        // Photo available in local storage
+            try {
+                Log.i("Helper", "Local storage " + user.getUsername());
 
-                        // Locate the objectId from the class
-                        Log.i("Helper", "LocalDB Pic " + parseObject.getBytes("picture").length);
-                        Bitmap bmp = BitmapFactory
-                                .decodeByteArray(
-                                        parseObject.getBytes("picture"), 0,
-                                        parseObject.getBytes("picture").length);
-                        addBitmapToMemoryCache(user.getUsername(),bmp);
-                        // Get the ImageView from
-                        // main.xml
-                        ImageView image = (ImageView) v;
-                        // Set the Bitmap into the
-                        // ImageView
-                        image.setImageBitmap(bmp);
-                    } else {
-                        ParseFile fileObject = user.getParseFile("profilePic");
-                        if (fileObject != null) {
-                            fileObject.getDataInBackground(new GetDataCallback() {
+//                ContextWrapper cw = new ContextWrapper(getApplicationContext());
+                // path to /data/data/yourapp/app_data/imageDir
 
-                                public void done(final byte[] data,
-                                                 ParseException e) {
-                                    if (e == null) {
-                                        Log.i("Helper", "Downloading Pic " + data.length + " " + user.getUsername() + " " + context.toString());
-                                        ParseObject picData = new ParseObject("picture");
-                                        picData.put("user", user);
-                                        picData.put("picture", data);
-                                        picData.pinInBackground();
+                File directory = context.getDir("imageDir", Context.MODE_PRIVATE);
+                loadImageFromStorage(directory.getPath(), user.getUsername(), (ImageView)v);
+            }
+            catch (Exception e){
+                ParseFile fileObject = user.getParseFile("profilePic");
+                if (fileObject != null) {
+                    fileObject.getDataInBackground(new GetDataCallback() {
 
-                                        ImageView image = (ImageView) v;
-                                        Bitmap bmp = BitmapFactory
-                                                .decodeByteArray(
-                                                        data, 0,
-                                                        data.length);
-                                        addBitmapToMemoryCache(user.getUsername(),bmp);
-                                        image.setImageBitmap(bmp);
-                                    }
-                                }
-                            });
+                        public void done(final byte[] data,
+                                         ParseException e) {
+                            if (e == null) {
+                                Log.i("Helper", "Downloading Pic " + data.length + " " + user.getUsername() + " " + context.toString());
+                                ParseObject picData = new ParseObject("picture");
+                                picData.put("user", user);
+                                picData.put("picture", data);
+                                picData.pinInBackground();
+
+                                ImageView image = (ImageView) v;
+                                Bitmap bmp = BitmapFactory
+                                        .decodeByteArray(
+                                                data, 0,
+                                                data.length);
+                                addBitmapToMemoryCache(user.getUsername(), bmp);
+
+                                image.setImageBitmap(bmp);
+                                saveToInternalStorage(bmp, user.getUsername(), context);
+                            }
                         }
-                    }
+                    });
                 }
-            });
+            }
         }
     }
 }

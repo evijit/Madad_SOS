@@ -2,7 +2,7 @@
 <resources>
     <declare-styleable name="AnalogClock"><attr format="dimension" name="jewelRadius"/><attr format="dimension" name="jewelOffset"/><attr format="color" name="jewelColor"/></declare-styleable>
     <declare-styleable name="GlowPadView"><attr name="android:gravity"/><attr format="reference" name="targetDrawables"/><attr format="reference" name="targetDescriptions"/><attr format="reference" name="directionDescriptions"/><attr format="reference" name="handleDrawable"/><attr format="reference" name="outerRingDrawable"/><attr format="reference" name="pointDrawable"/><attr format="dimension" name="inner_Radius"/><attr format="dimension" name="outerRadius"/><attr format="dimension" name="glowRadius"/><attr format="integer" name="vibrationDuration"/><attr format="dimension" name="snapMargin"/><attr format="integer" name="feedbackCount"/><attr format="boolean" name="alwaysTrackFinger"/></declare-styleable>
-    <!-- From: file:/Users/akshaygupta/Documents/Projects/SOS_InterIIT/library/build/intermediates/bundles/debug/res/values/values.xml -->
+    <!-- From: file:/home/best1yash/SOS/SOS_InterIIT/library/build/intermediates/bundles/debug/res/values/values.xml -->
     <eat-comment/>
     <dimen name="glowpadview_glow_radius">75dip</dimen>
     <dimen name="glowpadview_inner_radius">15dip</dimen>
