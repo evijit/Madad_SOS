@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -54,6 +55,7 @@ public class AcceptSOS extends AppCompatActivity {
         ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS_Users");
         pq.whereEqualTo("UserID", ParseUser.getCurrentUser());
         ParseObject sos = new ParseObject("SOS");
+
         sos.setObjectId(SOSId);
         pq.whereEqualTo("SOSid",sos);
         final ProgressDialog dia = ProgressDialog.show(AcceptSOS.this, null, getString(R.string.alert_wait));
@@ -63,9 +65,11 @@ public class AcceptSOS extends AppCompatActivity {
                 if(e!=null)
                 {
                     dia.dismiss();
+                    Log.d("Sos","Lost");
                     e.printStackTrace();
                     return;
                 }
+
                 Log.d("AcceptedSOS","ID "+parseObject.getObjectId());
                 parseObject.put("hasAccepted", true);
                 parseObject.saveInBackground(new SaveCallback() {

@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -41,6 +42,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import kgp.tech.interiit.sos.Utils.Helper;
 import kgp.tech.interiit.sos.Utils.Utils;
 
 public class AccountDetails extends AppCompatActivity {
@@ -61,34 +63,6 @@ public class AccountDetails extends AppCompatActivity {
 
         TextView email= (TextView) findViewById(R.id.email);
         email.setText(ParseUser.getCurrentUser().getString("email"));
-
-        ParseQuery<ParseObject> pq = ParseQuery.getQuery("picture");
-        pq.whereEqualTo("user", ParseUser.getCurrentUser());
-        pq.fromLocalDatastore();
-        pq.getFirstInBackground(new GetCallback<ParseObject>() {
-
-            @Override
-            public void done(ParseObject parseObject, ParseException e) {
-                if (e != null) {
-                    e.printStackTrace();
-                    return;
-                }
-                // Locate the objectId from the class
-                Bitmap bmp = BitmapFactory
-                        .decodeByteArray(
-                                parseObject.getBytes("picture"), 0,
-                                parseObject.getBytes("picture").length);
-
-                // Get the ImageView from
-                // main.xml
-                ImageView image = (ImageView) findViewById(R.id.photo);
-
-                // Set the Bitmap into the
-                // ImageView
-                image.setImageBitmap(bmp);
-            }});
-
-
     }
 
     public void photoupload(View v)
@@ -97,6 +71,13 @@ public class AccountDetails extends AppCompatActivity {
         startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
     }
 
+    @Override
+    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onPostCreate(savedInstanceState, persistentState);
+        ImageView image = (ImageView) findViewById(R.id.photo);
+
+        Helper.GetProfilePic(ParseUser.getCurrentUser(), image,this);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

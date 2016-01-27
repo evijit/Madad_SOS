@@ -37,6 +37,7 @@ import com.pubnub.api.PubnubException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
+import kgp.tech.interiit.sos.Utils.Helper;
 import kgp.tech.interiit.sos.Utils.comm;
 
 public class MessageActivity extends BaseActivity implements ObservableScrollViewCallbacks {
@@ -71,7 +73,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     private ObservableListView listView;
 
     String channelID;
-    String sos_creater;
+    String sos_creater = "Anon";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,18 +88,19 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         }
         channelID = getIntent().getStringExtra("channelID");
 
-//        ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS");
-//        pq.fromLocalDatastore();
-//        ParseObject sos=null;
-//        pq.whereEqualTo("channelID", channelID);
-//        try {
-//            sos = pq.getFirst();
-//            sos_creater = sos.getParseObject("User").getString("username");
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+        ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS");
+        pq.include("UserID");
+        pq.fromLocalDatastore();
+        ParseObject sos=null;
+        pq.whereEqualTo("channelID", channelID);
+        try {
+            sos = pq.getFirst();
+            sos_creater = sos.getParseUser("UserID").getUsername();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        String j = "hello";
+        String j = sos_creater;
         sender=j;
         listView = (ObservableListView) findViewById(R.id.list);
         //text = (EditText) this.findViewById(R.id.text);
@@ -111,6 +114,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         mFlexibleSpaceShowFabOffset = getResources().getDimensionPixelSize(R.dimen.flexible_space_show_fab_offset);
         mActionBarSize = getActionBarSize();
         mImageView = findViewById(R.id.image);
+
+
         mOverlayView = findViewById(R.id.overlay);
         //ObservableListView listView = (ObservableListView) findViewById(R.id.list);
         listView.setScrollViewCallbacks(this);
@@ -144,6 +149,15 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         mListBackgroundView = findViewById(R.id.list_background);
 
         text = (EditText)findViewById(R.id.text);
+        TextView desc = (TextView)findViewById(R.id.desc);
+
+
+        try{
+            Helper.GetProfilePic(sos.getParseUser("UserID"),mImageView,this);
+            desc.setText(sos.getString("Description"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         history(channelID);
         recieveMessage(channelID);

@@ -48,6 +48,7 @@ public class comm {
             final String channelName = UUID.randomUUID().toString();
             sos.put("channelID", channelName);
             sos.put("isActive", true);
+            sos.pinInBackground();
 
             sos.saveInBackground(new SaveCallback() {
                 public void done(ParseException e) {

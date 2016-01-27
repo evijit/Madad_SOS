@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Handler;
 
+import kgp.tech.interiit.sos.Utils.Helper;
 import kgp.tech.interiit.sos.Utils.UserData;
 
 
@@ -154,32 +155,9 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
         //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(android.content.Context);
         //Log.d("prefs dist", String.valueOf(sharedPref.getInt(getString(R.string.pref_distance),0)));
 
-        ParseQuery<ParseObject> pq = new ParseQuery("picture");
-        pq.whereEqualTo("user",ParseUser.getCurrentUser());
-        pq.fromLocalDatastore();
-        pq.getFirstInBackground(new GetCallback<ParseObject>() {
-
-            @Override
-            public void done(ParseObject parseObject, ParseException e) {
-                if (e == null) {
-                    // Locate the objectId from the class
-                    Bitmap bmp = BitmapFactory
-                            .decodeByteArray(
-                                    parseObject.getBytes("picture"), 0,
-                                    parseObject.getBytes("picture").length);
-
-                    // Get the ImageView from
-                    // main.xml
-                    ImageView image = (ImageView) findViewById(R.id.avatar);
-
-                    // Set the Bitmap into the
-                    // ImageView
-                    image.setImageBitmap(bmp);
-                }
-            }
-        });
-
         ImageView avatar=(ImageView)findViewById(R.id.avatar);
+        Log.d("home","wow");
+        Helper.GetProfilePic(ParseUser.getCurrentUser(),avatar,this);
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

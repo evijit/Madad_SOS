@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -14,12 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -32,6 +38,7 @@ import java.util.List;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import kgp.tech.interiit.sos.Utils.Helper;
 
 public class ChatlistFragment extends Fragment {
 
@@ -112,21 +119,20 @@ public class ChatlistFragment extends Fragment {
         pq.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                if(e!=null)
-                {
+                if (e != null) {
                     e.printStackTrace();
                     return;
                 }
                 //Log.d("Chatlist", String.valueOf(list.size()));
                 //Log.d("Chatlist", list.get(0).keySet().toString());
 
-                for(ParseObject psos : list) {
+                for (ParseObject psos : list) {
                     ParseObject sos = psos.getParseObject("SOSid");
                     sos.pinInBackground();
                     sos_list.add(sos);
                 }
 
-                MyAdapter adapter = new MyAdapter(sos_list,getActivity());
+                MyAdapter adapter = new MyAdapter(sos_list, getActivity());
                 listView.setAdapter(adapter);
             }
         });
@@ -185,30 +191,30 @@ class MyAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
-        View row=null;
+        LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View row=inflater.inflate(R.layout.list_single, parent, false);
 
-        if(convertView==null)
-        {
-            LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row=inflater.inflate(R.layout.list_single, parent, false);
-        }
-        else
-        {
-            row=convertView;
-        }
         TextView sos_title=(TextView) row.findViewById(R.id.name);
         TextView sos_message=(TextView) row.findViewById(R.id.txt);
         TextView sos_time=(TextView) row.findViewById(R.id.time);
-        CircleImageView iv1=(CircleImageView) row.findViewById(R.id.img);
 
         //Log.d("Chatlist","view "+sos_list.get(position).getClassName());
-        sos_title.setText(sos_list.get(position).getString("channelID"));
-        sos_message.setText(sos_list.get(position).getString("description"));
-        sos_time.setText(sos_list.get(position).getCreatedAt().toString());
-        iv1.setImageResource(R.drawable.sample_man);
+        final ParseUser user = sos_list.get(position).getParseUser("UserID");
+        user.pinInBackground();
 
+        sos_title.setText(user.getUsername());
+        sos_message.setText(sos_list.get(position).getString("Description"));
+        sos_time.setText(sos_list.get(position).getCreatedAt().toString());
+
+        CircleImageView iv1=(CircleImageView) row.findViewById(R.id.img);
+        iv1.setImageResource(R.drawable.sample_man);
+        Log.d("ChatList", "Pos " + position);
+        Helper.GetProfilePic(user, iv1, context);
+        Log.d("ChatList", "wow");
         return row;
     }
+
+
 
 }
 
