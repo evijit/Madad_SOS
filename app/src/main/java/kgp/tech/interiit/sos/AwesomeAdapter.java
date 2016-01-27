@@ -68,7 +68,7 @@ public class AwesomeAdapter extends BaseAdapter {
             //Check whether message is mine to show green background and align to right
             if(message.isMine())
             {
-                holder.message.setBackgroundResource(R.color.primary);
+                holder.message.setBackgroundResource(R.drawable.going_primary);
                 holder.message.setTextColor(Color.parseColor("#ffffff"));
                 lp.gravity = Gravity.RIGHT;
             }
@@ -78,7 +78,7 @@ public class AwesomeAdapter extends BaseAdapter {
 
                 //Drawable d=R.drawable.bubble_your;
                 //Drawable.mutate().setColorFilter( 0xffff0000, Mode.MULTIPLY)
-                holder.message.setBackgroundResource(android.R.color.white);
+                holder.message.setBackgroundResource(R.drawable.coming);
                 holder.message.setTextColor(Color.parseColor("#000000"));
                 lp.gravity = Gravity.LEFT;
             }
