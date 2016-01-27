@@ -69,10 +69,13 @@ public class AcceptSOS extends AppCompatActivity {
                     e.printStackTrace();
                     return;
                 }
-
+                //Log.d("AcceptSOS", parseObject.getACL().toString());
+                ParseObject pop = new ParseObject("SOS_Users");
+                //pop.setObjectId(parseObject.getObjectId());
+                pop.put("hasAccepted", true);
                 Log.d("AcceptedSOS","ID "+parseObject.getObjectId());
                 parseObject.put("hasAccepted", true);
-                parseObject.saveInBackground(new SaveCallback() {
+                parseObject.saveEventually(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if(e!=null)
