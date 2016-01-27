@@ -118,7 +118,7 @@ public class ChatlistFragment extends Fragment {
                     return;
                 }
                 //Log.d("Chatlist", String.valueOf(list.size()));
-                Log.d("Chatlist", list.get(0).keySet().toString());
+                //Log.d("Chatlist", list.get(0).keySet().toString());
 
                 for(ParseObject psos : list) {
                     ParseObject sos = psos.getParseObject("SOSid");

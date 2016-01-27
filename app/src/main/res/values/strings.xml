@@ -8,6 +8,8 @@
     <string name="title_activity_chatlist">Chatlist</string>
     <string name="title_activity_trusted">Trusted Contacts</string>
 
+    <string name="widget_call">Fake Call</string>
+    <string name="widget_sos">SOS</string>
 
     <string-array name="sample_names">
         <item>Kenny Hudson </item>

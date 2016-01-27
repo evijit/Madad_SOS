@@ -1,8 +1,0 @@
-<!-- From: file:/Users/stephen.parish/Dropbox/Android/Runaway/GlowPadView/library/src/main/AndroidManifest.xml --><manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.fima.glowpadview">
-
-    <uses-permission android:name="android.permission.VIBRATE"/>
-
-    <uses-sdk android:minSdkVersion="17" android:targetSdkVersion="19"/>
-
-
-</manifest>

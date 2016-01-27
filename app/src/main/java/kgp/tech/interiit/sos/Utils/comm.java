@@ -28,6 +28,14 @@ import kgp.tech.interiit.sos.MessageActivity;
  */
 public class comm {
 
+    private static comm _instance = null;
+    public static comm getInstance(){
+        if(_instance == null)
+            _instance= new comm();
+        return _instance;
+    }
+    private comm(){} //Making the constructor private, so no 2 object can be created
+
     public static String sendSOS() {
             /* Publish a simple message to the demo_tutorial channel */
         final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
