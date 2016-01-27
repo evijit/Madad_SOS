@@ -14,21 +14,45 @@
         android:background="?attr/colorPrimary"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-    <TextView
+
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/emptyviewtxt"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Trusted List"/>
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="Add your trusted contacts here" />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/trusted"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Requested List"/>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Requested List"/>-->
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/requested"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_perm_identity_white_24dp"
+        android:onClick="addTrusted"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"/>
+    </RelativeLayout>
+
+
 
 </LinearLayout>

@@ -202,6 +202,11 @@ public class NetworkLocationService extends Service implements LocationListener 
         am.set(AlarmManager.RTC_WAKEUP, timeOff9.getTimeInMillis() + 55000, sender);
         ParseGeoPoint pt = new ParseGeoPoint(getLocation().getLatitude(),getLocation().getLongitude());
         ParseUser person = ParseUser.getCurrentUser();
+        if(person==null)
+        {
+            stopSelf();
+            return 0;
+        }
         person.put("Geolocation",pt);
         person.saveInBackground();
         return START_STICKY;

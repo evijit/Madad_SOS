@@ -84,6 +84,9 @@
             android:name=".Signup"
             android:label="@string/title_activity_signup" />
         <activity
+            android:name=".ForgotPass"
+            android:label="@string/forgot_my_pwd" />
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity

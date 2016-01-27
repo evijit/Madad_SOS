@@ -133,8 +133,8 @@ public class MyMapFragment extends Fragment implements LocationListener{
                 @Override
                 public void run() {
                     try {
-                        //String key = "AIzaSyCTDMaJIhXDmGiz7dlJcmghD2LoVgKkTpI";
-                        String key = "AIzaSyD8JnsCfZdpM_SJ-nzdF-fiJA_3YPfXdYs";
+                        String key = "AIzaSyCTDMaJIhXDmGiz7dlJcmghD2LoVgKkTpI";
+//                      //  String key = "AIzaSyD8JnsCfZdpM_SJ-nzdF-fiJA_3YPfXdYs";
                         String url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + lat + "," + lng + "&rankby=distance&types=hospital|police|pharmacy&key=" + key;
                         String data = getJSON(url, 3000);
                         try {

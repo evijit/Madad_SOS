@@ -8,13 +8,18 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +42,6 @@ import com.pubnub.api.PubnubException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +59,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     private View mImageView;
     private View mOverlayView;
     private View mListBackgroundView;
-    private TextView mTitleView;
+    private RelativeLayout mTitleView;
     private View mFab;
     private int mActionBarSize;
     private int mFlexibleSpaceShowFabOffset;
@@ -73,7 +77,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     private ObservableListView listView;
 
     String channelID;
-    String sos_creater = "Anon";
+    String sos_creater;
+    private TextView mTitlehead;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +119,6 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         mFlexibleSpaceShowFabOffset = getResources().getDimensionPixelSize(R.dimen.flexible_space_show_fab_offset);
         mActionBarSize = getActionBarSize();
         mImageView = findViewById(R.id.image);
-
-
         mOverlayView = findViewById(R.id.overlay);
         //ObservableListView listView = (ObservableListView) findViewById(R.id.list);
         listView.setScrollViewCallbacks(this);
@@ -131,8 +134,10 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 
         listView.addHeaderView(paddingView);
         //setDummyData(listView);le
-        mTitleView = (TextView) findViewById(R.id.title);
-        mTitleView.setText(j);
+        mTitlehead = (TextView) findViewById(R.id.titlehead);
+        mTitleView = (RelativeLayout) findViewById(R.id.title);
+
+        mTitlehead.setText(j);
         setTitle(null);
         mFab = findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
@@ -395,5 +400,32 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     {
         mOverlayView.setBackgroundColor(getResources().getColor(colres));
         toolbar.setBackgroundColor(getResources().getColor(colres));
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_chat, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_map:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+            case R.id.action_voice:
+
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }
