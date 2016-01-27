@@ -71,8 +71,8 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MyMapFragment(), "MAP");
-        adapter.addFragment(new ChatlistFragment(), "CHAT");
+        adapter.addFragment(new MyMapFragment(),"");
+        adapter.addFragment(new ChatlistFragment(), ""); //Add label names HERE
         viewPager.setAdapter(adapter);
     }
 
@@ -99,6 +99,9 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_map_white_48dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_chat_bubble_white_48dp);
 
 
         mSheetLayout=(SheetLayout)findViewById(R.id.bottom_sheet);
