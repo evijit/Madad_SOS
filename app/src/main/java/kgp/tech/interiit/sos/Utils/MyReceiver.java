@@ -11,6 +11,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import kgp.tech.interiit.sos.AddSOSDetailActivity;
 import kgp.tech.interiit.sos.Utils.NetworkLocationService;
 import kgp.tech.interiit.sos.WelcomeActivity;
 
@@ -28,7 +29,16 @@ public class MyReceiver extends BroadcastReceiver {
             {
                 if(intent.getAction().compareTo("android.intent.action.SCREEN_ON")==0 || intent.getAction().compareTo("android.intent.action.SCREEN_OFF")==0 ) {
                     if (isConsecutive() == true)
+                    {
+                        String channelID = comm.sendSOS();
                         Log.e("MyReceiver", "Call SOS");
+
+                        Intent i= new Intent(context, AddSOSDetailActivity.class);
+                        i.putExtra("channelID",channelID);
+                        i.putExtra("mysos",true);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                    }
 
                     //Intent activity1 = new Intent(context, WelcomeActivity.class);
                     //activity1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.Gravity;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.os.Bundle;
 import android.os.Environment;
@@ -152,7 +153,14 @@ public class AddSOSDetailActivity extends Activity
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
+
+
         setContentView(R.layout.activity_record);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
         mRecordButton = (Button) findViewById(R.id.record);
         mRecordButton.setText("Start recording");
