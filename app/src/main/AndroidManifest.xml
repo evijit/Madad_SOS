@@ -167,7 +167,7 @@
                 <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
-
+        <service android:name=".Utils.SirenService"/>
         <service android:name=".Utils.NetworkLocationService" />
         <service android:name=".Utils.SOSService" />
         <receiver android:name=".Utils.MyReceiver">

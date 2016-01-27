@@ -77,9 +77,29 @@ public class MyMapFragment extends Fragment implements LocationListener{
     private ExpandableMenuOverlay menuOverlay;
 
     public Vector<People> getHelpers() {
+        /*ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS_Users");
+        String SOSid = "SDV";
+        ParseObject sos = new ParseObject("SOS");
+        sos.setObjectId(SOSid);
+        pq.include("UserID");
+        pq.whereEqualTo("SOSid", sos);
+        pq.whereEqualTo("hasAccepted", true);
+        final Vector<People> helpers = new Vector<People>();
+        pq.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                for (ParseObject l : list) {
+                    ParseUser user = l.getParseUser("UserID");
+                    double lat = user.getParseGeoPoint("location").getLatitude();
+                    double lng = user.getParseGeoPoint("location").getLongitude();
+                    helpers.addElement(new People(user.getUsername(),lat,lng));
+                }
+            }
+        });
+        */
         // We have to get it from the server
-        Vector<People> helpers = new Vector<People>(1);
-        helpers.addElement(new People("test loc", 22.33, 87.32));
+        final Vector<People> helpers = new Vector<People>();
+
         return helpers;
     }
 

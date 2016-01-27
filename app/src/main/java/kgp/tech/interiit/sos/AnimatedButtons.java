@@ -1,20 +1,26 @@
 package kgp.tech.interiit.sos;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import kgp.tech.interiit.sos.Utils.SirenService;
 import kgp.tech.interiit.sos.Utils.comm;
 
 public class AnimatedButtons extends AppCompatActivity {
+    public static boolean isSiren = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +164,41 @@ public class AnimatedButtons extends AppCompatActivity {
         map_fragment = null;
         System.gc();
         finish();
+    }
+    public void action_siren (View v){
+        Log.e("NextActivity", "startNotification");
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                        .setContentTitle("SOS APP")
+                        .setContentText("Touch to Stop the Siren!");
+        Intent resultIntent = new Intent(this, SirenService.class);
+        resultIntent.putExtra("isSiren",false);
+        PendingIntent pIntent = PendingIntent.getService(this, (int) System.currentTimeMillis(), resultIntent, 0);
+
+        mBuilder.setContentIntent(pIntent);
+        mBuilder.setOngoing(true);
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+        mNotificationManager.notify(1234, mBuilder.build());
+        Intent serv = new Intent(this,SirenService.class);
+        Intent serv2 = new Intent(this,SirenService.class);
+        if(isSiren) {
+            serv.putExtra("isSiren", false);
+            serv2.putExtra("isSiren",true);
+            isSiren = false;
+        }
+        else{
+            serv.putExtra("isSiren",true);
+            serv2.putExtra("isSiren", false);
+            isSiren = true;
+        }
+        stopService(serv2);
+        startService(serv);
+        finish();
+
     }
     @Override
     protected void onPause() {

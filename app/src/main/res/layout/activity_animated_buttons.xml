@@ -59,7 +59,7 @@
             android:id="@+id/fab6"
             android:src="@drawable/siren"
             android:background="@drawable/fab_grey"
-            android:onClick="action_fakecall"
+            android:onClick="action_siren"
             android:layout_centerInParent="true"
             />
 

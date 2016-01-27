@@ -32,7 +32,10 @@ public class FakeCall extends AppCompatActivity implements GlowPadView.OnTrigger
 
         player = MediaPlayer.create(this,
                 Settings.System.DEFAULT_RINGTONE_URI);
-        player.setVolume(1,1);
+        player.setLooping(true);
+        final AudioManager mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        int origionalVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
         player.start();
 
         mGlowPadView = (GlowPadView) findViewById(R.id.glow_pad_view);
