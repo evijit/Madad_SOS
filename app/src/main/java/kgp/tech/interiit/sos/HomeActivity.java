@@ -268,7 +268,7 @@ class MyDrawerAdapter extends BaseAdapter {
 
     String[] options;
     String[] items = {"Trusted Contacts","Settings", "Logout"};
-    int[] images = {R.drawable.pass, R.drawable.pass,R.drawable.pass, R.drawable.pass};
+    int[] images = {R.drawable.ic_trust, R.drawable.ic_settings,R.drawable.pass};
     private Context context;
 
 
