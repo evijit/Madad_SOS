@@ -64,11 +64,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_marginTop="80dp"
         android:gravity="center"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="0dp"
@@ -83,11 +84,13 @@
             android:id="@+id/notuser"
             android:visibility="gone"
             android:text="@string/notuser"/>
-        <Button
+        <ImageButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rembtn"
             android:text="@string/remind"
+            android:background="@null"
+            android:src="@drawable/remind"
             android:layout_gravity="center_horizontal"
             />
     </LinearLayout>
@@ -97,19 +100,25 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal">
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_call"
+            android:background="@null"
             android:id="@+id/callbtn"
+            android:layout_weight="1"
             android:text="@string/call"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             />
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/delbtn"
+            android:background="@null"
+            android:src="@drawable/ic_delete"
+            android:layout_weight="1"
             android:text="@string/delete"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             />
     </LinearLayout>
     </LinearLayout>

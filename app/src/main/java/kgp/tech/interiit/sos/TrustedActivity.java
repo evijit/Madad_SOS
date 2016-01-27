@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -226,7 +227,7 @@ class ContactAdapter extends BaseAdapter {
         TextView notuser = (TextView) v.findViewById(R.id.notuser);
         notuser.setText(contactList.get(position).getString("Name") + " " + context.getString(R.string.notuser));
 
-        Button remindBtn = (Button) v.findViewById(R.id.rembtn);
+        ImageButton remindBtn = (ImageButton) v.findViewById(R.id.rembtn);
         remindBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,7 +243,7 @@ class ContactAdapter extends BaseAdapter {
         });
 
 
-        Button callBtn = (Button) v.findViewById(R.id.callbtn);
+        ImageButton callBtn = (ImageButton) v.findViewById(R.id.callbtn);
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,7 +263,7 @@ class ContactAdapter extends BaseAdapter {
             }
         });
 
-        Button delBtn = (Button) v.findViewById(R.id.delbtn);
+        ImageButton delBtn = (ImageButton) v.findViewById(R.id.delbtn);
         delBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
