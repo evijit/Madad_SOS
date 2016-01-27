@@ -60,7 +60,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:src="@drawable/add"
+        android:src="@drawable/ic_touch_app_white_24dp"
         android:onClick="onFabClick"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"/>
