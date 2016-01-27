@@ -195,19 +195,33 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:gravity="left"
+            android:layout_alignParentLeft="true"
             android:maxLines="1"
+            android:text="Title"
             android:minHeight="?attr/actionBarSize"
             android:textColor="#fff"
             android:textSize="22sp" />
             <!--android:layout_marginLeft="150dp"-->
             <!--android:layout_marginTop="120dp"-->
+
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="fitXY"
+                android:background="@null"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="80dp"
+
+                android:src="@drawable/ic_location_on_white_24dp"/>
         <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:scaleType="fitXY"
-            android:minHeight="?attr/actionBarSize"
+            android:layout_marginRight="110dp"
+            android:layout_alignParentRight="true"
             android:background="@null"
-            android:layout_gravity="right"
+            android:layout_gravity="center_vertical"
             android:src="@drawable/ic_volume_up_white_24dp"/>
         </RelativeLayout>
 
@@ -224,6 +238,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="center"
+        android:visibility="invisible"
         android:layout_gravity="left|top"
         />
 </FrameLayout>
