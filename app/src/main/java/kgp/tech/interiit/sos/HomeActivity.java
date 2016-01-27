@@ -1,5 +1,6 @@
 package kgp.tech.interiit.sos;
 
+import android.app.ProgressDialog;
 import android.content.AsyncQueryHandler;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -35,6 +36,7 @@ import android.widget.TextView;
 
 import com.github.fabtransitionactivity.SheetLayout;
 import com.google.android.gms.maps.GoogleMap;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -130,7 +132,6 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
 //                    startActivity(intent);
                     Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
                     startActivity(intent);
-                    //finish();
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
 
                 }
@@ -140,12 +141,17 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
 //                    getSharedPreferences("MyPref", MODE_PRIVATE).edit().clear().commit();
 //
 //                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    Log.d("Home", "Logging Out");
+                    //final ProgressDialog dia = ProgressDialog.show(HomeActivity.this, null, getString(R.string.alert_wait));
                     ParseUser.getCurrentUser().unpinInBackground();
                     ParseUser.logOutInBackground();
+                    //dia.dismiss();
                     Intent intent = new Intent(HomeActivity.this, WelcomeActivity.class);
                     startActivity(intent);
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    Log.d("Home", "Logged Out");
                     finish();
+
 
                 }
 

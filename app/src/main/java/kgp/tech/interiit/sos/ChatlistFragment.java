@@ -31,6 +31,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import kgp.tech.interiit.sos.Utils.DateFormater;
 import kgp.tech.interiit.sos.Utils.Helper;
 
 public class ChatlistFragment extends Fragment {
@@ -207,7 +209,8 @@ class MyAdapter extends BaseAdapter {
 
         sos_title.setText(user.getUsername());
         sos_message.setText(sos_list.get(position).getString("Description"));
-        sos_time.setText(sos_list.get(position).getCreatedAt().toString());
+
+        sos_time.setText(DateFormater.formatTime(sos_list.get(position).getCreatedAt()));
 
         CircleImageView iv1=(CircleImageView) row.findViewById(R.id.img);
         iv1.setImageResource(R.drawable.sample_man);

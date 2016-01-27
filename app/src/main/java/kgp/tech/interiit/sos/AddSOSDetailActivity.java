@@ -5,7 +5,9 @@ package kgp.tech.interiit.sos;
  */
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.view.Gravity;
 import android.widget.EditText;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,8 +18,12 @@ import android.util.Log;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -220,10 +226,31 @@ public class AddSOSDetailActivity extends Activity
 
     void startSOS()
     {
-        Intent intent = new Intent(AddSOSDetailActivity.this, MessageActivity.class);
-        intent.putExtra("channelID",getIntent().getStringExtra("channelID"));
-        intent.putExtra("mysos", true);
-        startActivity(intent);
+
+        ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS");
+        pq.include("UserID");
+        pq.whereEqualTo("channelID",getIntent().getStringExtra("channelID"));
+        final ProgressDialog dia = ProgressDialog.show(AddSOSDetailActivity.this, null, getString(R.string.starting_sos));
+        pq.getFirstInBackground(new GetCallback<ParseObject>() {
+
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                ParseObject sos = parseObject;
+                ParseUser user = parseObject.getParseUser("UserID");
+
+                Intent intent = new Intent(AddSOSDetailActivity.this, MessageActivity.class);
+
+                intent.putExtra("channelID", getIntent().getStringExtra("channelID"));
+                intent.putExtra("mysos", true);
+
+                intent.putExtra("channelID", sos.getString("channelID"));
+                intent.putExtra("username", user.getUsername());
+                intent.putExtra("Description", user.getString("Description"));
+                dia.dismiss();
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override

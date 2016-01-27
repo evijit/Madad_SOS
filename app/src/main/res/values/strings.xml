@@ -67,6 +67,7 @@
     <string name="edit">Edit</string>
     <string name="new_chat">New Chat</string>
     <string name="alert_wait">Please wait...</string>
+    <string name="starting_sos">Starting SOS...</string>
     <string name="err_fields_empty">Please fill all the fields.</string>
     <string name="err_singup">Error occurred while signup:</string>
     <string name="err_login">Error occurred while login:</string>

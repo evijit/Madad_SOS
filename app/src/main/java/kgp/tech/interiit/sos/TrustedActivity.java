@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -60,6 +61,7 @@ public class TrustedActivity extends AppCompatActivity {
         ParseQuery<ParseObject> tquery = ParseQuery.getQuery("Trusted");
         tquery.whereEqualTo("UserId", ParseUser.getCurrentUser());
         //tquery.whereEqualTo("accepted", Boolean.TRUE);
+        Log.d("Trusted","Fetching");
         tquery.fromLocalDatastore();
         tquery.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -69,6 +71,7 @@ public class TrustedActivity extends AppCompatActivity {
                     ContactAdapter ca = new ContactAdapter(ptlist, TrustedActivity.this);
                     tcList.setAdapter(ca);
                 }
+                Log.d("Trusted","Fetched");
 
 //                ParseQuery<ParseObject> rquery = ParseQuery.getQuery("Trusted");
 //                rquery.whereEqualTo("UserId", ParseUser.getCurrentUser());

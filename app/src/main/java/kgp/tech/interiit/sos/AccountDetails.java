@@ -63,6 +63,9 @@ public class AccountDetails extends AppCompatActivity {
 
         TextView email= (TextView) findViewById(R.id.email);
         email.setText(ParseUser.getCurrentUser().getString("email"));
+
+        ImageView image = (ImageView) findViewById(R.id.photo);
+        Helper.GetProfilePic(ParseUser.getCurrentUser(), image, this);
     }
 
     public void photoupload(View v)
@@ -74,9 +77,7 @@ public class AccountDetails extends AppCompatActivity {
     @Override
     public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onPostCreate(savedInstanceState, persistentState);
-        ImageView image = (ImageView) findViewById(R.id.photo);
 
-        Helper.GetProfilePic(ParseUser.getCurrentUser(), image,this);
     }
 
     @Override

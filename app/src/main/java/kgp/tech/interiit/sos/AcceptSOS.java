@@ -53,6 +53,8 @@ public class AcceptSOS extends AppCompatActivity {
     public void action_accept_sos(View v)
     {
         ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS_Users");
+        pq.include("SOSid");
+        pq.include("SOSid.UserID");
         pq.whereEqualTo("UserID", ParseUser.getCurrentUser());
         ParseObject sos = new ParseObject("SOS");
 
@@ -69,9 +71,11 @@ public class AcceptSOS extends AppCompatActivity {
                     e.printStackTrace();
                     return;
                 }
-                //Log.d("AcceptSOS", parseObject.getACL().toString());
+
+                final ParseObject sos = parseObject.getParseObject("SOSid");
+                final ParseUser user = parseObject.getParseObject("SOSid").getParseUser("UserID");
+
                 ParseObject pop = new ParseObject("SOS_Users");
-                //pop.setObjectId(parseObject.getObjectId());
                 pop.put("hasAccepted", true);
                 Log.d("AcceptedSOS","ID "+parseObject.getObjectId());
                 parseObject.put("hasAccepted", true);
@@ -86,7 +90,10 @@ public class AcceptSOS extends AppCompatActivity {
                         }
                         dia.dismiss();
                         Log.d("AcceptedSOS", "Saved");
-                        Intent intent = new Intent(AcceptSOS.this, HomeActivity.class);
+                        Intent intent = new Intent(AcceptSOS.this, MessageActivity.class);
+                        intent.putExtra("channelID", sos.getString("channelID"));
+                        intent.putExtra("username", user.getUsername());
+                        intent.putExtra("Description", user.getString("Description"));
                         startActivity(intent);
                         finish();
                     }
