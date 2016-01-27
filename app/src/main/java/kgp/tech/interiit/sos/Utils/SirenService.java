@@ -55,15 +55,21 @@ public class SirenService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         Log.e("SirenService", "onStartCommand");
+        if(mp!=null && mp.isPlaying()){
+            mp.stop();
+        }
         mp = MediaPlayer.create(this, R.raw.siren);
-        mp.setVolume(8f, 8f);
+//        mp.setVolume(8f, 8f);
         mp.setLooping(true);
         Boolean shouldPlay = intent.getBooleanExtra("isSiren", false);
         Log.e("onStart",Boolean.toString(shouldPlay));
         if(shouldPlay) {
             final AudioManager mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-            int origionalVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            //int origionalVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
             mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+            if(mp!=null && mp.isPlaying()){
+                mp.stop();
+            }
             mp.start();
         }
         else {
@@ -72,6 +78,7 @@ public class SirenService extends Service {
             }
             mp.release();
             mp=null;
+            mp = new MediaPlayer();
             String ns = Context.NOTIFICATION_SERVICE;
             NotificationManager mNotificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
