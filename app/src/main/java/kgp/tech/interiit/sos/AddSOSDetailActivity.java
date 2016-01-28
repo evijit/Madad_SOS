@@ -7,6 +7,7 @@ package kgp.tech.interiit.sos;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import android.view.View.OnClickListener;
 import android.util.Log;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer;
+import android.widget.ImageButton;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -41,10 +43,10 @@ public class AddSOSDetailActivity extends Activity
     private static final String LOG_TAG = "AudioRecordTest";
     private static String mFileName = null;
 
-    private Button mRecordButton = null;
+    private ImageButton mRecordButton = null;
     private MediaRecorder mRecorder = null;
 
-    private Button   mPlayButton = null;
+    private ImageButton mPlayButton = null;
     private MediaPlayer   mPlayer = null;
 
     boolean mStartRecording = true;
@@ -162,8 +164,8 @@ public class AddSOSDetailActivity extends Activity
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
-        mRecordButton = (Button) findViewById(R.id.record);
-        mRecordButton.setText("Start recording");
+        mRecordButton = (ImageButton) findViewById(R.id.record);
+        //mRecordButton.setText("Start recording");
         mRecordButton.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -177,8 +179,8 @@ public class AddSOSDetailActivity extends Activity
             }
         });
 
-        mPlayButton = (Button) findViewById(R.id.play);
-        mPlayButton.setText("Start playing");
+        mPlayButton = (ImageButton) findViewById(R.id.play);
+        //mPlayButton.setText("Start playing");
         mPlayButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v)
@@ -194,8 +196,8 @@ public class AddSOSDetailActivity extends Activity
         });
 
         final EditText mTextBox = (EditText) findViewById(R.id.message);
-        Button skip = (Button) findViewById(R.id.skip);
-        Button save = (Button) findViewById(R.id.save);
+        FloatingActionButton skip = (FloatingActionButton) findViewById(R.id.skip);
+        FloatingActionButton save = (FloatingActionButton) findViewById(R.id.save);
 
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
