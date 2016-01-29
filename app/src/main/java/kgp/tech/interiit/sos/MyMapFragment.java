@@ -28,6 +28,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
@@ -80,6 +81,8 @@ public class MyMapFragment extends Fragment implements LocationListener{
     public static boolean isAddHospital = false;
     public static boolean isAddPolice = false;
     public static boolean isAddPharmacy = false;
+    static Vector<MarkerOptions> helpers_pre = null, helpers_now = null;
+    static Vector<MarkerOptions> to_help_pre = null, to_help_now = null;
 
     static private Context context=null;
 
@@ -112,6 +115,10 @@ public class MyMapFragment extends Fragment implements LocationListener{
             pq.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
+                    if(to_help_now  != null)
+                        to_help_now.clear();
+                    else
+                        to_help_now = new Vector<MarkerOptions>(1);
                     if(e!=null)
                     {
                         Utils.showDialog(context,e.getMessage());
@@ -129,12 +136,18 @@ public class MyMapFragment extends Fragment implements LocationListener{
                         // Adding to map
                         MarkerOptions mp = new MarkerOptions();
                         mp.title(user.getUsername());
-                        mp.position(new LatLng(lat,lng));
+                        mp.position(new LatLng(lat, lng));
                         mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                        mMap.addMarker(mp);
+                        //mMap.addMarker(mp);
+                        to_help_now.addElement(mp);
                     }
+                    to_help_pre = to_help_now;
                 }
             });
+            if(to_help_pre != null)
+            for(MarkerOptions mp : to_help_pre){
+                mMap.addMarker(mp);
+            }
         }
         else
         {
@@ -148,6 +161,10 @@ public class MyMapFragment extends Fragment implements LocationListener{
             pq.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
+                    if(helpers_now != null)
+                        helpers_now.clear();
+                    else
+                        helpers_now = new Vector<MarkerOptions>(1);
                     if(e!=null)
                     {
                         e.printStackTrace();
@@ -172,10 +189,16 @@ public class MyMapFragment extends Fragment implements LocationListener{
                         mp.title(user.getUsername());
                         mp.position(new LatLng(lat,lng));
                         mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                        mMap.addMarker(mp);
+                        //mMap.addMarker(mp);
+                        helpers_now.addElement(mp);
                     }
+                    helpers_pre = helpers_now;
                 }
             });
+            if(helpers_pre != null)
+            for(MarkerOptions mp : helpers_pre){
+                mMap.addMarker(mp);
+            }
         }
     }
 

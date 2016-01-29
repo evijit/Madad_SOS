@@ -44,6 +44,7 @@ public class AcceptSOS extends AppCompatActivity {
         try {
             JSONObject data = new JSONObject(intent.getExtras().getString("com.parse.Data"));
             SOSid = data.getString("sosId");
+            Log.d("AcceptSOS","sosid "+SOSid);
             senderId = data.getString("username");
             channelId = data.getString("chatChannel");
         } catch (JSONException e) {
@@ -75,9 +76,6 @@ public class AcceptSOS extends AppCompatActivity {
                 final ParseObject sos = parseObject.getParseObject("SOSid");
                 final ParseUser user = sos.getParseUser("UserID");
 
-                ParseObject pop = new ParseObject("SOS_Users");
-                pop.put("hasAccepted", true);
-                Log.d("AcceptedSOS","ID "+parseObject.getObjectId());
                 parseObject.put("hasAccepted", true);
                 parseObject.saveEventually(new SaveCallback() {
                     @Override
@@ -112,12 +110,14 @@ public class AcceptSOS extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case DialogInterface.BUTTON_NEGATIVE:
-                        Intent intent = new Intent(AcceptSOS.this, HomeActivity.class);
+                        Log.d("AcceptSOS","neg");
+                        Intent intent = new Intent(AcceptSOS.this, WelcomeActivity.class);
                         startActivity(intent);
                         finish();
 
                         break;
                     case DialogInterface.BUTTON_POSITIVE:
+                        Log.d("AcceptSOS","pos");
                         action_accept_sos(v);
                         //TODO call the cloud service and make it check if contact uses the app
                         break;

@@ -124,34 +124,14 @@ public class AccountDetails extends AppCompatActivity {
                 file.saveInBackground();
 
                 // Create a New Class called "ImageUpload" in Parse
-                ParseUser imgupload = ParseUser.getCurrentUser();
+                ParseUser user = ParseUser.getCurrentUser();
 
                 // Create a column named "ImageFile" and insert the image
-                imgupload.put("profilePic", file);
+                user.put("profilePic", file);
                 // Create the class and the columns
-                imgupload.saveInBackground();
+                user.saveInBackground();
 
-                ParseQuery<ParseObject> pq = ParseQuery.getQuery("picture");
-                pq.whereEqualTo("user", ParseUser.getCurrentUser());
-                pq.fromLocalDatastore();
-                pq.getFirstInBackground(new GetCallback<ParseObject>() {
-
-                    @Override
-                    public void done(ParseObject parseObject, ParseException e) {
-                        if (e != null) {
-                            // Saving image locally
-                            e.printStackTrace();
-                            ParseObject picData = new ParseObject("picture");
-                            picData.put("user", ParseUser.getCurrentUser());
-                            picData.put("picture", image);
-                            picData.pinInBackground();
-                            return;
-                        }
-                        parseObject.put("picture",image);
-                        parseObject.saveInBackground();
-                    }
-                });
-
+                Helper.saveToInternalStorage(resizedBitmap, user.getUsername(), AccountDetails.this);
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

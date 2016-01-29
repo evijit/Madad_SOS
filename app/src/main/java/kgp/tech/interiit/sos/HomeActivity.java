@@ -175,30 +175,6 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
     @Override
     protected void onResume() {
         super.onResume();
-
-        ParseQuery<ParseObject> pq = new ParseQuery("picture");
-        pq.fromLocalDatastore();
-
-        pq.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null && !list.isEmpty()) {
-                    // Locate the objectId from the class
-                    Bitmap bmp = BitmapFactory
-                            .decodeByteArray(
-                                    list.get(0).getBytes("picture"), 0,
-                                    list.get(0).getBytes("picture").length);
-
-                    // Get the ImageView from
-                    // main.xml
-                    ImageView image = (ImageView) findViewById(R.id.avatar);
-
-                    // Set the Bitmap into the
-                    // ImageView
-                    image.setImageBitmap(bmp);
-                }
-            }
-        });
     }
 
     static void centerToolbarTitle(final Toolbar toolbar) {

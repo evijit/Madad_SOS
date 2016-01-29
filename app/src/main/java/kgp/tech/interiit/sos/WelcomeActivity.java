@@ -41,22 +41,6 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
             StrictMode.setThreadPolicy(policy);
         }
 
-        // Check if the user started SOS, if yes, go to chat activity
-        SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_PRIVATE);
-        Log.d("SPWA", String.valueOf(sp.contains("sosID")));
-        if(sp.getString("sosID", null)!= null)
-        {
-            Log.d("Welcome","SOS");
-            final Intent intent = new Intent(WelcomeActivity.this, MessageActivity.class);
-            intent.putExtra("channelID", sp.getString("channelID", null));
-            intent.putExtra("username", sp.getString("username", null));
-            intent.putExtra("Description", sp.getString("Description", null));
-            intent.putExtra("createdAt", sp.getString("createdAt", null));
-            startActivity(intent);
-            finish();
-            return;
-        }
-
         final IntentFilter theFilter = new IntentFilter();
         /** System Defined Broadcast */
         theFilter.addAction(Intent.ACTION_SCREEN_ON);
@@ -67,9 +51,22 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
         setContentView(R.layout.activity_welcome);
 
         if (ParseUser.getCurrentUser() != null) {
-            Log.d("Welcome","Logged in");
             // Start an intent for the logged in activity
             ParseUser.getCurrentUser().pinInBackground();
+
+            SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_PRIVATE);
+            if(sp.getString("sosID", null)!= null)
+            {
+                Log.d("Welcome","SOS");
+                final Intent intent = new Intent(WelcomeActivity.this, MessageActivity.class);
+                intent.putExtra("channelID", sp.getString("channelID", null));
+                intent.putExtra("username", sp.getString("username", null));
+                intent.putExtra("Description", sp.getString("Description", null));
+                intent.putExtra("createdAt", sp.getString("createdAt", null));
+                startActivity(intent);
+                finish();
+                return;
+            }
 
             // Locate the objectId from the class
             //////////////////////Background thing start
@@ -86,44 +83,6 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
             am.set(AlarmManager.RTC_WAKEUP, timeOff9.getTimeInMillis() + 30000, sender);
 
             //////////////////////Background thing end
-            ParseFile fileObject =  ParseUser.getCurrentUser().getParseFile("profilePic");
-            if(fileObject!=null)
-            {
-                fileObject.getDataInBackground(new GetDataCallback() {
-
-                    public void done(final byte[] data,
-                                     ParseException e) {
-                        if (e == null) {
-                            Log.i("test",
-                                    "We've got data in data.");
-
-                            ParseQuery<ParseObject> pq = ParseQuery.getQuery("picture");
-                            pq.whereEqualTo("user", ParseUser.getCurrentUser());
-                            pq.fromLocalDatastore();
-                            pq.getFirstInBackground(new GetCallback<ParseObject>() {
-
-                                @Override
-                                public void done(ParseObject parseObject, ParseException e) {
-                                    if (e != null) {
-                                        // Saving image locally
-                                        e.printStackTrace();
-                                        ParseObject picData = new ParseObject("picture");
-                                        picData.put("user", ParseUser.getCurrentUser());
-                                        picData.put("picture", data);
-                                        picData.pinInBackground();
-                                        return;
-                                    }
-                                    parseObject.put("picture", data);
-                                    parseObject.saveInBackground();
-                                }
-                            });
-                        } else {
-                            Log.d("test",
-                                    "There was a problem downloading the data.");
-                        }
-                    }
-                });
-            }
 
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Trusted");

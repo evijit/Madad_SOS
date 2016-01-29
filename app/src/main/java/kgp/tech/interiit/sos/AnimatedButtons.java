@@ -209,9 +209,9 @@ public class AnimatedButtons extends AppCompatActivity {
         MyMapFragment map_fragment = new MyMapFragment();
         map_fragment.isAddHospital = !(map_fragment.isAddHospital);
         if(map_fragment.isAddHospital)
-            Toast.makeText(this, "Nearby Hospitals Marked", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Showing nearby Hospitals", Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(this, "Nearby Hospitals Un-Marked", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Removing Hospitals", Toast.LENGTH_LONG).show();
         map_fragment = null;
         System.gc();
         finish();
@@ -222,9 +222,9 @@ public class AnimatedButtons extends AppCompatActivity {
         MyMapFragment map_fragment = new MyMapFragment();
         map_fragment.isAddPolice= !(map_fragment.isAddPolice);
         if(map_fragment.isAddPolice)
-            Toast.makeText(this, "Nearby Police Stations Marked", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Showing nearby Police Stations", Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(this, "Nearby Police Staions Un-Marked", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Removing Police Stations", Toast.LENGTH_LONG).show();
         map_fragment = null;
         System.gc();
         finish();
@@ -235,9 +235,9 @@ public class AnimatedButtons extends AppCompatActivity {
         MyMapFragment map_fragment = new MyMapFragment();
         map_fragment.isAddPharmacy = !(map_fragment.isAddPharmacy);
         if(map_fragment.isAddPharmacy)
-            Toast.makeText(this, "Nearby Pharmacies Marked", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Showing nearby Pharmacies", Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(this, "Nearby Pharmacies Un-Marked", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Removing Pharmacies", Toast.LENGTH_LONG).show();
         map_fragment = null;
         System.gc();
         finish();
@@ -247,7 +247,7 @@ public class AnimatedButtons extends AppCompatActivity {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
-                        .setContentTitle("SOS APP")
+                        .setContentTitle("Madad")
                         .setContentText("Touch to Stop the Siren!");
         Intent resultIntent = new Intent(this, SirenService.class);
         resultIntent.putExtra("isSiren",false);

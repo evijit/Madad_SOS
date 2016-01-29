@@ -71,6 +71,7 @@ public class SirenService extends Service {
                 mp.stop();
             }
             mp.start();
+
         }
         else {
             if(mp!=null && mp.isPlaying()){
