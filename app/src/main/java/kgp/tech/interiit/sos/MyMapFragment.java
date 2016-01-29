@@ -64,6 +64,7 @@ import java.util.logging.Logger;
 import kgp.tech.interiit.sos.Utils.NetworkLocationService;
 import kgp.tech.interiit.sos.Utils.People;
 import kgp.tech.interiit.sos.Utils.Places;
+import kgp.tech.interiit.sos.Utils.Utils;
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu;
 import lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay;
 
@@ -102,16 +103,21 @@ public class MyMapFragment extends Fragment implements LocationListener{
             ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS_Users");
 
             ParseObject sos = new ParseObject("SOS");
-            sos.setObjectId(SOSid);
+            //sos.setObjectId(SOSid);
 
             pq.include("UserID");
-            pq.whereEqualTo("SOSid", sos);
+            pq.whereEqualTo("SOSid", SOSid);
             pq.whereEqualTo("hasAccepted", true);
 
 
             pq.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
+                    if(e!=null)
+                    {
+                        Utils.showDialog(getActivity(),e.getMessage());
+                        return;
+                    }
                     for (ParseObject l : list) {
                         ParseUser user = l.getParseUser("UserID");
                         double lat = user.getParseGeoPoint("Geolocation").getLatitude();

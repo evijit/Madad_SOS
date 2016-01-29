@@ -3,8 +3,11 @@ package kgp.tech.interiit.sos;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +17,21 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.util.List;
+
 import kgp.tech.interiit.sos.Utils.SirenService;
+import kgp.tech.interiit.sos.Utils.Utils;
 import kgp.tech.interiit.sos.Utils.comm;
 
 public class AnimatedButtons extends AppCompatActivity {
@@ -83,6 +98,58 @@ public class AnimatedButtons extends AppCompatActivity {
         Intent intent = new Intent(this, CreateSOSActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void action_cancel_sos(View v)
+    {
+        Utils.showDialog(this, R.string.cancel_sos, R.string.yes, R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        // int which = -2
+
+                        break;
+                    case DialogInterface.BUTTON_POSITIVE:
+                        SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_PRIVATE);
+                        String SOSid = sp.getString("sosID", null);
+
+                        ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS");
+                        pq.getInBackground(SOSid, new GetCallback<ParseObject>() {
+                            @Override
+                            public void done(ParseObject parseObject, ParseException e) {
+                                if (e != null) {
+                                    Utils.showDialog(AnimatedButtons.this, e.getMessage());
+                                    return;
+                                }
+                                parseObject.put("isActive", false);
+                                final ProgressDialog dia = ProgressDialog.show(AnimatedButtons.this, null, getString(R.string.alert_wait));
+                                parseObject.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if(e!=null) {
+                                            Utils.showDialog(AnimatedButtons.this, e.getMessage());
+                                            return;
+                                        }
+
+                                        SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sp.edit();
+                                        editor.putString("sosID", null);
+                                        dia.dismiss();
+
+                                        Intent intent = new Intent(AnimatedButtons.this, HomeActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                });
+                            }
+                        });
+                        //TODO call the cloud service and make it check if contact uses the app
+                        break;
+                }
+                return;
+            }
+        });
     }
 
     public void recordAudio(View v) {

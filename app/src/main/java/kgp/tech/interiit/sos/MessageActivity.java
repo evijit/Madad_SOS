@@ -5,11 +5,13 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.util.Log;
@@ -167,7 +169,6 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         if(sp.getString("sosID", null)!=null)
         {
             Log.d("Message","SOS active");
-
             setcolor(R.color.red);
         }
 
@@ -403,8 +404,10 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 
     void setcolor(int colres)//use setcolor R.color.red for Self SOS
     {
-        mOverlayView.setBackgroundColor(getResources().getColor(colres));
-        toolbar.setBackgroundColor(getResources().getColor(colres));
+        Log.d("Message", "Changing color");
+        mOverlayView.setBackgroundColor(colres);
+        toolbar.setBackgroundColor(colres);
+        //mFab.setBackgroundTintList(ColorStateList.valueOf(colres));
     }
 
 

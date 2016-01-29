@@ -84,6 +84,7 @@
     <string name="title_activity_account_details">Account Details</string>
     <string name="title_activity_first_time">"Hello "</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="cancel_sos">This will de-activate SOS.</string>
 
     <!-- Settings Page Strings -->
     <string name="settings">Settings</string>
