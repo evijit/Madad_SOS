@@ -167,7 +167,7 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
         });
 
         TextView name = (TextView) findViewById(R.id.drawer_username);
-        name.setText(ParseUser.getCurrentUser().getUsername());
+        name.setText(ParseUser.getCurrentUser().getString("displayname"));
         TextView email = (TextView) findViewById(R.id.drawer_email);
         email.setText(ParseUser.getCurrentUser().getEmail());
     }

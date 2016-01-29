@@ -135,8 +135,8 @@ public class MyMapFragment extends Fragment implements LocationListener{
                                 ParseUser.getCurrentUser().getParseGeoPoint("Geolocation").getLongitude());
                         // Adding to map
                         MarkerOptions mp = new MarkerOptions();
-                        mp.title(user.getUsername());
-                        mp.position(new LatLng(lat, lng));
+                        mp.title(user.getString("displayname"));
+                        mp.position(new LatLng(lat,lng));
                         mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                         //mMap.addMarker(mp);
                         to_help_now.addElement(mp);
@@ -186,7 +186,7 @@ public class MyMapFragment extends Fragment implements LocationListener{
 
                         // Adding to map
                         MarkerOptions mp = new MarkerOptions();
-                        mp.title(user.getUsername());
+                        mp.title(user.getString("displayname"));
                         mp.position(new LatLng(lat,lng));
                         mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                         //mMap.addMarker(mp);

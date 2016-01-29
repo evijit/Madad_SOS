@@ -51,6 +51,7 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
         setContentView(R.layout.activity_welcome);
 
         if (ParseUser.getCurrentUser() != null) {
+            Log.d("Welcome","Logged in");
             // Start an intent for the logged in activity
             ParseUser.getCurrentUser().pinInBackground();
 
@@ -63,6 +64,7 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
                 intent.putExtra("username", sp.getString("username", null));
                 intent.putExtra("Description", sp.getString("Description", null));
                 intent.putExtra("createdAt", sp.getString("createdAt", null));
+                intent.putExtra("displayname", sp.getString("displayName", null));
                 startActivity(intent);
                 finish();
                 return;
