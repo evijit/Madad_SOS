@@ -41,7 +41,7 @@ public class AwesomeAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Message message = (Message) this.getItem(position);
-        TextView n=(TextView)convertView.findViewById(R.id.name);
+        TextView n;
 
 
         ViewHolder holder;
@@ -50,12 +50,16 @@ public class AwesomeAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.sms_row, parent, false);
             holder.message = (TextView) convertView.findViewById(R.id.message_text);
+            n=(TextView)convertView.findViewById(R.id.name);
+
             convertView.setTag(holder);
         }
         else
             holder = (ViewHolder) convertView.getTag();
 
         holder.message.setText(message.getMessage());
+        n=(TextView)convertView.findViewById(R.id.name);
+
         n.setText(message.getUserame());
 
         LayoutParams lp = (LayoutParams) holder.message.getLayoutParams();
