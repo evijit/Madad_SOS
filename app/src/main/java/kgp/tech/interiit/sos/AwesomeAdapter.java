@@ -41,6 +41,8 @@ public class AwesomeAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Message message = (Message) this.getItem(position);
+        TextView n;
+
 
         ViewHolder holder;
         if(convertView == null)
@@ -48,19 +50,27 @@ public class AwesomeAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.sms_row, parent, false);
             holder.message = (TextView) convertView.findViewById(R.id.message_text);
+            n=(TextView)convertView.findViewById(R.id.name);
+
             convertView.setTag(holder);
         }
         else
             holder = (ViewHolder) convertView.getTag();
 
         holder.message.setText(message.getMessage());
+        n=(TextView)convertView.findViewById(R.id.name);
+
+        n.setText(message.getUserame());
 
         LayoutParams lp = (LayoutParams) holder.message.getLayoutParams();
+        LayoutParams lp1 = (LayoutParams) n.getLayoutParams();
+
         //check if it is a status message then remove background, and change text color.
         if(message.isStatusMessage())
         {
             holder.message.setBackgroundDrawable(null);
             lp.gravity = Gravity.LEFT;
+
             //holder.message.setTextColor(R.color.textFieldColor);
         }
         else
@@ -71,6 +81,8 @@ public class AwesomeAdapter extends BaseAdapter {
                 holder.message.setBackgroundResource(R.drawable.going_primary);
                 holder.message.setTextColor(Color.parseColor("#ffffff"));
                 lp.gravity = Gravity.RIGHT;
+                lp1.gravity = Gravity.RIGHT;
+
             }
             //If not mine then it is from sender to show orange background and align to left
             else
@@ -81,6 +93,7 @@ public class AwesomeAdapter extends BaseAdapter {
                 holder.message.setBackgroundResource(R.drawable.coming);
                 holder.message.setTextColor(Color.parseColor("#000000"));
                 lp.gravity = Gravity.LEFT;
+                lp1.gravity = Gravity.LEFT;
             }
             holder.message.setLayoutParams(lp);
             //holder.message.setTextColor(R.color.textColor);
