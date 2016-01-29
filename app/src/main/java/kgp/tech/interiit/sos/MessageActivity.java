@@ -6,19 +6,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -80,7 +86,9 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     private Toolbar toolbar;
     static String message_incoming = "";
     private ObservableListView listView;
-
+    ImageButton voice, map;
+    FrameLayout cont;
+    FloatingActionButton sendfab;
     String channelID;
     String sos_creater = "";
     private TextView mTitlehead;
@@ -89,6 +97,11 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+
+        voice=(ImageButton)findViewById(R.id.btn_voice);
+        map=(ImageButton)findViewById(R.id.btn_map);
+        cont=(FrameLayout)findViewById(R.id.container);
+        sendfab=(FloatingActionButton)findViewById(R.id.second_send_button_sms_view);
 
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         if(toolbar!=null) {
@@ -126,6 +139,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         //setDummyData(listView);le
         mTitlehead = (TextView) findViewById(R.id.titlehead);
         mTitleView = (RelativeLayout) findViewById(R.id.title);
+
+
 
 
         setTitle(null);
@@ -168,8 +183,10 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         {
             Log.d("Message","SOS active");
 
-            setcolor(R.color.red);
+            setcolorred();
         }
+
+        //setcolorred();
 
     }
 
@@ -271,6 +288,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
            // toolbar.setVisibility(View.INVISIBLE);
             mFabIsShown = true;
             mTitleView.setVisibility(View.VISIBLE);
+            map.setVisibility(View.VISIBLE);
+            voice.setVisibility(View.VISIBLE);
             getSupportActionBar().setTitle(new SpannableString(""));
 
 
@@ -283,6 +302,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
             ViewPropertyAnimator.animate(mFab).scaleX(0).scaleY(0).setDuration(200).start();
             //toolbar.setVisibility(View.VISIBLE);
             mTitleView.setVisibility(View.INVISIBLE);
+            map.setVisibility(View.INVISIBLE);
+            voice.setVisibility(View.INVISIBLE);
             getSupportActionBar().setTitle(new SpannableString(sender));
             mFabIsShown = false;
         }
@@ -401,10 +422,21 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         }
     }
 
-    void setcolor(int colres)//use setcolor R.color.red for Self SOS
+    void setcolorred()//use setcolor R.color.red for Self SOS
     {
-        mOverlayView.setBackgroundColor(getResources().getColor(colres));
-        toolbar.setBackgroundColor(getResources().getColor(colres));
+
+            mOverlayView.setBackgroundColor(ContextCompat.getColor(this,R.color.red));
+            cont.setBackgroundColor(ContextCompat.getColor(this,R.color.red));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(ContextCompat.getColor(this, R.color.darkred));
+            }
+            toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.red));
+            sendfab.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.red));
+
+
+
     }
 
 
