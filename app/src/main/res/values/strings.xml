@@ -42,6 +42,7 @@
     </string-array>
 
     <string name="please_help">Please help. Your help might save someones life.</string>
+    <string name="default_sos">I am in trouble. Help me.</string>
     <string name="save">Save</string>
     <string name="download_app">Please help me be safe. Install SOS App by clicking the link http://www.google.com</string>
     <string name="call">Call</string>
@@ -116,4 +117,8 @@
 
     <string name="pref_sms_title">SMS</string>
     <string name="pref_sms_summary">Allow to send SMS to contact</string>
+
+    <string name="title_activity_full_map">Nearby People</string>
+
+    <string name="started_at">Started at</string>
 </resources>

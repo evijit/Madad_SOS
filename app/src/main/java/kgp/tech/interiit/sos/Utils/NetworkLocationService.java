@@ -95,9 +95,7 @@ public class NetworkLocationService extends Service implements LocationListener 
         if(maps.mMap!=null) {
             maps.mMap.clear();
             ////// Adding Markers for helpers
-            Vector<MarkerOptions> markers = maps.getMarkers();
-            for (int i = 0; i < markers.size(); i++)
-                maps.mMap.addMarker(markers.get(i));
+            maps.getHelpers();
 
             if(maps.isAddHospital) { // 's' is for hospital
                 Thread thread = new Thread(new Runnable() {

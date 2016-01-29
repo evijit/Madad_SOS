@@ -1,6 +1,7 @@
 package kgp.tech.interiit.sos.Utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
@@ -28,6 +29,11 @@ import kgp.tech.interiit.sos.MessageActivity;
  */
 public class comm {
 
+    public static boolean internetConnected()
+    {
+        return true;
+    }
+
     private static comm _instance = null;
     public static comm getInstance(){
         if(_instance == null)
@@ -36,7 +42,7 @@ public class comm {
     }
     private comm(){} //Making the constructor private, so no 2 object can be created
 
-    public static String sendSOS() {
+    public static ParseObject sendSOS(String sos_message) {
             /* Publish a simple message to the demo_tutorial channel */
         final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
         pubnub.setUUID(ParseUser.getCurrentUser().toString());
@@ -47,36 +53,59 @@ public class comm {
             sos.put("UserID", ParseUser.getCurrentUser());
             final String channelName = UUID.randomUUID().toString();
             sos.put("channelID", channelName);
+            sos.put("Description",sos_message);
             sos.put("isActive", true);
             sos.pinInBackground();
+            // Log.d("comm", sos.getObjectId());
+//            sos.saveInBackground(new SaveCallback() {
+//                public void done(ParseException e) {
+//                    if (e == null) {
+//                        try {
+//                            Log.d("comm-func", sos.getObjectId());
+//                            HashMap<String, Object> params = new HashMap<>();
+//                            params.put("username", ParseUser.getCurrentUser().getUsername());
+//                            params.put("channel", channelName);
+//                            params.put("sosid", sos.getObjectId());
+//
+//                            ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
+//                                @Override
+//                                public void done(Float fLoat, ParseException e) {
+//                                    if (e == null) {
+//                                        System.out.println("YAAAY!!!");
+//                                        sendMessage(channelName, "Help me");
+//                                    }
+//                                }
+//                            });
+//                        } catch (Exception e1) {
+//                            e1.printStackTrace();
+//                        }
+//
+//                    } else
+//                        System.out.println(e.toString());
+//                }
+//            });
+            sos.save();
+            Log.d("comm", sos.getObjectId());
+            try {
+                Log.d("comm-func", sos.getObjectId());
+                HashMap<String, Object> params = new HashMap<>();
+                params.put("username", ParseUser.getCurrentUser().getUsername());
+                params.put("channel", channelName);
+                params.put("sosid", sos.getObjectId());
 
-            sos.saveInBackground(new SaveCallback() {
-                public void done(ParseException e) {
-                    if (e == null) {
-                        try {
-                            HashMap<String, Object> params = new HashMap<>();
-                            params.put("username", ParseUser.getCurrentUser().getUsername());
-                            params.put("channel", channelName);
-                            params.put("sosid", sos.getObjectId());
-
-                            ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
-                                @Override
-                                public void done(Float fLoat, ParseException e) {
-                                    if (e == null) {
-                                        System.out.println("YAAAY!!!");
-                                        sendMessage(channelName, "Help me");
-                                    }
-                                }
-                            });
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
+                ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
+                    @Override
+                    public void done(Float fLoat, ParseException e) {
+                        if (e == null) {
+                            System.out.println("YAAAY!!!");
+                            sendMessage(channelName, "Help me");
                         }
-
-                    } else
-                        System.out.println(e.toString());
-                }
-            });
-            return channelName;
+                    }
+                });
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+            return sos;
 
         } catch (Exception e) {
             e.printStackTrace();

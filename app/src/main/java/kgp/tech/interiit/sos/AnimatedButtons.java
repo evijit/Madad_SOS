@@ -80,20 +80,15 @@ public class AnimatedButtons extends AppCompatActivity {
 
     public void action_sos(View v)
     {
-        String channelID = comm.sendSOS();
-
-        Intent intent = new Intent(this, AddSOSDetailActivity.class);
-        intent.putExtra("channelID",channelID);
-        intent.putExtra("mysos",true);
+        Intent intent = new Intent(this, CreateSOSActivity.class);
         startActivity(intent);
         finish();
     }
 
     public void recordAudio(View v) {
-        Intent intent = new Intent(this, AddSOSDetailActivity.class);
+        Intent intent = new Intent(this, CreateSOSActivity.class);
         startActivity(intent);
         finish();
-
     }
 
     public void action_fakecall(View v)

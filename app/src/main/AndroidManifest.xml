@@ -153,45 +153,68 @@
         <activity
             android:name=".FakeCall"
             android:showOnLockScreen="true" />
-        <activity android:name=".WidgetActivity"
-            android:theme="@android:style/Theme.NoDisplay"/>
+        <activity
+            android:name=".WidgetActivity"
+            android:theme="@android:style/Theme.NoDisplay" />
         <activity android:name=".FakeCallOngoing" />
         <activity
-            android:name=".AddSOSDetailActivity"
+            android:name=".CreateSOSActivity"
             android:label="Audio Test"
-            android:theme="@style/Theme.UserDialog">
+            android:theme="@style/Theme.AppCompat.Dialog">
             >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
-        <service android:name=".Utils.SirenService"/>
+
+        <service android:name=".Utils.SirenService" />
         <service android:name=".Utils.NetworkLocationService" />
         <service android:name=".Utils.SOSService" />
+
         <receiver android:name=".Utils.MyReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_SCREEN_ON"></action>
-                <action android:name="android.intent.action.ACTION_SCREEN_OFF"></action>
+                <action android:name="android.intent.action.ACTION_SCREEN_ON" />
+                <action android:name="android.intent.action.ACTION_SCREEN_OFF" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".WidgetSOSClass" android:label="@string/widget_sos" >
+        <receiver
+            android:name=".WidgetSOSClass"
+            android:label="@string/widget_sos">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="kgp.tech.interiit.sos.WIDGET_BUTTON" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+
+            <meta-data
+                android:name="android.appwidget.provider"
                 android:resource="@xml/widget_sos" />
         </receiver>
-        <receiver android:name=".WidgetCALLClass" android:label="@string/widget_call" >
+        <receiver
+            android:name=".WidgetCALLClass"
+            android:label="@string/widget_call">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="kgp.tech.interiit.sos.WIDGET_BUTTON" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+
+            <meta-data
+                android:name="android.appwidget.provider"
                 android:resource="@xml/widget_call" />
         </receiver>
+
+        <activity
+            android:name=".FullMap"
+            android:label="@string/title_activity_full_map"
+            android:theme="@style/AppTheme"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="kgp.tech.interiit.sos.MessageActivity"
+                />
+        </activity>
     </application>
 
 </manifest>

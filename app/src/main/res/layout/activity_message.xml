@@ -206,6 +206,7 @@
             <!--android:layout_marginTop="120dp"-->
 
             <ImageButton
+                android:id="@+id/btn_map"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:scaleType="fitXY"
@@ -213,9 +214,10 @@
                 android:layout_alignParentRight="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="80dp"
-
+                android:onClick="openMap"
                 android:src="@drawable/ic_location_on_white_24dp"/>
         <ImageButton
+            android:id="@+id/btn_voice"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:scaleType="fitXY"

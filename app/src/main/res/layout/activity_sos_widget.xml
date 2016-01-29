@@ -15,6 +15,7 @@
             android:id="@+id/sos_button"
             android:src="@drawable/sos_button"
             android:background="@drawable/fab_red"
+            android:layout_gravity="center"
             />
 
     </LinearLayout>

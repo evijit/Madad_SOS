@@ -4,14 +4,11 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.parse.ParseObject;
 
 import kgp.tech.interiit.sos.Utils.comm;
 
@@ -35,11 +32,7 @@ public class WidgetActivity extends Activity {
         else if(sos_intent.getExtras().getString("type").equals("sos")){
             Log.d("Widget", "SOS");
             Toast.makeText(this, "SOS", Toast.LENGTH_SHORT).show();
-            String channelID = comm.sendSOS();
-
-            Intent intent = new Intent(this, AddSOSDetailActivity.class);
-            intent.putExtra("channelID",channelID);
-            intent.putExtra("mysos",true);
+            Intent intent = new Intent(this, CreateSOSActivity.class);
             startActivity(intent);
             finish();
         }else if(sos_intent.getExtras().getString("type").equals("call")){

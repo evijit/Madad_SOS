@@ -1,18 +1,22 @@
 package kgp.tech.interiit.sos;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +29,14 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
 import com.parse.FunctionCallback;
 import com.parse.Parse;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.pubnub.api.Callback;
@@ -49,6 +55,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -69,54 +76,118 @@ public class MyMapFragment extends Fragment implements LocationListener{
     final static Vector<Places> customPlaces = new Vector<Places>(10); // like People it too has a name
     public static boolean isAnimateCamera = true;
     public NetworkLocationService appLocationServiceNet = null;
-    public static boolean isAddHospital = true;
+    public static boolean isAddHospital = false;
     public static boolean isAddPolice = false;
     public static boolean isAddPharmacy = false;
+
+    static private Context context=null;
 
 
     private ExpandableMenuOverlay menuOverlay;
 
-    public Vector<People> getHelpers() {
-        /*ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS_Users");
-        String SOSid = "SDV";
-        ParseObject sos = new ParseObject("SOS");
-        sos.setObjectId(SOSid);
-        pq.include("UserID");
-        pq.whereEqualTo("SOSid", sos);
-        pq.whereEqualTo("hasAccepted", true);
-        final Vector<People> helpers = new Vector<People>();
-        pq.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                for (ParseObject l : list) {
-                    ParseUser user = l.getParseUser("UserID");
-                    double lat = user.getParseGeoPoint("location").getLatitude();
-                    double lng = user.getParseGeoPoint("location").getLongitude();
-                    helpers.addElement(new People(user.getUsername(),lat,lng));
-                }
-            }
-        });
-        */
-        // We have to get it from the server
-        final Vector<People> helpers = new Vector<People>();
-
-        return helpers;
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        this.context = context;
     }
 
-    public Vector<MarkerOptions> getMarkers() {
-        Vector<People> helpers = getHelpers();
-        Vector<MarkerOptions> markers = new Vector<MarkerOptions>(helpers.size());
-        MarkerOptions mp;
-        for(int i=0;i<helpers.size();i++)
+    public void getHelpers() {
+        SharedPreferences sp = context.getSharedPreferences("SOS", Context.MODE_APPEND | Context.MODE_PRIVATE);
+        String SOSid = null;
+        if(sp!=null) SOSid = sp.getString("sosID", null);
+
+        if(SOSid!=null)
         {
-            mp = new MarkerOptions();
-            mp.title(helpers.get(i).getName());
-            mp.position(helpers.get(i).getLat_lng());
-            mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-            markers.add(mp);
+            ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS_Users");
+
+            ParseObject sos = new ParseObject("SOS");
+            sos.setObjectId(SOSid);
+
+            pq.include("UserID");
+            pq.whereEqualTo("SOSid", sos);
+            pq.whereEqualTo("hasAccepted", true);
+
+
+            pq.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    for (ParseObject l : list) {
+                        ParseUser user = l.getParseUser("UserID");
+                        double lat = user.getParseGeoPoint("Geolocation").getLatitude();
+                        double lng = user.getParseGeoPoint("Geolocation").getLongitude();
+                        Log.d("MyMap","I am in trouble loop");
+                        Log.d("MyMap",user.getUsername()+" Pos " + lat + " " +lng);
+                        Log.d("MyMap",ParseUser.getCurrentUser().getUsername()+" Pos " +
+                                ParseUser.getCurrentUser().getParseGeoPoint("Geolocation").getLatitude() + " " +
+                                ParseUser.getCurrentUser().getParseGeoPoint("Geolocation").getLongitude());
+                        // Adding to map
+                        MarkerOptions mp = new MarkerOptions();
+                        mp.title(user.getUsername());
+                        mp.position(new LatLng(lat,lng));
+                        mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                        mMap.addMarker(mp);
+                    }
+                }
+            });
         }
-        return markers;
+        else
+        {
+            ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS_Users");
+            pq.include("SOSid");
+            pq.include("SOSid.UserID");
+            pq.whereEqualTo("UserID",ParseUser.getCurrentUser());
+            pq.whereEqualTo("hasAccepted", true);
+
+
+            pq.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if(e!=null)
+                    {
+                        e.printStackTrace();
+                        return;
+                    }
+                    for (ParseObject l : list) {
+                        Log.d("MyMap",l.keySet().toString());
+                        if(!(l.getParseObject("SOSid").getBoolean("isActive")))
+                            continue;
+                        ParseUser user = l.getParseObject("SOSid").getParseUser("UserID");
+                        double lat = user.getParseGeoPoint("Geolocation").getLatitude();
+                        double lng = user.getParseGeoPoint("Geolocation").getLongitude();
+
+                        Log.d("MyMap","I am helper");
+                        Log.d("MyMap",user.getUsername()+" Pos " + lat + " " +lng);
+                        Log.d("MyMap",ParseUser.getCurrentUser().getUsername()+" Pos " +
+                                ParseUser.getCurrentUser().getParseGeoPoint("Geolocation").getLatitude() + " " +
+                                ParseUser.getCurrentUser().getParseGeoPoint("Geolocation").getLongitude());
+
+                        // Adding to map
+                        MarkerOptions mp = new MarkerOptions();
+                        mp.title(user.getUsername());
+                        mp.position(new LatLng(lat,lng));
+                        mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                        mMap.addMarker(mp);
+                    }
+                }
+            });
+        }
     }
+
+//    public Vector<MarkerOptions> getMarkers() {
+//        Vector<People> helpers = getHelpers();
+//        Vector<MarkerOptions> markers = new Vector<MarkerOptions>(helpers.size());
+//        MarkerOptions mp;
+//        for(int i=0;i<helpers.size();i++)
+//        {
+//            mp = new MarkerOptions();
+//            mp.title(helpers.get(i).getName());
+//            mp.position(helpers.get(i).getLat_lng());
+//            mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+//            markers.add(mp);
+//        }
+//        return markers;
+//    }
 
     public void addCustomMarkers(final double lat,final double lng, final char type)
     {
@@ -289,7 +360,7 @@ public class MyMapFragment extends Fragment implements LocationListener{
                         // do stuff and dismiss
 //                        Intent i = new Intent(MapsActivity.this, Chatlist.class);
 //                        startActivity(i);
-                        sendSOS();
+                        //sendSOS();
                         menuOverlay.getButtonMenu().toggle();
                         break;
                     case LEFT:
@@ -371,73 +442,6 @@ public class MyMapFragment extends Fragment implements LocationListener{
 //            }
 //    }
 
-    public void sendSOS() {
-        final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
-
-            /* Publish a simple message to the demo_tutorial channel */
-        final JSONObject data = new JSONObject();
-        pubnub.setUUID(ParseUser.getCurrentUser().toString());
-
-        try {
-            //generate channel name
-            final ParseObject obj = new ParseObject("SOS");
-            final String channelName = UUID.randomUUID().toString();
-
-            obj.put("UserID", ParseUser.getCurrentUser());
-            obj.put("channelID", channelName);
-            obj.put("isActive", true);
-            obj.saveInBackground(new SaveCallback() {
-                public void done(ParseException e) {
-                    if (e == null) {
-                        String id = obj.getObjectId();
-                        try {
-                            data.put("userid", ParseUser.getCurrentUser());
-                            data.put("channel", channelName);
-
-                            HashMap<String, Object> params = new HashMap<>();
-                            params.put("username", ParseUser.getCurrentUser().getUsername());
-                            params.put("channel", channelName);
-                            params.put("sosid", id);
-
-                            ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
-                                @Override
-                                public void done(Float fLoat, ParseException e) {
-                                    if (e == null) {
-                                        System.out.println("YAAAY!!!");
-                                    }
-
-                                }
-                            });
-                            pubnub.publish(channelName, "BACHAO!!!", new Callback() {
-                            });
-
-                /* Subscribe to the demo_tutorial channel */
-
-                            pubnub.subscribe(channelName, new Callback() {
-                                public void successCallback(String channel, Object message) {
-                                    System.out.println(message);
-                                }
-
-                                public void errorCallback(String channel, PubnubError error) {
-                                    System.out.println(error.getErrorString());
-                                }
-                            });
-
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
-
-                    } else
-                        System.out.println(e.toString());
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
     @Override
     public void onLocationChanged(final Location location) {
         if(location.getAccuracy() <= appLocationServiceNet.getLocation().getAccuracy())
@@ -446,9 +450,10 @@ public class MyMapFragment extends Fragment implements LocationListener{
             mMap.clear();
 
             ////// Adding Markers for helpers
-            Vector<MarkerOptions> markers = getMarkers();
-            for (int i = 0; i < markers.size(); i++)
-                mMap.addMarker(markers.get(i));
+            //Vector<MarkerOptions> markers = getMarkers();
+//            for (int i = 0; i < markers.size(); i++)
+//                mMap.addMarker(markers.get(i));
+            getHelpers();
             if(isAddHospital) { // 's' is for hospital
                 Thread thread = new Thread(new Runnable() {
                     @Override

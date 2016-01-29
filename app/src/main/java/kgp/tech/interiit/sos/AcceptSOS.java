@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import kgp.tech.interiit.sos.Utils.DateFormater;
 import kgp.tech.interiit.sos.Utils.Utils;
 
 public class AcceptSOS extends AppCompatActivity {
@@ -73,7 +74,7 @@ public class AcceptSOS extends AppCompatActivity {
                 }
 
                 final ParseObject sos = parseObject.getParseObject("SOSid");
-                final ParseUser user = parseObject.getParseObject("SOSid").getParseUser("UserID");
+                final ParseUser user = sos.getParseUser("UserID");
 
                 ParseObject pop = new ParseObject("SOS_Users");
                 pop.put("hasAccepted", true);
@@ -85,15 +86,18 @@ public class AcceptSOS extends AppCompatActivity {
                         if(e!=null)
                         {
                             dia.dismiss();
+                            Utils.showDialog(AcceptSOS.this,e.getMessage());
                             e.printStackTrace();
                             return;
                         }
                         dia.dismiss();
                         Log.d("AcceptedSOS", "Saved");
                         Intent intent = new Intent(AcceptSOS.this, MessageActivity.class);
+                        intent.putExtra("createdAt", DateFormater.formatTimeDate(sos.getCreatedAt()));
                         intent.putExtra("channelID", sos.getString("channelID"));
                         intent.putExtra("username", user.getUsername());
-                        intent.putExtra("Description", user.getString("Description"));
+                        intent.putExtra("Description", sos.getString("Description"));
+                        Log.d("",sos.getString("Description"));
                         startActivity(intent);
                         finish();
                     }

@@ -1,11 +1,8 @@
 package kgp.tech.interiit.sos;
 
-import android.app.ProgressDialog;
-import android.content.AsyncQueryHandler;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.preference.PreferenceManager;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -36,9 +33,7 @@ import android.widget.TextView;
 
 import com.github.fabtransitionactivity.SheetLayout;
 import com.google.android.gms.maps.GoogleMap;
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -46,10 +41,8 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 
 import kgp.tech.interiit.sos.Utils.Helper;
-import kgp.tech.interiit.sos.Utils.UserData;
 
 
 public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFabAnimationEndListener{
@@ -79,8 +72,6 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StartApp.userData = new UserData();
-        //StartApp.userData.update();
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);

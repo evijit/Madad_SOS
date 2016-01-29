@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -39,6 +40,23 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+        // Check if the user started SOS, if yes, go to chat activity
+        SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_PRIVATE);
+        Log.d("SPWA", String.valueOf(sp.contains("sosID")));
+        if(sp.getString("sosID", null)!= null)
+        {
+            Log.d("Welcome","SOS");
+            final Intent intent = new Intent(WelcomeActivity.this, MessageActivity.class);
+            intent.putExtra("channelID", sp.getString("channelID", null));
+            intent.putExtra("username", sp.getString("username", null));
+            intent.putExtra("Description", sp.getString("Description", null));
+            intent.putExtra("createdAt", sp.getString("createdAt", null));
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         final IntentFilter theFilter = new IntentFilter();
         /** System Defined Broadcast */
         theFilter.addAction(Intent.ACTION_SCREEN_ON);
@@ -145,26 +163,6 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
             startActivity(new Intent(this, Login.class));
             finish();
         }
-//        if (findViewById(R.id.fragment_container) != null) {
-//
-//            // However, if we're being restored from a previous state,
-//            // then we don't need to do anything and should return or else
-//            // we could end up with overlapping fragments.
-//            if (savedInstanceState != null) {
-//                return;
-//            }
-//
-//            // Create a new Fragment to be placed in the activity layout
-//            ContactListFragment listFragment = new ContactListFragment();
-//
-//            // In case this activity was started with special instructions from an
-//            // Intent, pass the Intent's extras to the fragment as arguments
-//            listFragment.setArguments(getIntent().getExtras());
-//
-//            // Add the fragment to the 'fragment_container' FrameLayout
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.fragment_container, listFragment).commit();
-//        }
     }
 
     @Override

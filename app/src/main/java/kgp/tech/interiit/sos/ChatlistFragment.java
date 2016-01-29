@@ -99,6 +99,7 @@ public class ChatlistFragment extends Fragment {
                 final Intent intent = new Intent(getActivity(), MessageActivity.class);
                 ParseUser user = sos_list.get(position).getParseUser("UserID");
                 intent.putExtra("channelID", sos_list.get(position).getString("channelID"));
+                intent.putExtra("createdAt", DateFormater.formatTimeDate(sos_list.get(position).getCreatedAt()));
                 intent.putExtra("username", user.getUsername());
                 intent.putExtra("Description", user.getString("Description"));
                 startActivity(intent);

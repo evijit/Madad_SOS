@@ -5,9 +5,12 @@ package kgp.tech.interiit.sos;
  */
 
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.Preference;
 import android.support.design.widget.FloatingActionButton;
+import android.text.format.DateUtils;
 import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -22,6 +25,7 @@ import android.media.MediaPlayer;
 import android.widget.ImageButton;
 
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -34,11 +38,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 
+import kgp.tech.interiit.sos.Utils.DateFormater;
 import kgp.tech.interiit.sos.Utils.Utils;
+import kgp.tech.interiit.sos.Utils.comm;
 
 
-public class AddSOSDetailActivity extends Activity
+public class CreateSOSActivity extends Activity
 {
     private static final String LOG_TAG = "AudioRecordTest";
     private static String mFileName = null;
@@ -106,56 +113,73 @@ public class AddSOSDetailActivity extends Activity
         mRecorder = null;
     }
 
-    public AddSOSDetailActivity() {
+    private ParseObject sos = null;
+    public CreateSOSActivity() {
         mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
         mFileName += "/audiorecordtest.3gp";
     }
 
-//    public ParseObject uploadToParse(File audioFile, ParseObject po, String columnName){
-        private final ParseObject uploadAudioToParse(String message, File audioFile, ParseObject po, String columnName){
+    private void uploadAudioToParse(String message, File audioFile, String columnName){
 
-            if(audioFile != null){
-                Log.d("EB", "audioFile is not NULL: " + audioFile.toString());
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                BufferedInputStream in = null;
-                try {
-                    in = new BufferedInputStream(new FileInputStream(audioFile));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                int read;
-                byte[] buff = new byte[1024];
-                try {
-                    while ((read = in.read(buff)) > 0)
-                    {
-                        out.write(buff, 0, read);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    out.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                byte[] audioBytes = out.toByteArray();
-
-                // Create the ParseFile
-                ParseFile file = new ParseFile(audioFile.getName() , audioBytes);
-                po.put(columnName, file);
-                po.put("Description", message);
-
-                // Upload the file into Parse Cloud
-                file.saveInBackground();
-                po.saveInBackground();
+        if(audioFile != null){
+            Log.d("EB", "audioFile is not NULL: " + audioFile.toString());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            BufferedInputStream in = null;
+            try {
+                in = new BufferedInputStream(new FileInputStream(audioFile));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-            return po;
+            int read;
+            byte[] buff = new byte[1024];
+            try {
+                while ((read = in.read(buff)) > 0)
+                {
+                    out.write(buff, 0, read);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            byte[] audioBytes = out.toByteArray();
+
+            // Create the ParseFile
+            ParseFile file = new ParseFile(audioFile.getName() , audioBytes);
+            sos.put(columnName, file);
+            sos.put("Description", message);
+
+            // Upload the file into Parse Cloud
+            file.saveInBackground();
+            Log.d("Details",message);
+            sos.saveInBackground();
+        }
     }
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-
-
+        Log.d("CreateSOS","Creating sos");
+        sos = comm.sendSOS(getString(R.string.default_sos));
+        if(sos==null)
+        {
+            Utils.showDialog(this,"Please try again.");
+            return;
+        }
+        SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("sosID", sos.getObjectId());
+        editor.putString("username", ParseUser.getCurrentUser().getUsername());
+        editor.putString("channelID", sos.getString("channelID"));
+        editor.putString("Description", sos.getString("Description"));
+        Log.d("CreateSOS", sos.getString("channelID"));
+        Log.d("CreateSOS",(new Date()).toString());
+        editor.putString("createdAt", DateFormater.formatTimeDate(new Date()));
+        editor.commit();
+        Log.d("SPCSA", sos.getObjectId());
+        Log.d("SPCSA", String.valueOf(sp.contains("sosID")));
 
         setContentView(R.layout.activity_record);
 
@@ -196,37 +220,24 @@ public class AddSOSDetailActivity extends Activity
         });
 
         final EditText mTextBox = (EditText) findViewById(R.id.message);
-        FloatingActionButton skip = (FloatingActionButton) findViewById(R.id.skip);
-        FloatingActionButton save = (FloatingActionButton) findViewById(R.id.save);
-
-        skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSOS();
-                finish();
-            }
-
-        });
+        Button save = (Button) findViewById(R.id.save);
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String message = mTextBox.getText().toString();
                 if (message.length() == 0) {
-                    Utils.showDialog(AddSOSDetailActivity.this, getString(R.string.err_fields_empty));
+                    Utils.showDialog(CreateSOSActivity.this, getString(R.string.err_fields_empty));
                     return;
                 }
-                ParseObject parseObject = new ParseObject("SOS");
+                if(sos==null)
+                {
+                    Utils.showDialog(CreateSOSActivity.this,"Please try again.");
+                    return;
+                }
                 File audioFile = new File(mFileName);
-                ParseObject audio = uploadAudioToParse(message, audioFile, parseObject,"audio");
-//                parseObject.put("objectName", "Sos AUdio");
-
-//                parseObject.put("audio",audio);
-
-//                ParseFile audio = new ParseFile();
+                uploadAudioToParse(message, audioFile,"audio");
                 Log.d("audioUpload", message);
-//                parseObject.saveInBackground();
-
                 startSOS();
                 finish();
             }
@@ -236,31 +247,14 @@ public class AddSOSDetailActivity extends Activity
 
     void startSOS()
     {
-
-        ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS");
-        pq.include("UserID");
-        pq.whereEqualTo("channelID",getIntent().getStringExtra("channelID"));
-        final ProgressDialog dia = ProgressDialog.show(AddSOSDetailActivity.this, null, getString(R.string.starting_sos));
-        pq.getFirstInBackground(new GetCallback<ParseObject>() {
-
-            @Override
-            public void done(ParseObject parseObject, ParseException e) {
-                ParseObject sos = parseObject;
-                ParseUser user = parseObject.getParseUser("UserID");
-
-                Intent intent = new Intent(AddSOSDetailActivity.this, MessageActivity.class);
-
-                intent.putExtra("channelID", getIntent().getStringExtra("channelID"));
-                intent.putExtra("mysos", true);
-
-                intent.putExtra("channelID", sos.getString("channelID"));
-                intent.putExtra("username", user.getUsername());
-                intent.putExtra("Description", user.getString("Description"));
-                dia.dismiss();
-                startActivity(intent);
-                finish();
-            }
-        });
+        Intent intent = new Intent(CreateSOSActivity.this, MessageActivity.class);
+        intent.putExtra("sosID", sos.getObjectId());
+        intent.putExtra("channelID", sos.getString("channelID"));
+        intent.putExtra("createdAt", DateFormater.formatTimeDate(sos.getCreatedAt()));
+        intent.putExtra("username", ParseUser.getCurrentUser().getUsername());
+        intent.putExtra("Description", sos.getString("Description"));
+        startActivity(intent);
+        finish();
     }
 
     @Override

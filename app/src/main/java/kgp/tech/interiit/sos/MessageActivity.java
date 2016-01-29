@@ -4,6 +4,7 @@ package kgp.tech.interiit.sos;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -44,6 +45,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -72,6 +74,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     AwesomeAdapter adapter;
     EditText text;
     TextView desc;
+    TextView time;
     static Random rand = new Random();
     static String sender;
     private Toolbar toolbar;
@@ -142,6 +145,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 
         text = (EditText)findViewById(R.id.text);
         desc = (TextView)findViewById(R.id.desc);
+        time = (TextView)findViewById(R.id.time);
 
         //setting data
         Log.d("Message",getIntent().getStringExtra("username"));
@@ -151,11 +155,21 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         user.setUsername(sos_creater);
         Helper.GetProfilePic(user, mImageView, MessageActivity.this);
         desc.setText(getIntent().getStringExtra("Description"));
+        time.setText(getString(R.string.started_at) +" "+ getIntent().getStringExtra("createdAt"));
         mTitlehead.setText(sos_creater);
         sender = sos_creater;
 
         history(channelID);
         recieveMessage(channelID);
+
+        SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_APPEND | Context.MODE_PRIVATE);
+
+        if(sp.getString("sosID", null)!=null)
+        {
+            Log.d("Message","SOS active");
+
+            setcolor(R.color.red);
+        }
 
     }
 
@@ -368,7 +382,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     {
         messages.add(m);
         adapter.notifyDataSetChanged();
-        listView.setSelection(messages.size()-1);
+        listView.setSelection(messages.size() - 1);
     }
 
     @Override
@@ -401,11 +415,33 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         return true;
     }
 
+    public void openMap(View v)
+    {
+        action_openMap();
+    }
+
+    void action_openMap()
+    {
+
+        SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_APPEND | Context.MODE_PRIVATE);
+        if(sp.getString("sosID", null)!=null)
+        {
+            Intent intent = new Intent(MessageActivity.this, FullMap.class);
+            startActivity(intent);
+        }
+        else
+        {
+            Intent intent = new Intent(MessageActivity.this, HomeActivity.class);
+            startActivity(intent);
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_map:
                 // User chose the "Settings" item, show the app settings UI...
+                action_openMap();
                 return true;
 
             case R.id.action_voice:
