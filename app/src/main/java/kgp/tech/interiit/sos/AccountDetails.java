@@ -56,7 +56,7 @@ public class AccountDetails extends AppCompatActivity {
         setContentView(R.layout.activity_account_details);
 
         TextView username= (TextView) findViewById(R.id.username);
-        username.setText(ParseUser.getCurrentUser().getUsername());
+        username.setText(ParseUser.getCurrentUser().getString("displayname"));
 
         TextView phone= (TextView) findViewById(R.id.phone);
         phone.setText(ParseUser.getCurrentUser().getString("phone"));

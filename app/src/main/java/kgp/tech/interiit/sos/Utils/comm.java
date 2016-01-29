@@ -92,6 +92,8 @@ public class comm {
                 params.put("username", ParseUser.getCurrentUser().getUsername());
                 params.put("channel", channelName);
                 params.put("sosid", sos.getObjectId());
+                params.put("type", "sos");
+                params.put("displayName", ParseUser.getCurrentUser().get("displayname"));
 
                 ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
                     @Override

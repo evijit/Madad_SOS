@@ -16,7 +16,9 @@ import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -31,10 +33,10 @@ import kgp.tech.interiit.sos.Utils.Utils;
 
 public class AcceptSOS extends AppCompatActivity {
 
-    private String SOSid;
+    private String SOSId;
     private String channelId;
     private String senderId;
-
+    private String displayname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +45,10 @@ public class AcceptSOS extends AppCompatActivity {
         Intent intent = getIntent();
         try {
             JSONObject data = new JSONObject(intent.getExtras().getString("com.parse.Data"));
-            SOSid = data.getString("sosId");
+            SOSId = data.getString("sosId");
             senderId = data.getString("username");
             channelId = data.getString("chatChannel");
+            displayname = data.getString("displayname");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -57,9 +60,10 @@ public class AcceptSOS extends AppCompatActivity {
         pq.include("SOSid");
         pq.include("SOSid.UserID");
         pq.whereEqualTo("UserID", ParseUser.getCurrentUser());
-        ParseObject sos = ParseObject.createWithoutData("SOS",SOSid);
+        ParseObject sos = new ParseObject("SOS");
 
-        pq.whereEqualTo("SOSid",sos);
+        sos.setObjectId(SOSId);
+        pq.whereEqualTo("SOSid", sos);
         final ProgressDialog dia = ProgressDialog.show(AcceptSOS.this, null, getString(R.string.alert_wait));
         pq.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
@@ -90,12 +94,15 @@ public class AcceptSOS extends AppCompatActivity {
                             return;
                         }
                         dia.dismiss();
+
+                        notifySOS();
                         Log.d("AcceptedSOS", "Saved");
                         Intent intent = new Intent(AcceptSOS.this, MessageActivity.class);
                         intent.putExtra("createdAt", DateFormater.formatTimeDate(sos.getCreatedAt()));
                         intent.putExtra("channelID", sos.getString("channelID"));
                         intent.putExtra("username", user.getUsername());
                         intent.putExtra("Description", sos.getString("Description"));
+                        intent.putExtra("displayname", user.getString("displayname"));
                         Log.d("",sos.getString("Description"));
                         startActivity(intent);
                         finish();
@@ -103,6 +110,35 @@ public class AcceptSOS extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    public void notifySOS() {
+        // Find users near a given location
+        ParseQuery userQuery = ParseUser.getQuery();
+        userQuery.whereEqualTo("username", senderId);
+
+        // Find devices associated with these users
+        ParseQuery pushQuery = ParseInstallation.getQuery();
+        pushQuery.whereMatchesQuery("user", userQuery);
+
+        JSONObject jo = new JSONObject();
+        try {
+            jo.put("title", "Someone is coming to help you!");
+            jo.put("alert", "Ya! I'm coming!");
+            jo.put("sosId", SOSId);
+            jo.put("chatChannel", channelId);
+            jo.put("username", ParseUser.getCurrentUser().getUsername());
+            jo.put("type", "helping");
+            jo.put("displayname", displayname);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Send push notification to query
+        ParsePush push = new ParsePush();
+        push.setQuery(pushQuery); // Set our Installation query
+        push.setData(jo);
+        push.sendInBackground();
     }
 
     public void action_reject_sos(final View v)

@@ -174,6 +174,7 @@ public class CreateSOSActivity extends Activity
         editor.putString("username", ParseUser.getCurrentUser().getUsername());
         editor.putString("channelID", sos.getString("channelID"));
         editor.putString("Description", sos.getString("Description"));
+        editor.putString("displayname", ParseUser.getCurrentUser().getString("displayname"));
         Log.d("CreateSOS", sos.getString("channelID"));
         Log.d("CreateSOS",(new Date()).toString());
         editor.putString("createdAt", DateFormater.formatTimeDate(new Date()));
@@ -195,9 +196,9 @@ public class CreateSOSActivity extends Activity
             public void onClick(View v) {
                 onRecord(mStartRecording);
                 if (mStartRecording) {
-                    ((Button) v).setText("Stop recording");
+                    //this.setText("Stop recording");
                 } else {
-                    ((Button) v).setText("Start recording");
+                    //((Button) v).setText("Start recording");
                 }
                 mStartRecording = !mStartRecording;
             }
@@ -253,6 +254,7 @@ public class CreateSOSActivity extends Activity
         intent.putExtra("createdAt", DateFormater.formatTimeDate(sos.getCreatedAt()));
         intent.putExtra("username", ParseUser.getCurrentUser().getUsername());
         intent.putExtra("Description", sos.getString("Description"));
+        intent.putExtra("displayname", ParseUser.getCurrentUser().getString("displayname"));
         startActivity(intent);
         finish();
     }

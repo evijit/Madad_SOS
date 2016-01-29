@@ -235,6 +235,7 @@
             android:scaleType="fitXY"
             android:layout_marginRight="110dp"
             android:layout_alignParentRight="true"
+            android:onClick="playAudio"
             android:background="@null"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_volume_up_white_24dp"/>

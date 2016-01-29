@@ -8,9 +8,11 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -30,6 +32,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.media.MediaPlayer;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableListView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -52,6 +58,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.List;
@@ -167,8 +175,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         Helper.GetProfilePic(user, mImageView, MessageActivity.this);
         desc.setText(getIntent().getStringExtra("Description"));
         time.setText(getString(R.string.started_at) +" "+ getIntent().getStringExtra("createdAt"));
-        mTitlehead.setText(sos_creater);
-        sender = sos_creater;
+        mTitlehead.setText(getIntent().getStringExtra("displayname"));
+        sender = getIntent().getStringExtra("displayname");
 
         history(channelID);
         recieveMessage(channelID);
@@ -330,8 +338,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 
                         String message = json_mes.getString("message");
                         String username = json_mes.getString("username");
-
-                        final Message m = new Message(username,message,false);
+                        String displayname = json_mes.getString("displayname");
+                        final Message m = new Message(username,displayname,message,false);
                         if(username.equals(ParseUser.getCurrentUser().getUsername()))
                             m.isMine = true;
 
@@ -358,7 +366,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 
     public void history(String channelName){
         final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
-        pubnub.history(channelName,100,false,new Callback() {
+        pubnub.history(channelName, 100, false, new Callback() {
             @Override
             public void successCallback(String channel, final Object message) {
                 try {
@@ -369,20 +377,19 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
                     MessageActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            for (int i = 0; i < messages.length(); i++)
-                            {
+                            for (int i = 0; i < messages.length(); i++) {
                                 try {
                                     JSONObject jsonMsg = messages.getJSONObject(i);
 
                                     String message = jsonMsg.getString("message");
                                     String username = jsonMsg.getString("username");
-
-                                    final Message m = new Message(username, message, false);
+                                    String displayname = jsonMsg.getString("displayname");
+                                    final Message m = new Message(username, displayname, message, false);
                                     if (username.equals(ParseUser.getCurrentUser().getUsername()))
                                         m.isMine = true;
 
                                     addNewMessage(m);
-                                }catch (JSONException e) { // Handle errors silently
+                                } catch (JSONException e) { // Handle errors silently
                                     e.printStackTrace();
                                 }
                             }
@@ -427,14 +434,14 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     {
 
         mOverlayView.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
-        cont.setBackgroundColor(ContextCompat.getColor(this,R.color.red));
+        cont.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.darkred));
         }
-        toolbar.setBackgroundColor(ContextCompat.getColor(this,R.color.red));
-        sendfab.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.red));
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+        sendfab.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red));
 
 
 
@@ -451,6 +458,76 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     public void openMap(View v)
     {
         action_openMap();
+    }
+    public void playAudio(View v)
+    {
+        action_playAudio();
+    }
+
+    void action_playAudio(){
+        String filePath;
+        filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        filePath += "/audiorecordtest.3gp";
+        MediaPlayer mp = new MediaPlayer();
+        File file = new File(filePath);
+        try{
+            if(file.exists()) {
+                mp.setDataSource(filePath);//Write your location here
+                mp.prepare();
+                if(mp.isPlaying()){
+                    mp.stop();
+                    mp.release();
+                    mp = null;
+                }else {
+                    mp.start();
+                }
+            }else{
+//                MediaPlayer mediaPlayer = new MediaPlayer();
+                SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_APPEND | Context.MODE_PRIVATE);
+                String sosID = sp.getString("sosID", null);
+                if(sosID != null){
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("SOS");
+                    query.whereEqualTo("objectId", sosID).getInBackground("audioFile", new GetCallback<ParseObject>() {
+
+                        public void done(ParseObject recording, com.parse.ParseException e) {
+                            if (e != null) {
+                                //do nothing
+                            } else {
+                                ParseFile audioFile = recording.getParseFile("AudioFile");
+                                String audioFileURL = audioFile.getUrl();
+                                MediaPlayer mediaPlayer = new MediaPlayer();
+                                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                                try {
+                                    mediaPlayer.setDataSource(audioFileURL);
+                                    mediaPlayer.prepare();
+                                    if(mediaPlayer.isPlaying()){
+                                        mediaPlayer.stop();
+                                        mediaPlayer.release();
+                                        mediaPlayer = null;
+                                    }else {
+                                        mediaPlayer.start();
+                                    }
+                                    //
+                                } catch (IllegalArgumentException e1) {
+                                    // TODO Auto-generated catch block
+                                    e1.printStackTrace();
+                                } catch (SecurityException e1) {
+                                    // TODO Auto-generated catch block
+                                    e1.printStackTrace();
+                                } catch (IllegalStateException e1) {
+                                    // TODO Auto-generated catch block
+                                    e1.printStackTrace();
+                                } catch (IOException e1) {
+                                    // TODO Auto-generated catch block
+                                    e1.printStackTrace();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        }catch(Exception e){e.printStackTrace();}
+
     }
 
     void action_openMap()

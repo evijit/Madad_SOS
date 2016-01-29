@@ -31,6 +31,7 @@ public class Signup extends AppCompatActivity {
         final EditText email = (EditText) findViewById(R.id.email);
         final EditText address = (EditText) findViewById(R.id.address);
         final EditText phone = (EditText) findViewById(R.id.phone);
+        final EditText name = (EditText) findViewById(R.id.displayname);
 
         pass.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
@@ -54,6 +55,7 @@ public class Signup extends AppCompatActivity {
                 String semail =email.getText().toString();
                 String saddress = address.getText().toString();
                 String sphone = phone.getText().toString();
+                String sname =  name.getText().toString();
                 if (susername.length() == 0 || spassword.length() == 0 || semail.length()==0) {
                     Utils.showDialog(Signup.this, getString(R.string.err_fields_empty));
                     return;
@@ -65,7 +67,8 @@ public class Signup extends AppCompatActivity {
                 user.setEmail(semail);
                 user.put("address", saddress);
                 user.put("phone",sphone);
-                user.put("distance", 100/1000.0);
+                user.put("distance", 1000/1000.0);
+                user.put("displayname", sname);
                 final ProgressDialog dia = ProgressDialog.show(Signup.this, null, getString(R.string.alert_wait));
 
                 user.signUpInBackground(new SignUpCallback() {

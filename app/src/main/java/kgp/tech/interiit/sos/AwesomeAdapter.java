@@ -61,7 +61,7 @@ public class AwesomeAdapter extends BaseAdapter {
         holder.message.setText(message.getMessage());
         n=(TextView)convertView.findViewById(R.id.name);
 
-        n.setText(message.getUserame());
+        n.setText(message.getDisplayname());
 
         LayoutParams lp = (LayoutParams) holder.message.getLayoutParams();
         LayoutParams lp1 = (LayoutParams) n.getLayoutParams();
