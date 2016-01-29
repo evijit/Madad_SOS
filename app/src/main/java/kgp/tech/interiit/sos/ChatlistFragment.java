@@ -134,6 +134,8 @@ public class ChatlistFragment extends Fragment {
 
                 for (ParseObject psos : list) {
                     ParseObject sos = psos.getParseObject("SOSid");
+                    if(!sos.getBoolean("isActive"))
+                        continue;
                     sos.pinInBackground();
                     sos_list.add(sos);
                 }
