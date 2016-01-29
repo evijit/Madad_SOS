@@ -53,7 +53,18 @@
         android:minHeight="?attr/actionBarSize"
         android:textColor="#fff"
         android:textSize="14sp" />
-    
+
+    <TextView
+        android:id="@+id/people"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="70dp"
+        android:text="5 people coming to help"
+        android:minHeight="?attr/actionBarSize"
+        android:textColor="#fff"
+        android:textSize="14sp" />
 
 
     <!--<ImageButton-->
@@ -238,11 +249,10 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         app:backgroundTint="#fff"
-        android:src="@drawable/ic_loc"
+        android:src="@drawable/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="center"
-        android:visibility="invisible"
         android:layout_gravity="left|top"
         />
 </FrameLayout>
