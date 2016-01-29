@@ -65,7 +65,7 @@ public class Signup extends AppCompatActivity {
                 user.setEmail(semail);
                 user.put("address", saddress);
                 user.put("phone",sphone);
-
+                user.put("distance", 100/1000.0);
                 final ProgressDialog dia = ProgressDialog.show(Signup.this, null, getString(R.string.alert_wait));
 
                 user.signUpInBackground(new SignUpCallback() {

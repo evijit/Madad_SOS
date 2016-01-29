@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 /**
  * Created by akshaygupta on 25/01/16.
@@ -43,6 +47,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if (key.equals("pref_distance")) {
             Preference pref = findPreference(key);
             pref.setSummary(sharedPreferences.getString(key, ""));
+            ParseUser pu = ParseUser.getCurrentUser();
+            Log.d("SETTINGS", sharedPreferences.getString(key, "100"));
+            pu.put("distance", Float.parseFloat(sharedPreferences.getString(key, "100"))/1000.0);
+            pu.saveEventually();
         }
     }
+
+
 }
