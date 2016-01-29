@@ -12,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.util.Log;
@@ -424,7 +426,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     void setcolorred()//use setcolor R.color.red for Self SOS
     {
 
-        mOverlayView.setBackgroundColor(ContextCompat.getColor(this,R.color.red));
+        mOverlayView.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
         cont.setBackgroundColor(ContextCompat.getColor(this,R.color.red));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
