@@ -105,11 +105,6 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         sendfab=(FloatingActionButton)findViewById(R.id.second_send_button_sms_view);
 
         toolbar=(Toolbar)findViewById(R.id.toolbar);
-        if(toolbar!=null) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        }
 
         listView = (ObservableListView) findViewById(R.id.list);
         //text = (EditText) this.findViewById(R.id.text);
@@ -179,12 +174,17 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         recieveMessage(channelID);
 
         SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_APPEND | Context.MODE_PRIVATE);
-
+        setSupportActionBar(toolbar);
         if(sp.getString("sosID", null)!=null)
         {
             Log.d("Message","SOS active");
 
             setcolorred();
+        }
+        else{
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
 
         //setcolorred();

@@ -31,7 +31,7 @@ import kgp.tech.interiit.sos.Utils.Utils;
 
 public class AcceptSOS extends AppCompatActivity {
 
-    private String SOSId;
+    private String SOSid;
     private String channelId;
     private String senderId;
 
@@ -43,7 +43,7 @@ public class AcceptSOS extends AppCompatActivity {
         Intent intent = getIntent();
         try {
             JSONObject data = new JSONObject(intent.getExtras().getString("com.parse.Data"));
-            SOSId = data.getString("sosId");
+            SOSid = data.getString("sosId");
             senderId = data.getString("username");
             channelId = data.getString("chatChannel");
         } catch (JSONException e) {
@@ -57,9 +57,8 @@ public class AcceptSOS extends AppCompatActivity {
         pq.include("SOSid");
         pq.include("SOSid.UserID");
         pq.whereEqualTo("UserID", ParseUser.getCurrentUser());
-        ParseObject sos = new ParseObject("SOS");
+        ParseObject sos = ParseObject.createWithoutData("SOS",SOSid);
 
-        sos.setObjectId(SOSId);
         pq.whereEqualTo("SOSid",sos);
         final ProgressDialog dia = ProgressDialog.show(AcceptSOS.this, null, getString(R.string.alert_wait));
         pq.getFirstInBackground(new GetCallback<ParseObject>() {

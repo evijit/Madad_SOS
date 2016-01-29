@@ -6,7 +6,8 @@ package kgp.tech.interiit.sos;
 
 
         import android.content.Context;
-import android.graphics.Color;
+        import android.content.SharedPreferences;
+        import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +79,12 @@ public class AwesomeAdapter extends BaseAdapter {
             //Check whether message is mine to show green background and align to right
             if(message.isMine())
             {
-                holder.message.setBackgroundResource(R.drawable.going_primary);
+                SharedPreferences sp = mContext.getSharedPreferences("SOS", Context.MODE_PRIVATE);
+                if(sp.getString("sosID", null)!=null)
+                    holder.message.setBackgroundResource(R.drawable.going_red);
+                else
+                    holder.message.setBackgroundResource(R.drawable.going_primary);
+
                 holder.message.setTextColor(Color.parseColor("#ffffff"));
                 lp.gravity = Gravity.RIGHT;
                 lp1.gravity = Gravity.RIGHT;

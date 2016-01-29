@@ -95,7 +95,10 @@ public class NetworkLocationService extends Service implements LocationListener 
         if(maps.mMap!=null) {
             maps.mMap.clear();
             ////// Adding Markers for helpers
+            Log.e("Network Loc","Invoked get helpers" );
+
             maps.getHelpers();
+            Log.e("Network Loc", "Finished get helpers");
 
             if(maps.isAddHospital) { // 's' is for hospital
                 Thread thread = new Thread(new Runnable() {
