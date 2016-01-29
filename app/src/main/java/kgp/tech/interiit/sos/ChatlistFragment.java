@@ -49,7 +49,7 @@ public class ChatlistFragment extends Fragment {
     private List<ParseObject> sos_list = new ArrayList<ParseObject>();;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.frag_chatlist, container, false);
 
@@ -102,6 +102,7 @@ public class ChatlistFragment extends Fragment {
                 intent.putExtra("createdAt", DateFormater.formatTimeDate(sos_list.get(position).getCreatedAt()));
                 intent.putExtra("username", user.getUsername());
                 intent.putExtra("Description", user.getString("Description"));
+                intent.putExtra("displayname", user.getString("displayname"));
                 startActivity(intent);
             }
         });
@@ -210,7 +211,7 @@ class MyAdapter extends BaseAdapter {
         final ParseUser user = sos_list.get(position).getParseUser("UserID");
         user.pinInBackground();
 
-        sos_title.setText(user.getUsername());
+        sos_title.setText(user.getString("displayname"));
         sos_message.setText(sos_list.get(position).getString("Description"));
 
         sos_time.setText(DateFormater.formatTime(sos_list.get(position).getCreatedAt()));
@@ -222,8 +223,5 @@ class MyAdapter extends BaseAdapter {
         Log.d("ChatList", "wow");
         return row;
     }
-
-
-
 }
 

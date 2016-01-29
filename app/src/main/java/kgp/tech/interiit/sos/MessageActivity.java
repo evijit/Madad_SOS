@@ -167,8 +167,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         Helper.GetProfilePic(user, mImageView, MessageActivity.this);
         desc.setText(getIntent().getStringExtra("Description"));
         time.setText(getString(R.string.started_at) +" "+ getIntent().getStringExtra("createdAt"));
-        mTitlehead.setText(sos_creater);
-        sender = sos_creater;
+        mTitlehead.setText(getIntent().getStringExtra("displayname"));
+        sender = getIntent().getStringExtra("displayname");
 
         history(channelID);
         recieveMessage(channelID);
@@ -330,8 +330,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 
                         String message = json_mes.getString("message");
                         String username = json_mes.getString("username");
-
-                        final Message m = new Message(username,message,false);
+                        String displayname = json_mes.getString("displayname");
+                        final Message m = new Message(username,displayname,message,false);
                         if(username.equals(ParseUser.getCurrentUser().getUsername()))
                             m.isMine = true;
 
@@ -376,8 +376,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 
                                     String message = jsonMsg.getString("message");
                                     String username = jsonMsg.getString("username");
-
-                                    final Message m = new Message(username, message, false);
+                                    String displayname = jsonMsg.getString("displayname");
+                                    final Message m = new Message(username, displayname, message, false);
                                     if (username.equals(ParseUser.getCurrentUser().getUsername()))
                                         m.isMine = true;
 

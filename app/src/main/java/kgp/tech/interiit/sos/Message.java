@@ -16,6 +16,7 @@ public class Message {
      */
     String username;
     String message;
+    String displayname;
     /**
      * boolean to determine, who is sender of this message
      */
@@ -29,9 +30,10 @@ public class Message {
     /**
      * Constructor to make a Message object
      */
-    public Message(String username, String message, boolean isMine) {
+    public Message(String username, String displayname, String message, boolean isMine) {
         super();
         this.username = username;
+        this.displayname = displayname;
         this.message = message;
         this.isMine = isMine;
         this.isStatusMessage = false;
@@ -50,8 +52,11 @@ public class Message {
     public String getMessage() {
         return message;
     }
-    public String getUserame() {
+    public String getUsername() {
         return username;
+    }
+    public String getDisplayname() {
+        return displayname;
     }
     public void setMessage(String message) {
         this.message = message;

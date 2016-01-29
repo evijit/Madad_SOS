@@ -52,6 +52,7 @@ public class WelcomeActivity extends AppCompatActivity implements ContactItemFra
             intent.putExtra("username", sp.getString("username", null));
             intent.putExtra("Description", sp.getString("Description", null));
             intent.putExtra("createdAt", sp.getString("createdAt", null));
+            intent.putExtra("displayName", sp.getString("displayName", null));
             startActivity(intent);
             finish();
             return;
