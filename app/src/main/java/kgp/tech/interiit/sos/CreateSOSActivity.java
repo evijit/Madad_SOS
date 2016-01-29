@@ -196,9 +196,9 @@ public class CreateSOSActivity extends Activity
             public void onClick(View v) {
                 onRecord(mStartRecording);
                 if (mStartRecording) {
-                    ((Button) v).setText("Stop recording");
+                    //this.setText("Stop recording");
                 } else {
-                    ((Button) v).setText("Start recording");
+                    //((Button) v).setText("Start recording");
                 }
                 mStartRecording = !mStartRecording;
             }
