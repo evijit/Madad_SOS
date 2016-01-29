@@ -122,7 +122,7 @@ public class AcceptSOS extends AppCompatActivity {
         try {
             jo.put("title", "Someone is coming to help you!");
             jo.put("alert", "Ya! I'm coming!");
-            jo.put("sosId", SOSId);
+            jo.put("sosId", SOSid);
             jo.put("chatChannel", channelId);
             jo.put("username", ParseUser.getCurrentUser().getUsername());
             jo.put("type", "helping");

@@ -54,7 +54,7 @@ public class CustomReceiver extends ParsePushBroadcastReceiver {
             senderId = data.getString("username");
             channelId = data.getString("chatChannel");
             type = data.getString("type");
-            name = data.getString("displayName");
+            name = data.getString("displayname");
         } catch (JSONException e) {
             e.printStackTrace();
         }

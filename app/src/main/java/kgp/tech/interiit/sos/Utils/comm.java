@@ -93,7 +93,7 @@ public class comm {
                 params.put("channel", channelName);
                 params.put("sosid", sos.getObjectId());
                 params.put("type", "sos");
-                params.put("displayName", ParseUser.getCurrentUser().get("displayname"));
+                params.put("displayname", ParseUser.getCurrentUser().get("displayname"));
 
                 ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
                     @Override
@@ -101,6 +101,9 @@ public class comm {
                         if (e == null) {
                             System.out.println("YAAAY!!!");
                             sendMessage(channelName, "Help me");
+                        }
+                        else{
+                            e.printStackTrace();
                         }
                     }
                 });
@@ -122,6 +125,7 @@ public class comm {
         try {
             data.put("username",ParseUser.getCurrentUser().getUsername());
             data.put("message",message);
+            data.put("displayname",ParseUser.getCurrentUser().getString("displayname"));
             pubnub.publish(channelName, data, new Callback() {
             });
         } catch (JSONException e) {
