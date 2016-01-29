@@ -50,6 +50,13 @@ public class AnimatedButtons extends AppCompatActivity {
         ImageButton i5= (ImageButton) findViewById(R.id.fab5);
         ImageButton i6= (ImageButton) findViewById(R.id.fab6);
         ImageButton i7= (ImageButton) findViewById(R.id.fab7);
+
+        SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_APPEND | Context.MODE_PRIVATE);
+
+        if(sp.getString("sosID", null)!=null)
+        {
+            i7.setImageResource(R.drawable.ic_stop_white_24dp);
+        }
         FloatingActionButton ix= (FloatingActionButton) findViewById(R.id.fab);
 
 
@@ -58,7 +65,7 @@ public class AnimatedButtons extends AppCompatActivity {
         View[] views = new View[] {i7,i1,i2,i3,i4,i5,i6,ix };
 
 // 100ms delay between Animations
-        long delayBetweenAnimations = 100l;
+        long delayBetweenAnimations = 80l;
 
         for(int i = 0; i < views.length; i++) {
             final View view = views[i];
@@ -95,6 +102,13 @@ public class AnimatedButtons extends AppCompatActivity {
 
     public void action_sos(View v)
     {
+        SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_APPEND | Context.MODE_PRIVATE);
+
+        if(sp.getString("sosID", null)!=null)
+        {
+            action_cancel_sos(v);
+            return;
+        }
         Intent intent = new Intent(this, CreateSOSActivity.class);
         startActivity(intent);
         finish();
@@ -135,9 +149,10 @@ public class AnimatedButtons extends AppCompatActivity {
                                         SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sp.edit();
                                         editor.putString("sosID", null);
+                                        editor.commit();
                                         dia.dismiss();
 
-                                        Intent intent = new Intent(AnimatedButtons.this, HomeActivity.class);
+                                        Intent intent = new Intent(AnimatedButtons.this, WelcomeActivity.class);
                                         startActivity(intent);
                                         finish();
                                     }
