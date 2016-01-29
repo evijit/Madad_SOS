@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.telephony.PhoneNumberUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import java.util.regex.Pattern;
 
 import kgp.tech.interiit.sos.Utils.Utils;
 
@@ -45,6 +49,8 @@ public class Signup extends AppCompatActivity {
             }
         });
 
+        phone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
         Button b=(Button)findViewById(R.id.butt);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,8 +59,13 @@ public class Signup extends AppCompatActivity {
                 EditText pass = (EditText) findViewById(R.id.password);
                 String spassword = pass.getText().toString();
                 String semail =email.getText().toString();
+                if(isValidEmaillId(semail))
+                {
+                    Utils.showDialog(Signup.this,"Please enter a valid email address.");
+                    return;
+                }
                 String saddress = address.getText().toString();
-                String sphone = phone.getText().toString();
+                String sphone = PhoneNumberUtils.normalizeNumber(phone.getText().toString());
                 String sname =  name.getText().toString();
                 if (susername.length() == 0 || spassword.length() == 0 || semail.length()==0) {
                     Utils.showDialog(Signup.this, getString(R.string.err_fields_empty));
@@ -88,6 +99,16 @@ public class Signup extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private boolean isValidEmaillId(String email){
+
+        return Pattern.compile("^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
+                + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+                + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
+                + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$").matcher(email).matches();
     }
 
     @Override

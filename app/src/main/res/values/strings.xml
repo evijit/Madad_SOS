@@ -85,6 +85,8 @@
     <string name="title_activity_first_time">"Hello "</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="cancel_sos">This will de-activate SOS.</string>
+    <string name="cur_loc">Current Location:</string>
+    <string name="coming">people are coming to help</string>
 
     <!-- Settings Page Strings -->
     <string name="settings">Settings</string>

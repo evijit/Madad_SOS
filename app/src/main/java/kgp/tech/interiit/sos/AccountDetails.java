@@ -66,6 +66,9 @@ public class AccountDetails extends AppCompatActivity {
 
         ImageView image = (ImageView) findViewById(R.id.photo);
         Helper.GetProfilePic(ParseUser.getCurrentUser(), image, this);
+
+        TextView loc= (TextView) findViewById(R.id.location);
+        loc.setText(ParseUser.getCurrentUser().getString("location"));
     }
 
     public void photoupload(View v)

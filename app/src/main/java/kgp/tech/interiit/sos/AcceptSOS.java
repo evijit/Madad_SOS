@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -29,6 +31,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import kgp.tech.interiit.sos.Utils.DateFormater;
+import kgp.tech.interiit.sos.Utils.Helper;
 import kgp.tech.interiit.sos.Utils.Utils;
 
 public class AcceptSOS extends AppCompatActivity {
@@ -37,6 +40,8 @@ public class AcceptSOS extends AppCompatActivity {
     private String channelId;
     private String senderId;
     private String displayname;
+    private String createdtime;
+    private String location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +50,46 @@ public class AcceptSOS extends AppCompatActivity {
         Intent intent = getIntent();
         try {
             JSONObject data = new JSONObject(intent.getExtras().getString("com.parse.Data"));
+            Log.d("AcceptSOS",data.toString());
             SOSid = data.getString("sosId");
             Log.d("AcceptSOS","sosid "+SOSid);
             senderId = data.getString("username");
             channelId = data.getString("chatChannel");
             displayname = data.getString("displayname");
+            location = data.getString("location");
+            createdtime = DateFormater.formatString(data.getString("ctime"));
+
+            TextView username = (TextView)findViewById(R.id.username);
+            username.setText(displayname);
+
+            TextView det = (TextView)findViewById(R.id.detail);
+            det.setText(getString(R.string.default_sos));
+
+            TextView loc = (TextView)findViewById(R.id.addr);
+            loc.setText(location);
+
+            TextView tim = (TextView)findViewById(R.id.tim);
+            tim.setText(createdtime);
+
+            Log.d("AcceptedSOS", displayname);
+            Log.d("AcceptedSOS",location);
+
+
+            final ImageView img = (ImageView) findViewById(R.id.img);
+            ParseQuery<ParseUser> pq = ParseUser.getQuery();
+            pq.whereEqualTo("username", senderId);
+            pq.findInBackground(new FindCallback<ParseUser>() {
+                @Override
+                public void done(List<ParseUser> list, ParseException e) {
+                    if(e!=null)
+                    {
+                        e.printStackTrace();
+                        return;
+                    }
+                    Helper.GetProfilePic(list.get(0), img, AcceptSOS.this);
+                }
+            });
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -61,8 +101,8 @@ public class AcceptSOS extends AppCompatActivity {
         pq.include("SOSid");
         pq.include("SOSid.UserID");
         pq.whereEqualTo("UserID", ParseUser.getCurrentUser());
-        ParseObject sos = ParseObject.createWithoutData("SOS",SOSid);
-
+        ParseObject sos = ParseObject.createWithoutData("SOS", SOSid);
+        Log.d("AcceptedSOS","accepting");
         pq.whereEqualTo("SOSid",sos);
         final ProgressDialog dia = ProgressDialog.show(AcceptSOS.this, null, getString(R.string.alert_wait));
         pq.getFirstInBackground(new GetCallback<ParseObject>() {
@@ -110,12 +150,13 @@ public class AcceptSOS extends AppCompatActivity {
     }
 
     public void notifySOS() {
+        Log.d("AcceptedSOS","notifying");
         // Find users near a given location
-        ParseQuery userQuery = ParseUser.getQuery();
+        ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
         userQuery.whereEqualTo("username", senderId);
 
         // Find devices associated with these users
-        ParseQuery pushQuery = ParseInstallation.getQuery();
+        ParseQuery<ParseInstallation> pushQuery = ParseInstallation.getQuery();
         pushQuery.whereMatchesQuery("user", userQuery);
 
         JSONObject jo = new JSONObject();
@@ -143,13 +184,11 @@ public class AcceptSOS extends AppCompatActivity {
         Utils.showDialog(this, getString(R.string.please_help), R.string.save, R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Log.d("AcceptSOS",which+" whc");
                 switch (which) {
                     case DialogInterface.BUTTON_NEGATIVE:
-                        Log.d("AcceptSOS","neg");
-                        Intent intent = new Intent(AcceptSOS.this, WelcomeActivity.class);
-                        startActivity(intent);
+                        Log.d("AcceptSOS", "neg");
                         finish();
-
                         break;
                     case DialogInterface.BUTTON_POSITIVE:
                         Log.d("AcceptSOS","pos");

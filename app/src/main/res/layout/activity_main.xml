@@ -98,7 +98,7 @@ android:orientation="vertical" >
     android:padding="20dp"
     android:id="@+id/image_view"
     android:background="@color/primary"
-    android:layout_height="190dp">
+    android:layout_height="wrap_content">
 
 
 
@@ -141,7 +141,7 @@ android:orientation="vertical" >
     android:text="Current Location: IIT Kharagpur"
     android:textColor="#ffffff"
     android:textSize="11sp"
-    android:id="@+id/designation"
+    android:id="@+id/location"
     android:layout_gravity="left" />
 </LinearLayout>
 

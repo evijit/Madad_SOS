@@ -33,6 +33,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.media.MediaPlayer;
+
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -186,7 +188,6 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         if(sp.getString("sosID", null)!=null)
         {
             Log.d("Message","SOS active");
-
             setcolorred();
         }
         else{
@@ -195,6 +196,28 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
 
+        ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS");
+        pq.whereEqualTo("channelID",channelID);
+        pq.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if(e!=null)
+                {
+                    e.printStackTrace();
+                    return;
+                }
+                ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS_Users");
+                pq.whereEqualTo("SOSid",parseObject);
+                pq.whereEqualTo("hasAccepted",true);
+                pq.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> list, ParseException e) {
+                        TextView help = (TextView) findViewById(R.id.help);
+                        help.setText(list.size() + " " + getString(R.string.coming));
+                    }
+                });
+            }
+        });
         //setcolorred();
 
     }
@@ -461,72 +484,55 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     }
     public void playAudio(View v)
     {
-        action_playAudio();
+        action_playAudio(channelID);
     }
 
-    void action_playAudio(){
-        String filePath;
-        filePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-        filePath += "/audiorecordtest.3gp";
-        MediaPlayer mp = new MediaPlayer();
-        File file = new File(filePath);
-        try{
-            if(file.exists()) {
-                mp.setDataSource(filePath);//Write your location here
-                mp.prepare();
-                if(mp.isPlaying()){
-                    mp.stop();
-                    mp.release();
-                    mp = null;
-                }else {
-                    mp.start();
-                }
-            }else{
-//                MediaPlayer mediaPlayer = new MediaPlayer();
-                SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_APPEND | Context.MODE_PRIVATE);
-                String sosID = sp.getString("sosID", null);
-                if(sosID != null){
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("SOS");
-                    query.whereEqualTo("objectId", sosID).getInBackground("audioFile", new GetCallback<ParseObject>() {
+    void action_playAudio(String name){
 
-                        public void done(ParseObject recording, com.parse.ParseException e) {
-                            if (e != null) {
-                                //do nothing
-                            } else {
-                                ParseFile audioFile = recording.getParseFile("AudioFile");
-                                String audioFileURL = audioFile.getUrl();
-                                MediaPlayer mediaPlayer = new MediaPlayer();
-                                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                                try {
-                                    mediaPlayer.setDataSource(audioFileURL);
-                                    mediaPlayer.prepare();
-                                    if(mediaPlayer.isPlaying()){
-                                        mediaPlayer.stop();
-                                        mediaPlayer.release();
-                                        mediaPlayer = null;
-                                    }else {
-                                        mediaPlayer.start();
-                                    }
-                                    //
-                                } catch (IllegalArgumentException e1) {
-                                    // TODO Auto-generated catch block
-                                    e1.printStackTrace();
-                                } catch (SecurityException e1) {
-                                    // TODO Auto-generated catch block
-                                    e1.printStackTrace();
-                                } catch (IllegalStateException e1) {
-                                    // TODO Auto-generated catch block
-                                    e1.printStackTrace();
-                                } catch (IOException e1) {
-                                    // TODO Auto-generated catch block
-                                    e1.printStackTrace();
-                                }
-                            }
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("SOS");
+        query.whereEqualTo("channelID",channelID);
+        Log.d("MessageActivity", channelID);
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+
+            public void done(ParseObject recording, com.parse.ParseException e) {
+                if (e != null) {
+                    e.printStackTrace();
+                    Log.d("MessageActivity", e.getMessage());
+
+                    return;
+                } else {
+                    ParseFile audioFile = recording.getParseFile("audio");
+                    String audioFileURL = audioFile.getUrl();
+                    MediaPlayer mediaPlayer = new MediaPlayer();
+                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    Log.d("MessageActivity", "Playing Audio");
+                    try {
+                        mediaPlayer.setDataSource(audioFileURL);
+                        mediaPlayer.prepare();
+                        if (mediaPlayer.isPlaying()) {
+                            mediaPlayer.stop();
+                            mediaPlayer.release();
+                            mediaPlayer = null;
+                        } else {
+                            mediaPlayer.start();
                         }
-                    });
+                        //
+                    } catch (IllegalArgumentException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (SecurityException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (IllegalStateException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
             }
-        }catch(Exception e){e.printStackTrace();}
+        });
 
     }
 

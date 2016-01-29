@@ -53,6 +53,17 @@
         android:minHeight="?attr/actionBarSize"
         android:textColor="#fff"
         android:textSize="14sp" />
+    <TextView
+        android:id="@+id/help"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="100dp"
+        android:text="SOS activated on 3rd Jan at 5:40pm"
+        android:minHeight="?attr/actionBarSize"
+        android:textColor="#fff"
+        android:textSize="14sp" />
     
 
 

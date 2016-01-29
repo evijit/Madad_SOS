@@ -83,7 +83,7 @@ public class MyMapFragment extends Fragment implements LocationListener{
     public static boolean isAddPharmacy = false;
     static Vector<MarkerOptions> helpers_pre = null, helpers_now = null;
     static Vector<MarkerOptions> to_help_pre = null, to_help_now = null;
-
+    public static Location pre_place_point = null;
     static private Context context=null;
 
 
@@ -281,6 +281,8 @@ public class MyMapFragment extends Fragment implements LocationListener{
                                 }
                             }
                         } catch (JSONException e) {
+
+                            pre_hospital_point = null;
                             e.printStackTrace();
                         }
                         //Your code goes here
@@ -517,6 +519,53 @@ public class MyMapFragment extends Fragment implements LocationListener{
                         new LatLng(location.getLatitude(), location.getLongitude()), 16));
                 isAnimateCamera = false;
             }
+            final double lat = location.getLatitude();
+            final  double lng = location.getLongitude();
+            boolean was_null = false;
+            if(pre_place_point == null) {
+                was_null =true;
+                pre_place_point = new Location("loc");
+                pre_place_point.setLongitude(lng);
+                pre_place_point.setLatitude(lat);
+            }
+
+            Thread thread = new Thread(new Runnable() {
+
+
+                @Override
+                public void run() {
+                    try {
+                        String url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true";
+                        String data = getJSON(url, 3000);
+                        try {
+                            pre_place_point = location;
+                            JSONObject jsonRootObject = new JSONObject(data);
+
+                            //Get the instance of JSONArray that contains JSONObjects
+                            JSONArray jsonArray = jsonRootObject.getJSONArray("results");
+
+                            //Iterate the jsonArray and print the info of JSONObjects
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+                            String name = jsonObject.optString("formatted_address").toString();
+
+                            Log.e("Place Name is ", name);
+                            if(ParseUser.getCurrentUser()!=null) {
+                                ParseUser.getCurrentUser().put("location", name);
+                                ParseUser.getCurrentUser().saveInBackground();
+                            }
+                        } catch (JSONException e) {
+                            pre_place_point = null;
+                            e.printStackTrace();
+                        }
+                        //Your code goes here
+                    } catch (Exception e) {
+                        pre_place_point = null;
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.run();
         }
     }
 

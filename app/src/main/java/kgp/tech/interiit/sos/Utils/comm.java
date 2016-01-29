@@ -17,6 +17,7 @@ import com.pubnub.api.PubnubException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -94,6 +95,7 @@ public class comm {
                 params.put("sosid", sos.getObjectId());
                 params.put("type", "sos");
                 params.put("displayname", ParseUser.getCurrentUser().get("displayname"));
+                params.put("ctime", (new Date()).toString());
 
                 ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
                     @Override
@@ -115,6 +117,27 @@ public class comm {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static void checkIfUser(String trustedid)
+    {
+        try {
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("trustedid", trustedid);
+
+            ParseCloud.callFunctionInBackground("checkifuser", params, new FunctionCallback<Float>() {
+                @Override
+                public void done(Float fLoat, ParseException e) {
+                    if (e == null) {
+                    }
+                    else{
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

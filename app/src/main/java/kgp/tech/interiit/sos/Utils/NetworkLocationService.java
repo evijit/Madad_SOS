@@ -26,6 +26,10 @@ import com.parse.Parse;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.Vector;
 
@@ -134,6 +138,55 @@ public class NetworkLocationService extends Service implements LocationListener 
                 maps.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                         new LatLng(location.getLatitude(), location.getLongitude()), 16));
                 maps.isAnimateCamera = false;
+            }
+            final double lat = location.getLatitude();
+            final  double lng = location.getLongitude();
+            boolean was_null = false;
+            if(maps.pre_place_point == null) {
+                was_null =true;
+                maps.pre_place_point = new Location("loc");
+                maps.pre_place_point.setLongitude(lng);
+                maps.pre_place_point.setLatitude(lat);
+            }
+            if(location.distanceTo(maps.pre_place_point) >= 500 || was_null == true) {
+                Thread thread = new Thread(new Runnable() {
+
+
+                    @Override
+                    public void run() {
+                        try {
+                            maps.pre_place_point = location;
+                            String url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true";
+                            String data = maps.getJSON(url, 3000);
+                            try {
+                                JSONObject jsonRootObject = new JSONObject(data);
+
+                                //Get the instance of JSONArray that contains JSONObjects
+                                JSONArray jsonArray = jsonRootObject.getJSONArray("results");
+
+                                //Iterate the jsonArray and print the info of JSONObjects
+                                JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+                                String name = jsonObject.optString("formatted_address").toString();
+                                Log.e("Place Name is ", name);
+                                if(ParseUser.getCurrentUser()!=null) {
+                                    ParseUser.getCurrentUser().put("location", name);
+                                    ParseUser.getCurrentUser().saveInBackground();
+                                }
+
+
+                            } catch (JSONException e) {
+                                maps.pre_place_point = null;
+                                e.printStackTrace();
+                            }
+                            //Your code goes here
+                        } catch (Exception e) {
+                            maps.pre_place_point = null;
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                thread.run();
             }
         }
 
