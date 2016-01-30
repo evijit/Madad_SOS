@@ -248,12 +248,14 @@ public class AnimatedButtons extends AppCompatActivity {
         }
 
         mRecorder.start();
+        Toast.makeText(this,"Recording started",Toast.LENGTH_SHORT).show();
     }
 
     private void stopRecording() {
         mRecorder.stop();
         mRecorder.release();
         mRecorder = null;
+        Toast.makeText(this,"Recording stopped",Toast.LENGTH_SHORT).show();
         shareAudio();
     }
 
