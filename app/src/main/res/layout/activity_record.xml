@@ -16,7 +16,7 @@
         android:gravity="center"
         android:layout_alignParentTop="true"
         android:textStyle="bold"
-        android:text="Add details to your Madad request (optional)"
+        android:text="Edit SOS Request"
         android:textSize="25sp"
         android:textColor="#777777"/>
     <!--<EditText-->
@@ -121,7 +121,6 @@
                         android:editable="true"
                         android:text="I'm in trouble. Please help me."
                         android:ellipsize="end"
-                        android:hint="Enter your message..."
                         android:inputType="textMultiLine"
                         android:scrollHorizontally="false"
                         android:textColor="#000"/>

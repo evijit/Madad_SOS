@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/action_map"
+        android:title="Show Map"
+        android:icon="@drawable/menu_map"
+        android:orderInCategory="1"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_voice"
+        android:title="Play Voice"
+        android:icon="@drawable/menu_voice"
+        android:orderInCategory="2"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_close"
+        android:title="Close SOS"
+        android:icon="@drawable/menu_close"
+        android:orderInCategory="3"
+        app:showAsAction="never" />
+</menu>

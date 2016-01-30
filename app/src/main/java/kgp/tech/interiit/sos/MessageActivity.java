@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -155,7 +156,9 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MessageActivity.this, "FAB is clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MessageActivity.this, "FAB is clicked", Toast.LENGTH_SHORT).show();
+                showPopup(v);
+
             }
         });
         mFabMargin = getResources().getDimensionPixelSize(R.dimen.margin_standard);
@@ -202,14 +205,13 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         pq.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
-                if(e!=null)
-                {
+                if (e != null) {
                     e.printStackTrace();
                     return;
                 }
                 ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS_Users");
-                pq.whereEqualTo("SOSid",parseObject);
-                pq.whereEqualTo("hasAccepted",true);
+                pq.whereEqualTo("SOSid", parseObject);
+                pq.whereEqualTo("hasAccepted", true);
                 pq.findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> list, ParseException e) {
@@ -232,6 +234,44 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
 //    protected ObservableListView createScrollable() {
 //        return null;
 //    }
+
+    public void showPopup(View v) {
+        IconizedPopup popup = new IconizedPopup(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_APPEND | Context.MODE_PRIVATE);
+        setSupportActionBar(toolbar);
+        if (sp.getString("sosID", null) != null) {
+            inflater.inflate(R.menu.menu_self, popup.getMenu());
+            popup.show();
+
+        } else {
+            inflater.inflate(R.menu.menu_other, popup.getMenu());
+            popup.show();
+        }
+
+        IconizedPopup.OnMenuItemClickListener listener = new IconizedPopup.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_map:
+                        // User chose the "Settings" item, show the app settings UI...
+                        action_openMap();
+                        return true;
+
+                    case R.id.action_voice:
+
+                        return true;
+
+                    case R.id.action_close:
+
+                        return true;
+                }
+                return false;
+
+            }
+        };
+        popup.setOnMenuItemClickListener(listener);
+    }
 
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
@@ -388,7 +428,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         }
     }
 
-    public void history(String channelName){
+    public void history(String channelName) {
         final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
         pubnub.history(channelName, 100, false, new Callback() {
             @Override
@@ -466,6 +506,8 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         }
         toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
         sendfab.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red));
+        FloatingActionButton f=(FloatingActionButton)findViewById(R.id.fab);
+        f.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.darkred));
 
 
 
