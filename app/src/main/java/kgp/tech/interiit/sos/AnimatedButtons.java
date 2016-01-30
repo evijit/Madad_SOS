@@ -8,7 +8,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
@@ -32,6 +36,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import kgp.tech.interiit.sos.Utils.SirenService;
@@ -41,6 +47,11 @@ import kgp.tech.interiit.sos.Utils.comm;
 public class AnimatedButtons extends AppCompatActivity {
     public static boolean isSiren = false;
 
+    ImageButton mRecordButton= null;
+    private static String mFileName = null;
+    private static final String LOG_TAG = "AudioShareable";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         enterFromBottomAnimation();
@@ -48,6 +59,7 @@ public class AnimatedButtons extends AppCompatActivity {
         setContentView(R.layout.activity_animated_buttons);
 
         ImageButton i1= (ImageButton) findViewById(R.id.fab1);
+        ImageButton mRecordButton = (ImageButton) findViewById(R.id.fab1);
         ImageButton i2= (ImageButton) findViewById(R.id.fab2);
         ImageButton i3= (ImageButton) findViewById(R.id.fab3);
         ImageButton i4= (ImageButton) findViewById(R.id.fab4);
@@ -55,6 +67,21 @@ public class AnimatedButtons extends AppCompatActivity {
         ImageButton i6= (ImageButton) findViewById(R.id.fab6);
         ImageButton i7= (ImageButton) findViewById(R.id.fab7);
 
+        mFileName = Environment.getExternalStorageDirectory().getAbsolutePath();
+        mFileName += "/audioShareable.mp3";
+
+        mRecordButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                onRecord(mStartRecording);
+                if (mStartRecording) {
+                    //((Button) v).setText("Stop recording");
+                } else {
+                    //((Button) v).setText("Start recording");
+                }
+                mStartRecording = !mStartRecording;
+            }
+        });
 
         i5.setBackgroundResource(R.drawable.fab_purple);
         i6.setBackgroundResource(R.drawable.fab_grey);
@@ -190,12 +217,67 @@ public class AnimatedButtons extends AppCompatActivity {
         });
     }
 
-    public void recordAudio(View v) {
-        Intent intent = new Intent(this, CreateSOSActivity.class);
-        startActivity(intent);
-        finish();
+
+//    private ImageButton mRecordButton = null;
+    private MediaRecorder mRecorder = null;
+
+    boolean mStartRecording = true;
+    boolean mStartPlaying = true;
+
+    private void onRecord(boolean start) {
+        if (start) {
+            startRecording();
+        } else {
+            stopRecording();
+        }
+    }
+    //mRecordButton.setText("Start recording");
+
+
+    private void startRecording() {
+        mRecorder = new MediaRecorder();
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mRecorder.setOutputFile(mFileName);
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            mRecorder.prepare();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+        }
+
+        mRecorder.start();
+        Toast.makeText(this,"Recording started",Toast.LENGTH_SHORT).show();
     }
 
+    private void stopRecording() {
+        mRecorder.stop();
+        mRecorder.release();
+        mRecorder = null;
+        Toast.makeText(this,"Recording stopped",Toast.LENGTH_SHORT).show();
+        shareAudio();
+    }
+
+    private void shareAudio() {
+        Intent share = new Intent(Intent.ACTION_SEND);
+
+        // If you want to share a png image only, you can do:
+        // setType("image/png"); OR for jpeg: setType("image/jpeg");
+        share.setType("audio/*");
+
+        // Make sure you put example png image named myImage.png in your
+        // directory
+        String imagePath = Environment.getExternalStorageDirectory()
+                + "/audioShareable.mp3";
+
+        File imageFileToShare = new File(imagePath);
+
+        Uri uri = Uri.fromFile(imageFileToShare);
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+
+        startActivity(Intent.createChooser(share, "Share Audio!"));
+    }
     public void action_fakecall(View v)
     {
         Intent intent = new Intent(this, FakeCallReciever.class);
