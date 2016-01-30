@@ -121,7 +121,7 @@ public class TrustedActivity extends AppCompatActivity {
                         case DialogInterface.BUTTON_POSITIVE:
                             // int which = -1
                             //search the user in data base and add to friend class
-                            ParseObject trustedUser = new ParseObject("Trusted");
+                            final ParseObject trustedUser = new ParseObject("Trusted");
                             trustedUser.put("Name", name);
 
                             trustedUser.put("Phone", PhoneNumberUtils.normalizeNumber(phone));
@@ -131,8 +131,13 @@ public class TrustedActivity extends AppCompatActivity {
                             trustedUser.put("accepted", Boolean.FALSE);
                             trustedUser.pinInBackground("trusted");
 
-                            trustedUser.saveEventually();
-                            comm.checkIfUser(trustedUser.getObjectId());
+                            trustedUser.saveEventually(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    comm.checkIfUser(trustedUser.getObjectId());
+                                    Log.d("TRUSTED", trustedUser.getObjectId());
+                                }
+                            });
 
                             ptlist.add(trustedUser);
                             ContactAdapter ca = (ContactAdapter)((ListView) findViewById(R.id.trusted)).getAdapter();
