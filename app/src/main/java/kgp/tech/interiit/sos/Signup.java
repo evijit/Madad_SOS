@@ -59,7 +59,7 @@ public class Signup extends AppCompatActivity {
                 EditText pass = (EditText) findViewById(R.id.password);
                 String spassword = pass.getText().toString();
                 String semail =email.getText().toString();
-                if(isValidEmaillId(semail))
+                if(!isValidEmaillId(semail))
                 {
                     Utils.showDialog(Signup.this,"Please enter a valid email address.");
                     return;

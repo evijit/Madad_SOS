@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,11 +43,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import kgp.tech.interiit.sos.Utils.DateFormater;
 import kgp.tech.interiit.sos.Utils.Helper;
 
-public class ChatlistFragment extends Fragment {
+public class ChatlistFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private Toolbar toolbar;
     private ListView listView;
     private List<ParseObject> sos_list = new ArrayList<ParseObject>();;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -54,11 +56,19 @@ public class ChatlistFragment extends Fragment {
         View v=inflater.inflate(R.layout.frag_chatlist, container, false);
 
         listView = (ListView) v.findViewById(R.id.list_data);
-        pullData();
+
         listView.setEmptyView(v.findViewById(R.id.emptyviewtxt));
 
         listView.setDivider(null);
         listView.setDividerHeight(0);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh_layout);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        swipeRefreshLayout.setRefreshing(true);
+        pullData();
+
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> av, View v, int position, long id) {
@@ -143,6 +153,7 @@ public class ChatlistFragment extends Fragment {
 
                 MyAdapter adapter = new MyAdapter(sos_list, getActivity());
                 listView.setAdapter(adapter);
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -162,6 +173,11 @@ public class ChatlistFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRefresh() {
+        pullData();
     }
 }
 
