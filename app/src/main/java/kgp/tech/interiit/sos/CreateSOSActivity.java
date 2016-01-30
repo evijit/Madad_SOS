@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.support.design.widget.FloatingActionButton;
+import android.telephony.SmsManager;
 import android.text.format.DateUtils;
 import android.view.Gravity;
 import android.view.WindowManager;
@@ -25,6 +26,7 @@ import android.media.MediaPlayer;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -40,6 +42,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import kgp.tech.interiit.sos.Utils.DateFormater;
 import kgp.tech.interiit.sos.Utils.Utils;
@@ -162,13 +165,28 @@ public class CreateSOSActivity extends Activity
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        Log.d("CreateSOS","Creating sos");
+        Log.d("CreateSOS", "Creating sos");
         sos = comm.sendSOS(getString(R.string.default_sos));
         if(sos==null)
         {
             Utils.showDialog(this,"Please try again.");
             return;
         }
+
+        ParseQuery<ParseObject> pqq = ParseQuery.getQuery("Trusted");
+        pqq.whereEqualTo("UserId", ParseUser.getCurrentUser());
+        pqq.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                for (ParseObject i : list) {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    String message = "Please save me. Help me! --" + ParseUser.getCurrentUser().getString("displayname") + ".";
+                    smsManager.sendTextMessage(i.getString("Phone"), null, message, null, null);
+                }
+            }
+        });
+
+
         Toast.makeText(this, "SOS Signal has been sent", Toast.LENGTH_LONG).show();
         SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
