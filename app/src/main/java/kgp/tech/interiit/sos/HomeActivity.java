@@ -156,12 +156,12 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
         //Log.d("prefs dist", String.valueOf(sharedPref.getInt(getString(R.string.pref_distance),0)));
 
         ImageView avatar=(ImageView)findViewById(R.id.avatar);
-        Log.d("home","wow");
-        Helper.GetProfilePic(ParseUser.getCurrentUser(),avatar,this);
+        Log.d("home", "wow");
+        Helper.GetProfilePic(ParseUser.getCurrentUser(), avatar, this);
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(HomeActivity.this, AccountDetails.class);
+                Intent i = new Intent(HomeActivity.this, AccountDetails.class);
                 startActivity(i);
             }
         });
@@ -170,35 +170,13 @@ public class HomeActivity extends AppCompatActivity implements SheetLayout.OnFab
         name.setText(ParseUser.getCurrentUser().getString("displayname"));
         TextView email = (TextView) findViewById(R.id.drawer_email);
         email.setText(ParseUser.getCurrentUser().getEmail());
+        TextView loc = (TextView) findViewById(R.id.location);
+        loc.setText(getString(R.string.cur_loc)+" "+ParseUser.getCurrentUser().getString("location"));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        ParseQuery<ParseObject> pq = new ParseQuery("picture");
-        pq.fromLocalDatastore();
-
-        pq.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null && !list.isEmpty()) {
-                    // Locate the objectId from the class
-                    Bitmap bmp = BitmapFactory
-                            .decodeByteArray(
-                                    list.get(0).getBytes("picture"), 0,
-                                    list.get(0).getBytes("picture").length);
-
-                    // Get the ImageView from
-                    // main.xml
-                    ImageView image = (ImageView) findViewById(R.id.avatar);
-
-                    // Set the Bitmap into the
-                    // ImageView
-                    image.setImageBitmap(bmp);
-                }
-            }
-        });
     }
 
     static void centerToolbarTitle(final Toolbar toolbar) {

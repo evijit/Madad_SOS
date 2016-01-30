@@ -23,6 +23,7 @@ import android.util.Log;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.Parse;
@@ -168,6 +169,7 @@ public class CreateSOSActivity extends Activity
             Utils.showDialog(this,"Please try again.");
             return;
         }
+        Toast.makeText(this, "SOS Signal has been sent", Toast.LENGTH_LONG).show();
         SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("sosID", sos.getObjectId());
@@ -196,7 +198,7 @@ public class CreateSOSActivity extends Activity
             public void onClick(View v) {
                 onRecord(mStartRecording);
                 if (mStartRecording) {
-                    //this.setText("Stop recording");
+                    //((Button) v).setText("Stop recording");
                 } else {
                     //((Button) v).setText("Start recording");
                 }

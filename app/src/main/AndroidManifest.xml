@@ -91,7 +91,8 @@
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".AcceptSOS"
-            android:label="@string/title_activity_accept_sos" />
+            android:label="@string/title_activity_accept_sos"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".TrustedActivity"
             android:label="@string/title_activity_trusted"

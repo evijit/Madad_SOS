@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 
 import com.parse.ParsePushBroadcastReceiver;
 
@@ -30,18 +31,20 @@ public class CustomReceiver extends ParsePushBroadcastReceiver {
     @Override
     protected Notification getNotification(Context context, Intent intent) {
         Intent notificationIntent = new Intent(context, AcceptSOS.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        notificationIntent.putExtras(intent);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        notificationIntent.putExtras(intent.getExtras());
 
         Intent helping = new Intent(context, MessageActivity.class);
-        helping.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        helping.putExtras(intent);
+        helping.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        helping.putExtras(intent.getExtras());
 
         PendingIntent piIntent = PendingIntent.getActivity(context, 0,
-                notificationIntent, 0);
+                notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         PendingIntent pi = PendingIntent.getActivity(context, 1,
-                helping, 0);
+                helping, PendingIntent.FLAG_CANCEL_CURRENT);
 
         String SOSId = null;
         String senderId = null;
@@ -50,11 +53,12 @@ public class CustomReceiver extends ParsePushBroadcastReceiver {
         String name = null;
         try {
             JSONObject data = new JSONObject(intent.getExtras().getString("com.parse.Data"));
+            Log.d("customreceive", data.toString());
             SOSId = data.getString("sosId");
             senderId = data.getString("username");
             channelId = data.getString("chatChannel");
             type = data.getString("type");
-            name = data.getString("displayName");
+            name = data.getString("displayname");
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -101,7 +101,7 @@ public class ChatlistFragment extends Fragment {
                 intent.putExtra("channelID", sos_list.get(position).getString("channelID"));
                 intent.putExtra("createdAt", DateFormater.formatTimeDate(sos_list.get(position).getCreatedAt()));
                 intent.putExtra("username", user.getUsername());
-                intent.putExtra("Description", user.getString("Description"));
+                intent.putExtra("Description", sos_list.get(position).getString("Description"));
                 intent.putExtra("displayname", user.getString("displayname"));
                 startActivity(intent);
             }

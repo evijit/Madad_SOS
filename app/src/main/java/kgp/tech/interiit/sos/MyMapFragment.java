@@ -28,6 +28,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
@@ -65,8 +66,6 @@ import kgp.tech.interiit.sos.Utils.NetworkLocationService;
 import kgp.tech.interiit.sos.Utils.People;
 import kgp.tech.interiit.sos.Utils.Places;
 import kgp.tech.interiit.sos.Utils.Utils;
-import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu;
-import lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay;
 
 
 public class MyMapFragment extends Fragment implements LocationListener{
@@ -80,11 +79,12 @@ public class MyMapFragment extends Fragment implements LocationListener{
     public static boolean isAddHospital = false;
     public static boolean isAddPolice = false;
     public static boolean isAddPharmacy = false;
-
+    static Vector<MarkerOptions> helpers_pre = null, helpers_now = null;
+    static Vector<MarkerOptions> to_help_pre = null, to_help_now = null;
+    public static Location pre_place_point = null;
     static private Context context=null;
 
 
-    private ExpandableMenuOverlay menuOverlay;
 
     @Override
     public void onAttach(Context context)
@@ -112,6 +112,10 @@ public class MyMapFragment extends Fragment implements LocationListener{
             pq.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
+                    if(to_help_now  != null)
+                        to_help_now.clear();
+                    else
+                        to_help_now = new Vector<MarkerOptions>(1);
                     if(e!=null)
                     {
                         Utils.showDialog(context,e.getMessage());
@@ -131,10 +135,16 @@ public class MyMapFragment extends Fragment implements LocationListener{
                         mp.title(user.getString("displayname"));
                         mp.position(new LatLng(lat,lng));
                         mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                        mMap.addMarker(mp);
+                        //mMap.addMarker(mp);
+                        to_help_now.addElement(mp);
                     }
+                    to_help_pre = to_help_now;
                 }
             });
+            if(to_help_pre != null)
+            for(MarkerOptions mp : to_help_pre){
+                mMap.addMarker(mp);
+            }
         }
         else
         {
@@ -148,6 +158,10 @@ public class MyMapFragment extends Fragment implements LocationListener{
             pq.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
+                    if(helpers_now != null)
+                        helpers_now.clear();
+                    else
+                        helpers_now = new Vector<MarkerOptions>(1);
                     if(e!=null)
                     {
                         e.printStackTrace();
@@ -172,10 +186,16 @@ public class MyMapFragment extends Fragment implements LocationListener{
                         mp.title(user.getString("displayname"));
                         mp.position(new LatLng(lat,lng));
                         mp.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                        mMap.addMarker(mp);
+                        //mMap.addMarker(mp);
+                        helpers_now.addElement(mp);
                     }
+                    helpers_pre = helpers_now;
                 }
             });
+            if(helpers_pre != null)
+            for(MarkerOptions mp : helpers_pre){
+                mMap.addMarker(mp);
+            }
         }
     }
 
@@ -258,6 +278,8 @@ public class MyMapFragment extends Fragment implements LocationListener{
                                 }
                             }
                         } catch (JSONException e) {
+
+                            pre_hospital_point = null;
                             e.printStackTrace();
                         }
                         //Your code goes here
@@ -356,27 +378,27 @@ public class MyMapFragment extends Fragment implements LocationListener{
 
 
 
-        menuOverlay = (ExpandableMenuOverlay) v.findViewById(R.id.button_menu);
-        menuOverlay.setOnMenuButtonClickListener(new ExpandableButtonMenu.OnMenuButtonClick() {
-            @Override
-            public void onClick(ExpandableButtonMenu.MenuButton action) {
-                switch (action) {
-                    case MID:
-                        // do stuff and dismiss
-//                        Intent i = new Intent(MapsActivity.this, Chatlist.class);
-//                        startActivity(i);
-                        //sendSOS();
-                        menuOverlay.getButtonMenu().toggle();
-                        break;
-                    case LEFT:
-                        // do stuff
-                        break;
-                    case RIGHT:
-                        // do stuff
-                        break;
-                }
-            }
-        });
+//        menuOverlay = (ExpandableMenuOverlay) v.findViewById(R.id.button_menu);
+//        menuOverlay.setOnMenuButtonClickListener(new ExpandableButtonMenu.OnMenuButtonClick() {
+//            @Override
+//            public void onClick(ExpandableButtonMenu.MenuButton action) {
+//                switch (action) {
+//                    case MID:
+//                        // do stuff and dismiss
+////                        Intent i = new Intent(MapsActivity.this, Chatlist.class);
+////                        startActivity(i);
+//                        //sendSOS();
+//                        menuOverlay.getButtonMenu().toggle();
+//                        break;
+//                    case LEFT:
+//                        // do stuff
+//                        break;
+//                    case RIGHT:
+//                        // do stuff
+//                        break;
+//                }
+//            }
+//        });
         return v;
     }
 
@@ -494,6 +516,53 @@ public class MyMapFragment extends Fragment implements LocationListener{
                         new LatLng(location.getLatitude(), location.getLongitude()), 16));
                 isAnimateCamera = false;
             }
+            final double lat = location.getLatitude();
+            final  double lng = location.getLongitude();
+            boolean was_null = false;
+            if(pre_place_point == null) {
+                was_null =true;
+                pre_place_point = new Location("loc");
+                pre_place_point.setLongitude(lng);
+                pre_place_point.setLatitude(lat);
+            }
+
+            Thread thread = new Thread(new Runnable() {
+
+
+                @Override
+                public void run() {
+                    try {
+                        String url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=true";
+                        String data = getJSON(url, 3000);
+                        try {
+                            pre_place_point = location;
+                            JSONObject jsonRootObject = new JSONObject(data);
+
+                            //Get the instance of JSONArray that contains JSONObjects
+                            JSONArray jsonArray = jsonRootObject.getJSONArray("results");
+
+                            //Iterate the jsonArray and print the info of JSONObjects
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+                            String name = jsonObject.optString("formatted_address").toString();
+
+                            Log.e("Place Name is ", name);
+                            if(ParseUser.getCurrentUser()!=null) {
+                                ParseUser.getCurrentUser().put("location", name);
+                                ParseUser.getCurrentUser().saveInBackground();
+                            }
+                        } catch (JSONException e) {
+                            pre_place_point = null;
+                            e.printStackTrace();
+                        }
+                        //Your code goes here
+                    } catch (Exception e) {
+                        pre_place_point = null;
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.run();
         }
     }
 

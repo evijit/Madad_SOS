@@ -52,7 +52,7 @@
 
             android:textSize="24sp"
             android:textStyle="bold"
-            android:id="@+id/textView"
+            android:id="@+id/username"
             android:layout_gravity="center_horizontal" />
 
 

@@ -12,7 +12,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,10 +32,12 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
 import kgp.tech.interiit.sos.Utils.Utils;
+import kgp.tech.interiit.sos.Utils.comm;
 
 public class TrustedActivity extends AppCompatActivity {
 
@@ -119,16 +123,22 @@ public class TrustedActivity extends AppCompatActivity {
                             //search the user in data base and add to friend class
                             ParseObject trustedUser = new ParseObject("Trusted");
                             trustedUser.put("Name", name);
-                            trustedUser.put("Phone", phone);
+
+                            trustedUser.put("Phone", PhoneNumberUtils.normalizeNumber(phone));
+
                             trustedUser.put("Email", email);
                             trustedUser.put("UserId", ParseUser.getCurrentUser());
                             trustedUser.put("accepted", Boolean.FALSE);
                             trustedUser.pinInBackground("trusted");
+
                             trustedUser.saveEventually();
+                            comm.checkIfUser(trustedUser.getObjectId());
 
                             ptlist.add(trustedUser);
                             ContactAdapter ca = (ContactAdapter)((ListView) findViewById(R.id.trusted)).getAdapter();
                             ca.notifyDataSetChanged();
+
+
 
                             //TODO call the cloud service and make it check if contact uses the app
                             break;

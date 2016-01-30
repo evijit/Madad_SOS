@@ -5,12 +5,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="50dp"
-    android:layout_marginBottom="50dp"
+
     android:background="#E3E3E3"
     android:padding="40dp"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"
+        android:text="Add details to your Madad request (optional)"
+        android:textSize="25sp"
+        android:textColor="#777777"/>
     <!--<EditText-->
         <!--android:id="@+id/message"-->
         <!--android:layout_width="match_parent"-->
@@ -21,6 +29,7 @@
         <!--android:layout_marginTop="45dp"/>-->
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_marginTop="80dp"
         android:layout_height="wrap_content">
         <ImageButton
             android:id="@+id/record"

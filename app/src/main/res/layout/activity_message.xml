@@ -18,7 +18,7 @@
     android:layout_width="match_parent"
     android:id="@+id/container"
     xmlns:fab="http://schemas.android.com/tools"
-    android:background="@color/primary_dark"
+    android:background="@color/primary"
     android:layout_height="match_parent">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -53,18 +53,18 @@
         android:minHeight="?attr/actionBarSize"
         android:textColor="#fff"
         android:textSize="14sp" />
-
     <TextView
-        android:id="@+id/people"
+        android:id="@+id/help"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:layout_marginLeft="150dp"
-        android:layout_marginTop="70dp"
-        android:text="5 people coming to help"
+        android:layout_marginTop="100dp"
+        android:text="SOS activated on 3rd Jan at 5:40pm"
         android:minHeight="?attr/actionBarSize"
         android:textColor="#fff"
         android:textSize="14sp" />
+    
 
 
     <!--<ImageButton-->
@@ -168,6 +168,7 @@
         <com.github.ksoichiro.android.observablescrollview.ObservableListView
             android:id="@+id/list"
             android:layout_width="match_parent"
+            android:layout_marginTop="50dp"
             android:layout_height="match_parent"
             android:layout_above="@id/bottom_write_bar"
             android:layout_alignParentTop="true"
@@ -250,7 +251,7 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         app:backgroundTint="#fff"
-        android:src="@drawable/add"
+        android:src="@drawable/ic_loc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="center"

@@ -17,6 +17,7 @@ import com.pubnub.api.PubnubException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -93,7 +94,8 @@ public class comm {
                 params.put("channel", channelName);
                 params.put("sosid", sos.getObjectId());
                 params.put("type", "sos");
-                params.put("displayName", ParseUser.getCurrentUser().get("displayname"));
+                params.put("displayname", ParseUser.getCurrentUser().get("displayname"));
+                params.put("ctime", (new Date()).toString());
 
                 ParseCloud.callFunctionInBackground("sendSOS", params, new FunctionCallback<Float>() {
                     @Override
@@ -101,6 +103,9 @@ public class comm {
                         if (e == null) {
                             System.out.println("YAAAY!!!");
                             sendMessage(channelName, "Help me");
+                        }
+                        else{
+                            e.printStackTrace();
                         }
                     }
                 });
@@ -115,6 +120,27 @@ public class comm {
         }
     }
 
+    public static void checkIfUser(String trustedid)
+    {
+        try {
+            HashMap<String, Object> params = new HashMap<>();
+            params.put("trustedid", trustedid);
+
+            ParseCloud.callFunctionInBackground("checkifuser", params, new FunctionCallback<Float>() {
+                @Override
+                public void done(Float fLoat, ParseException e) {
+                    if (e == null) {
+                    }
+                    else{
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void sendMessage(String channelName,String message)
     {
         final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
@@ -122,6 +148,7 @@ public class comm {
         try {
             data.put("username",ParseUser.getCurrentUser().getUsername());
             data.put("message",message);
+            data.put("displayname",ParseUser.getCurrentUser().getString("displayname"));
             pubnub.publish(channelName, data, new Callback() {
             });
         } catch (JSONException e) {

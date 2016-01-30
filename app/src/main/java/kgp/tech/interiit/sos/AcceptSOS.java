@@ -1,5 +1,6 @@
 package kgp.tech.interiit.sos;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,7 +10,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -29,14 +33,17 @@ import org.json.JSONObject;
 import java.util.List;
 
 import kgp.tech.interiit.sos.Utils.DateFormater;
+import kgp.tech.interiit.sos.Utils.Helper;
 import kgp.tech.interiit.sos.Utils.Utils;
 
 public class AcceptSOS extends AppCompatActivity {
 
-    private String SOSId;
+    private String SOSid;
     private String channelId;
     private String senderId;
     private String displayname;
+    private String createdtime;
+    private String location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +52,46 @@ public class AcceptSOS extends AppCompatActivity {
         Intent intent = getIntent();
         try {
             JSONObject data = new JSONObject(intent.getExtras().getString("com.parse.Data"));
-            SOSId = data.getString("sosId");
+            Log.d("AcceptSOS",data.toString());
+            SOSid = data.getString("sosId");
+            Log.d("AcceptSOS","sosid "+SOSid);
             senderId = data.getString("username");
             channelId = data.getString("chatChannel");
             displayname = data.getString("displayname");
+            location = data.getString("location");
+            createdtime = DateFormater.formatString(data.getString("ctime"));
+
+            TextView username = (TextView)findViewById(R.id.username);
+            username.setText(displayname);
+
+            TextView det = (TextView)findViewById(R.id.detail);
+            det.setText(getString(R.string.default_sos));
+
+            TextView loc = (TextView)findViewById(R.id.addr);
+            loc.setText(location);
+
+            TextView tim = (TextView)findViewById(R.id.tim);
+            tim.setText(createdtime);
+
+            Log.d("AcceptedSOS", displayname);
+            Log.d("AcceptedSOS",location);
+
+
+            final ImageView img = (ImageView) findViewById(R.id.img);
+            ParseQuery<ParseUser> pq = ParseUser.getQuery();
+            pq.whereEqualTo("username", senderId);
+            pq.findInBackground(new FindCallback<ParseUser>() {
+                @Override
+                public void done(List<ParseUser> list, ParseException e) {
+                    if(e!=null)
+                    {
+                        e.printStackTrace();
+                        return;
+                    }
+                    Helper.GetProfilePic(list.get(0), img, AcceptSOS.this);
+                }
+            });
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -60,10 +103,9 @@ public class AcceptSOS extends AppCompatActivity {
         pq.include("SOSid");
         pq.include("SOSid.UserID");
         pq.whereEqualTo("UserID", ParseUser.getCurrentUser());
-        ParseObject sos = new ParseObject("SOS");
-
-        sos.setObjectId(SOSId);
-        pq.whereEqualTo("SOSid", sos);
+        ParseObject sos = ParseObject.createWithoutData("SOS", SOSid);
+        Log.d("AcceptedSOS","accepting");
+        pq.whereEqualTo("SOSid",sos);
         final ProgressDialog dia = ProgressDialog.show(AcceptSOS.this, null, getString(R.string.alert_wait));
         pq.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
@@ -79,9 +121,6 @@ public class AcceptSOS extends AppCompatActivity {
                 final ParseObject sos = parseObject.getParseObject("SOSid");
                 final ParseUser user = sos.getParseUser("UserID");
 
-                ParseObject pop = new ParseObject("SOS_Users");
-                pop.put("hasAccepted", true);
-                Log.d("AcceptedSOS","ID "+parseObject.getObjectId());
                 parseObject.put("hasAccepted", true);
                 parseObject.saveEventually(new SaveCallback() {
                     @Override
@@ -113,19 +152,20 @@ public class AcceptSOS extends AppCompatActivity {
     }
 
     public void notifySOS() {
+        Log.d("AcceptedSOS","notifying");
         // Find users near a given location
-        ParseQuery userQuery = ParseUser.getQuery();
+        ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
         userQuery.whereEqualTo("username", senderId);
 
         // Find devices associated with these users
-        ParseQuery pushQuery = ParseInstallation.getQuery();
+        ParseQuery<ParseInstallation> pushQuery = ParseInstallation.getQuery();
         pushQuery.whereMatchesQuery("user", userQuery);
 
         JSONObject jo = new JSONObject();
         try {
             jo.put("title", "Someone is coming to help you!");
             jo.put("alert", "Ya! I'm coming!");
-            jo.put("sosId", SOSId);
+            jo.put("sosId", SOSid);
             jo.put("chatChannel", channelId);
             jo.put("username", ParseUser.getCurrentUser().getUsername());
             jo.put("type", "helping");
@@ -143,24 +183,42 @@ public class AcceptSOS extends AppCompatActivity {
 
     public void action_reject_sos(final View v)
     {
-        Utils.showDialog(this, getString(R.string.please_help), R.string.save, R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        Intent intent = new Intent(AcceptSOS.this, HomeActivity.class);
-                        startActivity(intent);
-                        finish();
+//        Utils.showDialog(this, getString(R.string.please_help), R.string.save, R.string.no, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Log.d("AcceptSOS",which+" whc");
+//                switch (which) {
+//                    case DialogInterface.BUTTON_NEGATIVE:
+//                        Log.d("AcceptSOS", "neg");
+//                        Toast.makeText(getApplicationContext(),"Bad person", Toast.LENGTH_SHORT).show();
+//                        finish();
+//                        break;
+//                    case DialogInterface.BUTTON_POSITIVE:
+//                        Log.d("AcceptSOS","pos");
+//                        action_accept_sos(v);
+//                        //TODO call the cloud service and make it check if contact uses the app
+//                        break;
+//                }
+//                return;
+//            }
+//        });
 
-                        break;
-                    case DialogInterface.BUTTON_POSITIVE:
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.please_help)
+                .setCancelable(false)
+                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
                         action_accept_sos(v);
-                        //TODO call the cloud service and make it check if contact uses the app
-                        break;
-                }
-                return;
-            }
-        });
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        AcceptSOS.this.finish();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override
