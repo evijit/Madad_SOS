@@ -8,12 +8,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -51,11 +55,30 @@ public class AnimatedButtons extends AppCompatActivity {
         ImageButton i6= (ImageButton) findViewById(R.id.fab6);
         ImageButton i7= (ImageButton) findViewById(R.id.fab7);
 
+
+        i5.setBackgroundResource(R.drawable.fab_purple);
+        i6.setBackgroundResource(R.drawable.fab_grey);
+        i1.setBackgroundResource(R.drawable.fab_blue);
+        i2.setBackgroundResource(R.drawable.fab_ochre);
+        i7.setBackgroundResource(R.drawable.fab_red);
+        i3.setBackgroundResource(R.drawable.fab_green);
+        i4.setBackgroundResource(R.drawable.fab_amber);
+
+
         SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_APPEND | Context.MODE_PRIVATE);
 
         if(sp.getString("sosID", null)!=null)
         {
-            i7.setImageResource(R.drawable.ic_stop_white_24dp);
+            i7.setImageResource(R.drawable.ic_done_white_24dp);
+            i7.setBackgroundResource(R.drawable.fab_green);
+            findViewById(R.id.holder).setBackgroundColor(ContextCompat.getColor(this, R.color.darkred));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(ContextCompat.getColor(this, R.color.darkred));
+            }
+
+
         }
         FloatingActionButton ix= (FloatingActionButton) findViewById(R.id.fab);
 

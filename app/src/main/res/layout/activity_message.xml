@@ -18,7 +18,7 @@
     android:layout_width="match_parent"
     android:id="@+id/container"
     xmlns:fab="http://schemas.android.com/tools"
-    android:background="@color/primary_dark"
+    android:background="@color/primary"
     android:layout_height="match_parent">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -168,6 +168,7 @@
         <com.github.ksoichiro.android.observablescrollview.ObservableListView
             android:id="@+id/list"
             android:layout_width="match_parent"
+            android:layout_marginTop="50dp"
             android:layout_height="match_parent"
             android:layout_above="@id/bottom_write_bar"
             android:layout_alignParentTop="true"
@@ -254,7 +255,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="center"
-        android:visibility="invisible"
         android:layout_gravity="left|top"
         />
 </FrameLayout>

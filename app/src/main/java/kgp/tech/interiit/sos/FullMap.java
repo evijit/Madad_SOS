@@ -6,12 +6,15 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 /*
 import com.android.volley.Request;
@@ -61,7 +64,7 @@ public class FullMap extends AppCompatActivity implements SheetLayout.OnFabAnima
         if(sp.getString("sosID", null)!=null)
         {
             Log.d("Message", "SOS active");
-            setcolor(R.color.red);
+            setcolorred();
         }
 
         if (findViewById(R.id.fragment_container) != null) {
@@ -112,10 +115,18 @@ public class FullMap extends AppCompatActivity implements SheetLayout.OnFabAnima
         }
     }
 
-    void setcolor(int colres)//use setcolor R.color.red for Self SOS
+    void setcolorred()//use setcolor R.color.red for Self SOS
     {
         Log.d("Message", "Changing color");
-        mToolbar.setBackgroundColor(colres);
+        mToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+        mFab.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.red));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.darkred));
+        }
+        mSheetLayout.setColor(ContextCompat.getColor(this, R.color.darkred));
+
         //mFab.setBackgroundTintList(ColorStateList.valueOf(colres));
     }
 }
