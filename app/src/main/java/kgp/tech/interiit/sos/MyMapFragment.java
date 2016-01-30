@@ -66,8 +66,6 @@ import kgp.tech.interiit.sos.Utils.NetworkLocationService;
 import kgp.tech.interiit.sos.Utils.People;
 import kgp.tech.interiit.sos.Utils.Places;
 import kgp.tech.interiit.sos.Utils.Utils;
-import lt.lemonlabs.android.expandablebuttonmenu.ExpandableButtonMenu;
-import lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay;
 
 
 public class MyMapFragment extends Fragment implements LocationListener{
@@ -87,7 +85,6 @@ public class MyMapFragment extends Fragment implements LocationListener{
     static private Context context=null;
 
 
-    private ExpandableMenuOverlay menuOverlay;
 
     @Override
     public void onAttach(Context context)
@@ -381,27 +378,27 @@ public class MyMapFragment extends Fragment implements LocationListener{
 
 
 
-        menuOverlay = (ExpandableMenuOverlay) v.findViewById(R.id.button_menu);
-        menuOverlay.setOnMenuButtonClickListener(new ExpandableButtonMenu.OnMenuButtonClick() {
-            @Override
-            public void onClick(ExpandableButtonMenu.MenuButton action) {
-                switch (action) {
-                    case MID:
-                        // do stuff and dismiss
-//                        Intent i = new Intent(MapsActivity.this, Chatlist.class);
-//                        startActivity(i);
-                        //sendSOS();
-                        menuOverlay.getButtonMenu().toggle();
-                        break;
-                    case LEFT:
-                        // do stuff
-                        break;
-                    case RIGHT:
-                        // do stuff
-                        break;
-                }
-            }
-        });
+//        menuOverlay = (ExpandableMenuOverlay) v.findViewById(R.id.button_menu);
+//        menuOverlay.setOnMenuButtonClickListener(new ExpandableButtonMenu.OnMenuButtonClick() {
+//            @Override
+//            public void onClick(ExpandableButtonMenu.MenuButton action) {
+//                switch (action) {
+//                    case MID:
+//                        // do stuff and dismiss
+////                        Intent i = new Intent(MapsActivity.this, Chatlist.class);
+////                        startActivity(i);
+//                        //sendSOS();
+//                        menuOverlay.getButtonMenu().toggle();
+//                        break;
+//                    case LEFT:
+//                        // do stuff
+//                        break;
+//                    case RIGHT:
+//                        // do stuff
+//                        break;
+//                }
+//            }
+//        });
         return v;
     }
 

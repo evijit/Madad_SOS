@@ -1,5 +1,6 @@
 package kgp.tech.interiit.sos;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -181,24 +183,42 @@ public class AcceptSOS extends AppCompatActivity {
 
     public void action_reject_sos(final View v)
     {
-        Utils.showDialog(this, getString(R.string.please_help), R.string.save, R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Log.d("AcceptSOS",which+" whc");
-                switch (which) {
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        Log.d("AcceptSOS", "neg");
-                        finish();
-                        break;
-                    case DialogInterface.BUTTON_POSITIVE:
-                        Log.d("AcceptSOS","pos");
+//        Utils.showDialog(this, getString(R.string.please_help), R.string.save, R.string.no, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Log.d("AcceptSOS",which+" whc");
+//                switch (which) {
+//                    case DialogInterface.BUTTON_NEGATIVE:
+//                        Log.d("AcceptSOS", "neg");
+//                        Toast.makeText(getApplicationContext(),"Bad person", Toast.LENGTH_SHORT).show();
+//                        finish();
+//                        break;
+//                    case DialogInterface.BUTTON_POSITIVE:
+//                        Log.d("AcceptSOS","pos");
+//                        action_accept_sos(v);
+//                        //TODO call the cloud service and make it check if contact uses the app
+//                        break;
+//                }
+//                return;
+//            }
+//        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.please_help)
+                .setCancelable(false)
+                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
                         action_accept_sos(v);
-                        //TODO call the cloud service and make it check if contact uses the app
-                        break;
-                }
-                return;
-            }
-        });
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        AcceptSOS.this.finish();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override

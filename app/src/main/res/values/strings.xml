@@ -43,7 +43,7 @@
 
     <string name="please_help">Please help. Your help might save someones life.</string>
     <string name="default_sos">I am in trouble. Help me.</string>
-    <string name="save">Save</string>
+    <string name="save">Save the person</string>
     <string name="download_app">Please help me be safe. Install SOS App by clicking the link http://www.google.com</string>
     <string name="call">Call</string>
     <string name="delete">Delete</string>
@@ -52,7 +52,8 @@
     <string name="deleteContact">will be removed from Trusted Contacts</string>
     <string name="add1">as Trusted ?</string>
     <string name="yes">Yes</string>
-    <string name="no">No</string>
+    <string name="no_sos">No</string>
+    <string name="no">Do not save</string>
     <string name="add">Add</string>
     <string name="or">or</string>
     <string name="email">Email</string>

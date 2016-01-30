@@ -13,29 +13,6 @@
      />
 
 
-    <lt.lemonlabs.android.expandablebuttonmenu.ExpandableMenuOverlay
-        xmlns:ebm="http://schemas.android.com/apk/res-auto"
-        android:visibility="invisible"
-        android:id="@+id/button_menu"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/circle"
-        android:background="@drawable/ripple"
-        app:elevation="6dp"
-        ebm:dimAmount="0.8"
-        ebm:mainButtonSize="0.2"
-        ebm:otherButtonSize="0.18"
-        ebm:closeButtonSrc="@drawable/ic_close"
-        ebm:leftButtonSrc="@drawable/circle"
-        ebm:midButtonSrc="@drawable/circle"
-        ebm:rightButtonSrc="@drawable/circle"
-        ebm:leftButtonText="@string/action_left"
-        ebm:midButtonText="@string/action_middle"
-        ebm:rightButtonText="@string/action_right"
-        />
-
     </RelativeLayout>
 
 
