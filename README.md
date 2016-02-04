@@ -1,5 +1,5 @@
-# SOS_InterIIT
-SOS App for Inter IIT
+# Madad
+The all purpose help app
 
 Security is increasingly important in the modern world today, and thanks to the penetration of smartphones and technology we 
 can use them to solve a large number of problems. We need to develop an android application to allow people facing any kind 
