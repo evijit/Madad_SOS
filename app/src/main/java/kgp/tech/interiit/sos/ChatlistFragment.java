@@ -128,6 +128,7 @@ public class ChatlistFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     void pullData()
     {
+        sos_list.clear();
         ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS_Users");
         pq.whereEqualTo("UserID", ParseUser.getCurrentUser());
         pq.whereEqualTo("hasAccepted", true);

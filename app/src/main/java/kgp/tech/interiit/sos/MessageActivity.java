@@ -2,7 +2,9 @@ package kgp.tech.interiit.sos;
 
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -53,6 +55,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.pubnub.api.Callback;
 import com.pubnub.api.Pubnub;
 import com.pubnub.api.PubnubError;
@@ -72,6 +75,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import kgp.tech.interiit.sos.Utils.Helper;
+import kgp.tech.interiit.sos.Utils.Utils;
 import kgp.tech.interiit.sos.Utils.comm;
 
 public class MessageActivity extends BaseActivity implements ObservableScrollViewCallbacks {
@@ -259,11 +263,11 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
                         return true;
 
                     case R.id.action_voice:
-
+                        playAudio();
                         return true;
 
                     case R.id.action_close:
-
+                        action_cancel_sos();
                         return true;
                 }
                 return false;
@@ -428,6 +432,59 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
         }
     }
 
+    public void action_cancel_sos()
+    {
+        Utils.showDialog(this, R.string.cancel_sos, R.string.yes, R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        // int which = -2
+
+                        break;
+                    case DialogInterface.BUTTON_POSITIVE:
+                        SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_PRIVATE);
+                        String SOSid = sp.getString("sosID", null);
+
+                        ParseQuery<ParseObject> pq = ParseQuery.getQuery("SOS");
+                        pq.getInBackground(SOSid, new GetCallback<ParseObject>() {
+                            @Override
+                            public void done(ParseObject parseObject, ParseException e) {
+                                if (e != null) {
+                                    Utils.showDialog(MessageActivity.this, e.getMessage());
+                                    return;
+                                }
+                                parseObject.put("isActive", false);
+                                final ProgressDialog dia = ProgressDialog.show(MessageActivity.this, null, getString(R.string.alert_wait));
+                                parseObject.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e != null) {
+                                            Utils.showDialog(MessageActivity.this, e.getMessage());
+                                            return;
+                                        }
+
+                                        SharedPreferences sp = getSharedPreferences("SOS", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sp.edit();
+                                        editor.putString("sosID", null);
+                                        editor.commit();
+                                        dia.dismiss();
+
+                                        Intent intent = new Intent(MessageActivity.this, WelcomeActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                });
+                            }
+                        });
+                        //TODO call the cloud service and make it check if contact uses the app
+                        break;
+                }
+                return;
+            }
+        });
+    }
+
     public void history(String channelName) {
         final Pubnub pubnub = new Pubnub("pub-c-f9d02ea4-19f1-4737-b3e1-ef2ce904b94f", "sub-c-3d547124-be29-11e5-8a35-0619f8945a4f");
         pubnub.history(channelName, 100, false, new Callback() {
@@ -525,7 +582,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
     {
         action_openMap();
     }
-    public void playAudio(View v)
+    public void playAudio()
     {
         action_playAudio(channelID);
     }
@@ -541,7 +598,6 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
                 if (e != null) {
                     e.printStackTrace();
                     Log.d("MessageActivity", e.getMessage());
-
                     return;
                 } else {
                     ParseFile audioFile = recording.getParseFile("audio");
@@ -604,7 +660,7 @@ public class MessageActivity extends BaseActivity implements ObservableScrollVie
                 return true;
 
             case R.id.action_voice:
-
+                playAudio();
                 return true;
 
             default:

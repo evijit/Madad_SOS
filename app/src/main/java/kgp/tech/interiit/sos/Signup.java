@@ -87,7 +87,7 @@ public class Signup extends AppCompatActivity {
                         dia.dismiss();
                         if (e == null) {
                             // Hooray! Let them use the app now.
-                            startActivity(new Intent(Signup.this, HomeActivity.class));
+                            startActivity(new Intent(Signup.this, WelcomeActivity.class));
                             finish();
                         } else {
                             // Sign up didn't succeed. Look at the ParseException

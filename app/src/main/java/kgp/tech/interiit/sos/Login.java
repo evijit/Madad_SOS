@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity {
                     public void done(ParseUser user, ParseException e) {
                         dia.dismiss();
                         if (user != null) {
-                            startActivity(new Intent(Login.this, HomeActivity.class));
+                            startActivity(new Intent(Login.this, WelcomeActivity.class));
                             finish();
                         } else {
                             Utils.showDialog(Login.this, getString(R.string.err_login) + e.getMessage());

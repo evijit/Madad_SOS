@@ -276,7 +276,7 @@ public class AnimatedButtons extends AppCompatActivity {
         Uri uri = Uri.fromFile(imageFileToShare);
         share.putExtra(Intent.EXTRA_STREAM, uri);
 
-        startActivity(Intent.createChooser(share, "Share Audio!"));
+        startActivity(Intent.createChooser(share, "Share the Recording"));
     }
     public void action_fakecall(View v)
     {
