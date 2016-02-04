@@ -11,3 +11,9 @@ The app is with the following features:
 * The user should have an option to send some message with the help signal, and the receivers should have an option to reply back for further information.
 * It should allow the people willing to help to track the location of person who issued the notification, preferably in real time.
 * Think of more innovative ways to trigger the app which do not require opening the app.
+
+Our solution- MADAD:
+
+![alt text][logo]
+
+[logo]:http://i.imgur.com/aLNrjGW.jpg "Madad"
